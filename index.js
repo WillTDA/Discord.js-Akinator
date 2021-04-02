@@ -15,7 +15,7 @@ module.exports = {
     * const PREFIX = "!";
     * 
     * client.on("message", async message => {
-    *     if(message.content.startsWith(`${PREFIX}akiantor`)) {
+    *     if(message.content.startsWith(`${PREFIX}akinator`)) {
     *         akinator.play(message)
     *     }
     * });
