@@ -53,7 +53,7 @@ module.exports = {
                 max: 1,
                 timeout: 60000,
             })
-                .then(responses => {
+                .then(async responses => {
                     if (!responses.size) {
                         return message.channel.send(
                             new MessageEmbed()
