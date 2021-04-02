@@ -1,0 +1,21 @@
+{
+  "name": "discord.js-akinator",
+  "version": "1.0.0",
+  "description": "Create an Akinator Command for Your Discord Bot within Seconds of Installation.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "akinator",
+    "discord.js",
+    "aki-api"
+  ],
+  "author": "WillTDA",
+  "license": "ISC",
+  "dependencies": {
+    "aki-api": "^5.2.1",
+    "discord.js": "^12.5.3",
+    "discordjs-prompter": "^2.0.4"
+  }
+}
