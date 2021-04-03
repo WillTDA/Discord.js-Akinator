@@ -188,6 +188,9 @@ module.exports = function (message) {
                 } else {
                     await aki.step(answers[answer]);
                 }
+
+                if (!notFinished) return;
+
                 let updatedAkiEmbed = new Discord.MessageEmbed()
                     .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
                     .setTitle(`Question ${aki.currentStep + 1}`)
