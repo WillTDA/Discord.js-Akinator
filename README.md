@@ -25,7 +25,7 @@ client.on("ready", () => {
 
 client.on("message", async message => {
     if(message.content.startsWith(`${PREFIX}akinator`)) {
-        akinator.play(message);
+        akinator(message);
     }
 });
 
