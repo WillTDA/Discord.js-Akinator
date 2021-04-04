@@ -188,6 +188,7 @@ module.exports = async function (message) {
                         await aki.back();
                     }
                 } else if (answer == "s" || answer == "stop") {
+                    hasGuessed.delete(message.author.id)
                     games.delete(message.author.id)
                     let stopEmbed = new Discord.MessageEmbed()
                         .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
