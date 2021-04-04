@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const { Aki } = require("aki-api");
 const games = new Set();
+const hasGuessed = new Set();
 
 /**
     * @param {Discord.Message} message The Message Sent by the User.
@@ -18,7 +19,7 @@ const games = new Set();
     * });
        */
 
-module.exports = function (message) {
+module.exports = async function (message) {
 
     if (!message) return console.log("Discord.js Akinator Error: Message was not Provided. Need Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
     if (games.has(message.author.id)) {
@@ -44,6 +45,7 @@ module.exports = function (message) {
     await aki.start();
 
     let notFinished = true;
+    let stepsSinceLastGuess = 0;
 
     let noResEmbed = new Discord.MessageEmbed()
         .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
@@ -59,15 +61,24 @@ module.exports = function (message) {
         .setFooter(`You can also type "S" or "Stop" to End your Game`)
         .setColor("RANDOM")
 
-    await startingMessage.delete()
-    let akiMessage = await message.channel.send({ embed: akiEmbed })
+    await startingMessage.delete();
+    let akiMessage = await message.channel.send({ embed: akiEmbed });
 
     while (notFinished) {
-
         if (!notFinished) return;
+        if (hasGuessed.has(message.author.id)) {
+            stepsSinceLastGuess = stepsSinceLastGuess + 1
+        }
 
-        if (aki.progress >= 95 || aki.currentStep >= 78) {
-            await aki.win()
+        if ((aki.progress >= 95 && stepsSinceLastGuess === 10) || aki.currentStep >= 78) {
+            await aki.win();
+
+            if (!hasGuessed.has(message.author.id)) {
+                hasGuessed.add(message.author.id);
+            }
+
+            stepsSinceLastGuess = 0;
+
             let guessEmbed = new Discord.MessageEmbed()
                 .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
                 .setTitle(`I'm ${Math.round(aki.progress)}% Sure your Character is...`)
@@ -92,7 +103,7 @@ module.exports = function (message) {
             })
                 .then(async responses => {
                     if (!responses.size) {
-                        return akiMessage.edit({ embed: noResEmbed })
+                        return akiMessage.edit({ embed: noResEmbed });
                     }
                     const guessAnswer = String(responses.first()).toLowerCase();
 
@@ -120,6 +131,7 @@ module.exports = function (message) {
                                 .setColor("RANDOM")
                             await akiMessage.edit({ embed: finishedGameDefeated })
                             notFinished = false;
+                            hasGuessed.delete(message.author.id)
                             games.delete(message.author.id)
                         } else {
                             aki.progress = 50
