@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 const { Aki } = require("aki-api");
 const games = new Set();
-const hasGuessed = new Set();
 
 /**
     * @param {Discord.Message} message The Message Sent by the User.
@@ -66,16 +65,11 @@ module.exports = async function (message) {
 
     while (notFinished) {
         if (!notFinished) return;
-        if (hasGuessed.has(message.author.id)) {
-            stepsSinceLastGuess = stepsSinceLastGuess + 1
-        }
 
-        if ((aki.progress >= 95 && stepsSinceLastGuess === 10) || aki.currentStep >= 78) {
+        stepsSinceLastGuess = stepsSinceLastGuess + 1
+
+        if ((aki.progress >= 95 && stepsSinceLastGuess >= 10) || aki.currentStep >= 78) {
             await aki.win();
-
-            if (!hasGuessed.has(message.author.id)) {
-                hasGuessed.add(message.author.id);
-            }
 
             stepsSinceLastGuess = 0;
 
@@ -131,14 +125,24 @@ module.exports = async function (message) {
                                 .setColor("RANDOM")
                             await akiMessage.edit({ embed: finishedGameDefeated })
                             notFinished = false;
-                            hasGuessed.delete(message.author.id)
                             games.delete(message.author.id)
                         } else {
+                            let loadingEmbed = new Discord.MessageEmbed()
+                                .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
+                                .setTitle(`I'm ${Math.round(aki.progress)}% Sure your Character is...`)
+                                .setDescription(`**${aki.answers[0].name}**\n${aki.answers[0].description}\n\nIs this your Character? **(Type Y/Yes or N/No)**`)
+                                .addField("Ranking", `**#${aki.answers[0].ranking}**`, true)
+                                .addField("No. of Questions", `**${aki.currentStep}**`, true)
+                                .setImage(aki.answers[0].absolute_picture_path)
+                                .setColor("RANDOM")
+                            await akiMessage.edit({ embed: loadingEmbed });
                             aki.progress = 50
                         }
                     }
                 });
         }
+
+        if (!notFinished) return;
 
         const filter = x => {
             return (x.author.id === message.author.id && ([
@@ -181,6 +185,16 @@ module.exports = async function (message) {
                     "pn": 4,
                     "probably not": 4,
                 }
+
+                let thinkingEmbed = new Discord.MessageEmbed()
+                    .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
+                    .setTitle(`Question ${aki.currentStep + 1}`)
+                    .setDescription(`**Progress: ${Math.round(aki.progress)}%\n${aki.question}**`)
+                    .addField("Please Type...", "**Y** or **Yes**\n**N** or **No**\n**IDK** or **Don't Know**\n**P** or **Probably**\n**PN** or **Probably Not**\n**B** or **Back**")
+                    .setFooter(`Thinking...`)
+                    .setColor("RANDOM")
+                await akiMessage.edit({ embed: thinkingEmbed })
+
                 await responses.first().delete();
 
                 if (answer == "b" || answer == "back") {
@@ -188,7 +202,6 @@ module.exports = async function (message) {
                         await aki.back();
                     }
                 } else if (answer == "s" || answer == "stop") {
-                    hasGuessed.delete(message.author.id)
                     games.delete(message.author.id)
                     let stopEmbed = new Discord.MessageEmbed()
                         .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
