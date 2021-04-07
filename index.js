@@ -169,6 +169,9 @@ module.exports = async function (message) {
         })
             .then(async responses => {
                 if (!responses.size) {
+                    await aki.win()
+                    notFinished = false;
+                    games.delete(message.author.id)
                     return akiMessage.edit({ embed: noResEmbed })
                 }
                 const answer = String(responses.first()).toLowerCase().replace("'", "");
