@@ -84,7 +84,6 @@ module.exports = async function (message, client) {
 
             if (((aki.progress >= 95 && stepsSinceLastGuess >= 10) || aki.currentStep >= 78) && (!attemptingGuess.has(message.guild.id))) {
                 attemptingGuess.add(message.guild.id)
-                console.log("attempting to win")
                 await aki.win();
 
                 stepsSinceLastGuess = 0;
