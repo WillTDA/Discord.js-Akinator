@@ -9,13 +9,15 @@ const attemptingGuess = new Set();
     * @returns Discord.js Akinator Game
     * @async
     * @example
+    *  const Discord = require("discord.js");
+    *  const client = new Discord.Client();
     *  const akinator = require("discord.js-akinator");
     * 
     * const PREFIX = "!";
     * 
     * client.on("message", async message => {
     *     if(message.content.startsWith(`${PREFIX}akinator`)) {
-    *         akinator(message)
+    *         akinator(message, client)
     *     }
     * });
        */
