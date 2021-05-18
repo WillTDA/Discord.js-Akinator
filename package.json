@@ -1,6 +1,6 @@
 {
   "name": "discord.js-akinator",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Create an Akinator Command for Your Discord Bot within Seconds of Installation.",
   "main": "index.js",
   "scripts": {
