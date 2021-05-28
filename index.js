@@ -26,10 +26,11 @@ module.exports = async function (message, client) {
     try {
         if (!message) return console.log("Discord.js Akinator Error: Message was not Provided.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
         if (!client) return console.log("Discord.js Akinator Error: Discord Client was not Provided, and is needed in the new 2.0.0 Update you installed.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
-
+        let usertag = message.author.tag
+        let avatar = message.author.displayAvatarURL()
         if (games.has(message.author.id)) {
             let alreadyPlayingEmbed = new Discord.MessageEmbed()
-                .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
+                .setAuthor(usertag, avatar)
                 .setTitle(`❌ You're Already Playing!`)
                 .setDescription("**You're already Playing a Game of Akinator. Type `S` or `Stop` to Cancel your Game.**")
                 .setColor("RED")
@@ -39,7 +40,7 @@ module.exports = async function (message, client) {
         games.add(message.author.id)
 
         let startingEmbed = new Discord.MessageEmbed()
-            .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
+            .setAuthor(usertag, avatar)
             .setTitle(`Starting Game...`)
             .setDescription("**The Game will Start in About 3 Seconds...**")
             .setColor("RANDOM")
@@ -53,16 +54,16 @@ module.exports = async function (message, client) {
         let stepsSinceLastGuess = 0;
 
         let noResEmbed = new Discord.MessageEmbed()
-            .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
+            .setAuthor(usertag, avatar)
             .setTitle(`Game Ended`)
             .setDescription(`**${message.author.username}, your Game has Ended due to 1 Minute of Inactivity.**`)
             .setColor("RANDOM")
 
         let akiEmbed = new Discord.MessageEmbed()
-            .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
+            .setAuthor(usertag, avatar)
             .setTitle(`Question ${aki.currentStep + 1}`)
             .setDescription(`**Progress: 0%\n${aki.question}**`)
-            .addField("Please Type...", "**Y** or **Yes**\n**N** or **No**\n**IDK** or **Don't Know**\n**P** or **Probably**\n**PN** or **Probably Not**\n**B** or **Back**")
+            .addField("Please Type...", "**Y** or **Yes**\n**N** or **No**\n**I** or **IDK**\n**P** or **Probably**\n**PN** or **Probably Not**\n**B** or **Back**")
             .setFooter(`You can also type "S" or "Stop" to End your Game`)
             .setColor("RANDOM")
 
@@ -91,7 +92,7 @@ module.exports = async function (message, client) {
                 stepsSinceLastGuess = 0;
 
                 let guessEmbed = new Discord.MessageEmbed()
-                    .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
+                    .setAuthor(usertag, avatar)
                     .setTitle(`I'm ${Math.round(aki.progress)}% Sure your Character is...`)
                     .setDescription(`**${aki.answers[0].name}**\n${aki.answers[0].description}\n\nIs this your Character? **(Type Y/Yes or N/No)**`)
                     .addField("Ranking", `**#${aki.answers[0].ranking}**`, true)
@@ -124,7 +125,7 @@ module.exports = async function (message, client) {
 
                         if (guessAnswer == "y" || guessAnswer == "yes") {
                             let finishedGameCorrect = new Discord.MessageEmbed()
-                                .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
+                                .setAuthor(usertag, avatar)
                                 .setTitle(`Well Played!`)
                                 .setDescription(`**${message.author.username}, I guessed right one more time!**`)
                                 .addField("Character", `**${aki.answers[0].name}**`, true)
@@ -138,7 +139,7 @@ module.exports = async function (message, client) {
                         } else if (guessAnswer == "n" || guessAnswer == "no") {
                             if (aki.currentStep >= 78) {
                                 let finishedGameDefeated = new Discord.MessageEmbed()
-                                    .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
+                                    .setAuthor(usertag, avatar)
                                     .setTitle(`Well Played!`)
                                     .setDescription(`**${message.author.username}, bravo! You have defeated me...**`)
                                     .setColor("RANDOM")
@@ -155,10 +156,10 @@ module.exports = async function (message, client) {
             if (!notFinished) return;
 
             let updatedAkiEmbed = new Discord.MessageEmbed()
-                .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
+                .setAuthor(usertag, avatar)
                 .setTitle(`Question ${aki.currentStep + 1}`)
                 .setDescription(`**Progress: ${Math.round(aki.progress)}%\n${aki.question}**`)
-                .addField("Please Type...", "**Y** or **Yes**\n**N** or **No**\n**IDK** or **Don't Know**\n**P** or **Probably**\n**PN** or **Probably Not**\n**B** or **Back**")
+                .addField("Please Type...", "**Y** or **Yes**\n**N** or **No**\n**I** or **IDK**\n**P** or **Probably**\n**PN** or **Probably Not**\n**B** or **Back**")
                 .setFooter(`You can also type "S" or "Stop" to End your Game`)
                 .setColor("RANDOM")
             akiMessage.edit({ embed: updatedAkiEmbed })
@@ -169,6 +170,7 @@ module.exports = async function (message, client) {
                     "yes",
                     "n",
                     "no",
+                    "i",
                     "idk",
                     "dont know",
                     "don't know",
@@ -200,8 +202,10 @@ module.exports = async function (message, client) {
                         "yes": 0,
                         "n": 1,
                         "no": 1,
+                        "i": 2,
                         "idk": 2,
                         "dont know": 2,
+                        "don't know": 2,
                         "p": 3,
                         "probably": 3,
                         "pn": 4,
@@ -209,10 +213,10 @@ module.exports = async function (message, client) {
                     }
 
                     let thinkingEmbed = new Discord.MessageEmbed()
-                        .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
+                        .setAuthor(usertag, avatar)
                         .setTitle(`Question ${aki.currentStep + 1}`)
                         .setDescription(`**Progress: ${Math.round(aki.progress)}%\n${aki.question}**`)
-                        .addField("Please Type...", "**Y** or **Yes**\n**N** or **No**\n**IDK** or **Don't Know**\n**P** or **Probably**\n**PN** or **Probably Not**\n**B** or **Back**")
+                        .addField("Please Type...", "**Y** or **Yes**\n**N** or **No**\n**I** or **IDK**\n**P** or **Probably**\n**PN** or **Probably Not**\n**B** or **Back**")
                         .setFooter(`Thinking...`)
                         .setColor("RANDOM")
                     await akiMessage.edit({ embed: thinkingEmbed })
@@ -226,7 +230,7 @@ module.exports = async function (message, client) {
                     } else if (answer == "s" || answer == "stop") {
                         games.delete(message.author.id)
                         let stopEmbed = new Discord.MessageEmbed()
-                            .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
+                            .setAuthor(usertag, avatar)
                             .setTitle(`Game Ended`)
                             .setDescription(`**${message.author.username}, your game was successfully ended!**`)
                             .setColor("RANDOM")
