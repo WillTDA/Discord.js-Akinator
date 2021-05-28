@@ -62,7 +62,7 @@ module.exports = async function (message, client) {
             .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
             .setTitle(`Question ${aki.currentStep + 1}`)
             .setDescription(`**Progress: 0%\n${aki.question}**`)
-            .addField("Please Type...", "**Y** or **Yes**\n**N** or **No**\n**IDK** or **Don't Know**\n**P** or **Probably**\n**PN** or **Probably Not**\n**B** or **Back**")
+            .addField("Please Type...", "**Y** or **Yes**\n**N** or **No**\n**I** or **IDK**\n**P** or **Probably**\n**PN** or **Probably Not**\n**B** or **Back**")
             .setFooter(`You can also type "S" or "Stop" to End your Game`)
             .setColor("RANDOM")
 
@@ -158,7 +158,7 @@ module.exports = async function (message, client) {
                 .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
                 .setTitle(`Question ${aki.currentStep + 1}`)
                 .setDescription(`**Progress: ${Math.round(aki.progress)}%\n${aki.question}**`)
-                .addField("Please Type...", "**Y** or **Yes**\n**N** or **No**\n**IDK** or **Don't Know**\n**P** or **Probably**\n**PN** or **Probably Not**\n**B** or **Back**")
+                .addField("Please Type...", "**Y** or **Yes**\n**N** or **No**\n**I** or **IDK**\n**P** or **Probably**\n**PN** or **Probably Not**\n**B** or **Back**")
                 .setFooter(`You can also type "S" or "Stop" to End your Game`)
                 .setColor("RANDOM")
             akiMessage.edit({ embed: updatedAkiEmbed })
@@ -170,6 +170,7 @@ module.exports = async function (message, client) {
                     "n",
                     "no",
                     "idk",
+                    "i",
                     "dont know",
                     "don't know",
                     "p",
@@ -202,6 +203,8 @@ module.exports = async function (message, client) {
                         "no": 1,
                         "idk": 2,
                         "dont know": 2,
+                        "don't know": 2,
+                        "i": 2,
                         "p": 3,
                         "probably": 3,
                         "pn": 4,
@@ -212,7 +215,7 @@ module.exports = async function (message, client) {
                         .setAuthor(`${message.author.username}#${message.author.discriminator}`, message.author.displayAvatarURL())
                         .setTitle(`Question ${aki.currentStep + 1}`)
                         .setDescription(`**Progress: ${Math.round(aki.progress)}%\n${aki.question}**`)
-                        .addField("Please Type...", "**Y** or **Yes**\n**N** or **No**\n**IDK** or **Don't Know**\n**P** or **Probably**\n**PN** or **Probably Not**\n**B** or **Back**")
+                        .addField("Please Type...", "**Y** or **Yes**\n**N** or **No**\n**I** or **IDK**\n**P** or **Probably**\n**PN** or **Probably Not**\n**B** or **Back**")
                         .setFooter(`Thinking...`)
                         .setColor("RANDOM")
                     await akiMessage.edit({ embed: thinkingEmbed })
