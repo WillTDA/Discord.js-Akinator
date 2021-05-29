@@ -32,6 +32,10 @@ client.on("message", async message => {
 client.login("Discord Bot Token")
 ```
 
+# Special Thanks
+
+- [Ashish#0540](https://github.com/3061LRTAGSPKJMORMRT) (For error handling and writing much cleaner code. Thanks!)
+
 # Need Help? Join Our Discord Server!
 
 https://discord.gg/P2g24jp
