@@ -24,10 +24,18 @@ const attemptingGuess = new Set();
 
 module.exports = async function (message, client) {
     try {
+        // error handling
         if (!message) return console.log("Discord.js Akinator Error: Message was not Provided.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
         if (!client) return console.log("Discord.js Akinator Error: Discord Client was not Provided, and is needed in the new 2.0.0 Update you installed.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
+        if (!message.id || !message.channel || !message.channel.id || !message.author) throw new Error("The Message Object provided was invalid!")
+        if (!client.user.id || !client.user) throw new Error("The Discord Client Object provided was invalid!")
+        if (!message.guild) throw new Error("This cannot be used in DMs!")
+       
+        // defining for easy use
         let usertag = message.author.tag
         let avatar = message.author.displayAvatarURL()
+        
+        // check if a game is being hosted by the player
         if (games.has(message.author.id)) {
             let alreadyPlayingEmbed = new Discord.MessageEmbed()
                 .setAuthor(usertag, avatar)
@@ -37,6 +45,8 @@ module.exports = async function (message, client) {
 
             return message.channel.send({ embed: alreadyPlayingEmbed })
         }
+       
+        // adding the player into the game
         games.add(message.author.id)
 
         let startingEmbed = new Discord.MessageEmbed()
@@ -47,6 +57,7 @@ module.exports = async function (message, client) {
 
         let startingMessage = await message.channel.send({ embed: startingEmbed })
 
+        // starts the game
         let aki = new Aki("en")
         await aki.start();
 
@@ -69,7 +80,8 @@ module.exports = async function (message, client) {
 
         await startingMessage.delete();
         let akiMessage = await message.channel.send({ embed: akiEmbed });
-
+         
+        // if message was deleted, quit the player from the game
         client.on("messageDelete", async deletedMessage => {
             if (deletedMessage.id == akiMessage.id) {
                 notFinished = false;
@@ -80,6 +92,7 @@ module.exports = async function (message, client) {
             }
         })
 
+        // repeat while the game is not finished
         while (notFinished) {
             if (!notFinished) return;
 
@@ -101,6 +114,7 @@ module.exports = async function (message, client) {
                     .setColor("RANDOM")
                 await akiMessage.edit({ embed: guessEmbed });
 
+                // valid answers if the akinator sends the last question
                 const guessFilter = x => {
                     return (x.author.id === message.author.id && ([
                         "y",
@@ -123,6 +137,7 @@ module.exports = async function (message, client) {
 
                         attemptingGuess.delete(message.guild.id)
 
+                        // if they answered yes
                         if (guessAnswer == "y" || guessAnswer == "yes") {
                             let finishedGameCorrect = new Discord.MessageEmbed()
                                 .setAuthor(usertag, avatar)
@@ -136,6 +151,8 @@ module.exports = async function (message, client) {
                             notFinished = false;
                             games.delete(message.author.id)
                             return;
+                           
+                        // otherwise
                         } else if (guessAnswer == "n" || guessAnswer == "no") {
                             if (aki.currentStep >= 78) {
                                 let finishedGameDefeated = new Discord.MessageEmbed()
@@ -164,6 +181,7 @@ module.exports = async function (message, client) {
                 .setColor("RANDOM")
             akiMessage.edit({ embed: updatedAkiEmbed })
 
+            // all valid answers when answering a regular akinator question
             const filter = x => {
                 return (x.author.id === message.author.id && ([
                     "y",
@@ -198,6 +216,7 @@ module.exports = async function (message, client) {
                     }
                     const answer = String(responses.first()).toLowerCase().replace("'", "");
 
+                    // assign points for the possible answers given
                     const answers = {
                         "y": 0,
                         "yes": 0,
@@ -229,6 +248,8 @@ module.exports = async function (message, client) {
                         if (aki.currentStep >= 1) {
                             await aki.back();
                         }
+                       
+                    // stop the game if the user selected to stop
                     } else if (answer == "s" || answer == "stop") {
                         games.delete(message.author.id)
                         let stopEmbed = new Discord.MessageEmbed()
@@ -247,6 +268,7 @@ module.exports = async function (message, client) {
                 });
         }
     } catch (e) {
+        // log any errors that come
         attemptingGuess.delete(message.guild.id)
         games.delete(message.guild.id)
         if (e == "DiscordAPIError: Unknown Message") return;
