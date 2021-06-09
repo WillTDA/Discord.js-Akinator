@@ -63,6 +63,7 @@ module.exports = async function (message, client) {
 
         let notFinished = true;
         let stepsSinceLastGuess = 0;
+        let hasGuessed = false;
 
         let noResEmbed = new Discord.MessageEmbed()
             .setAuthor(usertag, avatar)
@@ -98,11 +99,12 @@ module.exports = async function (message, client) {
 
             stepsSinceLastGuess = stepsSinceLastGuess + 1
 
-            if (((aki.progress >= 95 && stepsSinceLastGuess >= 10) || aki.currentStep >= 78) && (!attemptingGuess.has(message.guild.id))) {
+            if (((aki.progress >= 95 && (stepsSinceLastGuess >= 10 || hasGuessed == false)) || aki.currentStep >= 78) && (!attemptingGuess.has(message.guild.id))) {
                 attemptingGuess.add(message.guild.id)
                 await aki.win();
 
                 stepsSinceLastGuess = 0;
+                hasGuessed = true;
 
                 let guessEmbed = new Discord.MessageEmbed()
                     .setAuthor(usertag, avatar)
