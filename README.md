@@ -4,6 +4,8 @@
 
 Create an Akinator Command for Your Discord Bot within Seconds of Installation.
 
+UPDATE 2.1.0 - Now includes support for 10 new languages for questions, including French, German, Russian, Turkish and more! Update and use the new `region` parameter to try it out!
+
 # Install Package
 
 Let's take a look at how you can install this package into your Discord Bot Project.
@@ -25,7 +27,7 @@ client.on("ready", () => {
 
 client.on("message", async message => {
     if(message.content.startsWith(`${PREFIX}akinator`)) {
-        akinator(message, client);
+        akinator(message, client, "en"); //region will default to "en" if it's not specified!
     }
 });
 

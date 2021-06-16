@@ -6,6 +6,7 @@ const attemptingGuess = new Set();
 /**
     * @param {Discord.Message} message The Message Sent by the User.
     * @param {Discord.Client} client The Discord Client.
+    * @param {"en" | "ar" | "cn" | "de" | "es" | "fr" | "il" | "it" | "jp" | "kr" | "nl" | "pl" | "pt" | "ru" | "tr" | "id"} region (OPTIONAL): The Region/Language Code you want Akinator to Use. Defaults to "en".
     * @returns Discord.js Akinator Game
     * @async
     * @example
@@ -22,11 +23,12 @@ const attemptingGuess = new Set();
     * });
        */
 
-module.exports = async function (message, client) {
+module.exports = async function (message, client, region) {
     try {
         // error handling
         if (!message) return console.log("Discord.js Akinator Error: Message was not Provided.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
         if (!client) return console.log("Discord.js Akinator Error: Discord Client was not Provided, and is needed in the new 2.0.0 Update you installed.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
+        if (!region) region = "en"
         if (!message.id || !message.channel || !message.channel.id || !message.author) throw new Error("The Message Object provided was invalid!")
         if (!client.user.id || !client.user) throw new Error("The Discord Client Object provided was invalid!")
         if (!message.guild) throw new Error("This cannot be used in DMs!")
@@ -58,7 +60,7 @@ module.exports = async function (message, client) {
         let startingMessage = await message.channel.send({ embed: startingEmbed })
 
         // starts the game
-        let aki = new Aki("en")
+        let aki = new Aki(region)
         await aki.start();
 
         let notFinished = true;
