@@ -11,17 +11,22 @@ const attemptingGuess = new Set();
     * @returns Discord.js Akinator Game
     * @async
     * @example
-    *  const Discord = require("discord.js");
-    *  const client = new Discord.Client();
-    *  const akinator = require("discord.js-akinator");
+    * const Discord = require("discord.js");
+    * const client = new Discord.Client();
+    * const akinator = require("discord.js-akinator");
     * 
     * const PREFIX = "!";
     * 
+    * let language = "en";
+    * let useButtons = true;
+    *
     * client.on("message", async message => {
     *     if(message.content.startsWith(`${PREFIX}akinator`)) {
-    *         akinator(message, "en") //language will default to "en" if it's not specified!
+    *         akinator(message, language, useButtons);
+    *         // language will default to "en" if it's not specified!
+    *         // useButtons will default to "false" if it's not specified!
     *     }
-    * });
+});
        */
 
 module.exports = async function (message, language, useButtons) {
