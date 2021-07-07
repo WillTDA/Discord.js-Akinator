@@ -19,6 +19,7 @@
   "license": "ISC",
   "dependencies": {
     "aki-api": "^5.2.1",
-    "discord.js": "^12.5.3"
+    "discord.js": "^12.5.3",
+    "translatte": "^3.0.1"
   }
 }

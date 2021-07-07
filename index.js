@@ -1,12 +1,13 @@
 const Discord = require("discord.js");
 const { Aki } = require("aki-api");
+const translatte = require("translatte");
 const games = new Set();
 const attemptingGuess = new Set();
 
 /**
     * @param {Discord.Message} message The Message Sent by the User.
-    * @param {Discord.Client} client The Discord Client.
-    * @param {"en" | "ar" | "cn" | "de" | "es" | "fr" | "il" | "it" | "jp" | "kr" | "nl" | "pl" | "pt" | "ru" | "tr" | "id"} region (OPTIONAL): The Region/Language Code you want Akinator to Use. Defaults to "en".
+    * @param {translatte.languages} language (OPTIONAL): The Region/Language Code you want to Use. Defaults to "en".
+    * @param {boolean} (OPTIONAL): Whether you want to use Buttons instead of Typing your Response to the Question. Defaults to "false".
     * @returns Discord.js Akinator Game
     * @async
     * @example
@@ -18,25 +19,24 @@ const attemptingGuess = new Set();
     * 
     * client.on("message", async message => {
     *     if(message.content.startsWith(`${PREFIX}akinator`)) {
-    *         akinator(message, client)
+    *         akinator(message, "en") //language will default to "en" if it's not specified!
     *     }
     * });
        */
 
-module.exports = async function (message, client, region) {
+module.exports = async function (message, language, useButtons) {
     try {
         // error handling
         if (!message) return console.log("Discord.js Akinator Error: Message was not Provided.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
-        if (!client) return console.log("Discord.js Akinator Error: Discord Client was not Provided, and is needed in the new 2.0.0 Update you installed.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
-        if (!region) region = "en"
-        if (!message.id || !message.channel || !message.channel.id || !message.author) throw new Error("The Message Object provided was invalid!")
-        if (!client.user.id || !client.user) throw new Error("The Discord Client Object provided was invalid!")
-        if (!message.guild) throw new Error("This cannot be used in DMs!")
-       
+        if (!message.id || !message.channel || !message.channel.id || !message.author) return console.log("Discord.js Akinator Error: Message Provided was Invalid.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
+        if (!message.guild) return console.log("Discord.js Akinator Error: Cannot be used in Direct Messages.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
+        if (!language) language = "en"
+        if (!useButtons) useButtons = false;
+
         // defining for easy use
         let usertag = message.author.tag
         let avatar = message.author.displayAvatarURL()
-        
+
         // check if a game is being hosted by the player
         if (games.has(message.author.id)) {
             let alreadyPlayingEmbed = new Discord.MessageEmbed()
@@ -47,7 +47,7 @@ module.exports = async function (message, client, region) {
 
             return message.channel.send({ embed: alreadyPlayingEmbed })
         }
-       
+
         // adding the player into the game
         games.add(message.author.id)
 
@@ -60,7 +60,7 @@ module.exports = async function (message, client, region) {
         let startingMessage = await message.channel.send({ embed: startingEmbed })
 
         // starts the game
-        let aki = new Aki(region)
+        let aki = new Aki(language)
         await aki.start();
 
         let notFinished = true;
@@ -83,9 +83,9 @@ module.exports = async function (message, client, region) {
 
         await startingMessage.delete();
         let akiMessage = await message.channel.send({ embed: akiEmbed });
-         
+
         // if message was deleted, quit the player from the game
-        client.on("messageDelete", async deletedMessage => {
+        message.client.on("messageDelete", async deletedMessage => {
             if (deletedMessage.id == akiMessage.id) {
                 notFinished = false;
                 games.delete(message.author.id)
@@ -155,8 +155,8 @@ module.exports = async function (message, client, region) {
                             notFinished = false;
                             games.delete(message.author.id)
                             return;
-                           
-                        // otherwise
+
+                            // otherwise
                         } else if (guessAnswer == "n" || guessAnswer == "no") {
                             if (aki.currentStep >= 78) {
                                 let finishedGameDefeated = new Discord.MessageEmbed()
@@ -252,8 +252,8 @@ module.exports = async function (message, client, region) {
                         if (aki.currentStep >= 1) {
                             await aki.back();
                         }
-                       
-                    // stop the game if the user selected to stop
+
+                        // stop the game if the user selected to stop
                     } else if (answer == "s" || answer == "stop") {
                         games.delete(message.author.id)
                         let stopEmbed = new Discord.MessageEmbed()
