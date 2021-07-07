@@ -1,5 +1,3 @@
-⚠ This Package is Still in Development! (Find any bugs? Join Our Discord Server, link is at the bottom of this page!)
-
 # Discord.js Akinator
 
 Create an Akinator Command for Your Discord Bot within Seconds of Installation.
@@ -63,6 +61,6 @@ client.login("Discord Bot Token")
 
 - [Ashish#0540](https://github.com/3061LRTAGSPKJMORMRT) (For error handling and writing much cleaner code. Thanks!)
 
-# Need Help? Join Our Discord Server!
+# Need Help or Find Any Bugs? Join Our Discord Server!
 
 https://discord.gg/P2g24jp
