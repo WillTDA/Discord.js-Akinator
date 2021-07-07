@@ -6,8 +6,8 @@ const attemptingGuess = new Set();
 
 /**
     * @param {Discord.Message} message The Message Sent by the User.
-    * @param {translatte.languages} language (OPTIONAL): The Region/Language Code you want to Use. Defaults to "en".
-    * @param {boolean} (OPTIONAL): Whether you want to use Buttons instead of Typing your Response to the Question. Defaults to "false".
+    * @param {"af" | "sq" | "am" | "ar" | "hy" | "az" | "eu" | "be" | "bn" | "bs" | "bg" | "ca" | "ceb" | "ny" | "zh" | "zh-cn" | "zh-tw" | "co" | "hr" | "cs" | "da" | "nl" | "en" | "eo" | "et" | "tl" | "fi" | "fr" | "fy" | "gl" | "ka" | "de" | "el" | "gu" | "ht" | "ha" | "haw" | "he" | "iw" | "hi" | "hmn" | "hu" | "is" | "ig" | "id" | "ga" | "it" | "ja" | "jw" | "kn" | "kk" | "km" | "ko" | "ku" | "ky" | "lo" | "la" | "lv" | "lt" | "lb" | "mk" | "mg" | "ms" | "ml" | "mt" | "mi" | "mr" | "mn" | "my" | "ne" | "no" | "ps" | "fa" | "pl" | "pt" | "pa" | "ro" | "ru" | "sm" | "gd" | "sr" | "st" | "sn" | "sd" | "si" | "sk" | "sl" | "so" | "es" | "su" | "sw" | "sv" | "tg" | "ta" | "te" | "th" | "tr" | "uk" | "ur" | "uz" | "vi" | "cy" | "xh" | "yi" | "yo" | "zu"} language (OPTIONAL): The Region/Language Code you want to Use. Defaults to "en".
+    * @param {Boolean} useButtons (OPTIONAL): Whether you want to use Buttons instead of Typing your Response to the Question. Defaults to "false".
     * @returns Discord.js Akinator Game
     * @async
     * @example
@@ -30,7 +30,7 @@ module.exports = async function (message, language, useButtons) {
         if (!message) return console.log("Discord.js Akinator Error: Message was not Provided.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
         if (!message.id || !message.channel || !message.channel.id || !message.author) return console.log("Discord.js Akinator Error: Message Provided was Invalid.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
         if (!message.guild) return console.log("Discord.js Akinator Error: Cannot be used in Direct Messages.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
-        if (!language) language = "en"
+        if (!language) language = "en";
         if (!useButtons) useButtons = false;
 
         // defining for easy use
