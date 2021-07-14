@@ -16,7 +16,9 @@ New Features Include:
 
 Discord.js Akinator no longer relies on other Akinator API servers to translate, as they are all slow and laggy apart from the European one. Also, they only translate the questions and nothing else!
 
-By utilising another package known as [Translatte](https://npmjs.com/package/translatte), translation of OVER 100 NEW LANGUAGES are now supported by using the Google API!
+By utilising another package known as [Translatte](https://npmjs.com/package/translatte) and creating hard-coded AI* built translation mappings, translation of OVER 100 NEW LANGUAGES are now supported! Also, every other pieces of text can be translated too!
+
+*The Hard-Coded Mappings were generated using the [MyMemory API](https://rapidapi.com/translated/api/mymemory-translation-memory) and are not 100% accurate, but they are close enough to be somewhat useful.
 
 ## <u>BUTTONS!</u>
 
@@ -28,7 +30,7 @@ Do keep in mind that it is `false` by default.
 
 The package no longer requires you to pass in a `Discord.Client` object to function.
 
-Just pass in the `Discord.Message` (and your language of choice) and it'll handle the rest!
+Just pass in the `Discord.Message` and it'll handle the rest!
 
 # Install Package
 
