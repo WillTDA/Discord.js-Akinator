@@ -18,9 +18,9 @@
   "author": "WillTDA",
   "license": "ISC",
   "dependencies": {
+    "@vitalets/google-translate-api": "^7.0.0",
     "aki-api": "^5.2.1",
     "discord-buttons": "^4.0.0",
-    "discord.js": "^12.5.3",
-    "translatte": "^3.0.1"
+    "discord.js": "^12.5.3"
   }
 }
