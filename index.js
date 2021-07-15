@@ -251,7 +251,7 @@ module.exports = async function (message, language, useButtons) {
                         .setTitle(`${translations.question} ${aki.currentStep + 1}`)
                         .setDescription(`**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, language)}**`)
                         .addField(translations.pleaseType, `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**`)
-                        .setFooter(`${await translate("Thinking...", language)}`)
+                        .setFooter(`🤔`)
                         .setColor("RANDOM")
                     await akiMessage.edit({ embed: thinkingEmbed })
 
@@ -267,7 +267,7 @@ module.exports = async function (message, language, useButtons) {
                         games.delete(message.author.id)
                         let stopEmbed = new Discord.MessageEmbed()
                             .setAuthor(usertag, avatar)
-                            .setTitle(`Game Ended`)
+                            .setTitle(translations.gameEnded)
                             .setDescription(`**${message.author.username}, ${translations.gameForceEnd}**`)
                             .setColor("RANDOM")
                         await aki.win()
