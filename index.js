@@ -248,10 +248,10 @@ module.exports = async function (message, language, useButtons) {
 
                     let thinkingEmbed = new Discord.MessageEmbed()
                         .setAuthor(usertag, avatar)
-                        .setTitle(`Question ${aki.currentStep + 1}`)
-                        .setDescription(`**Progress: ${Math.round(aki.progress)}%\n${aki.question}**`)
+                        .setTitle(`${translations.question} ${aki.currentStep + 1}`)
+                        .setDescription(`**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, language)}**`)
                         .addField(translations.pleaseType, `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**`)
-                        .setFooter(`Thinking...`)
+                        .setFooter(`${await translate("Thinking...", language)}`)
                         .setColor("RANDOM")
                     await akiMessage.edit({ embed: thinkingEmbed })
 
