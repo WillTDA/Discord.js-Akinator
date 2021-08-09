@@ -33,11 +33,11 @@ const attemptingGuess = new Set();
 module.exports = async function (message, language, useButtons) {
     try {
         // error handling
-        if (!message) return console.log("Error: Message was not Provided.'");
-        if (!message.id || !message.channel || !message.channel.id || !message.author) return console.log("Error: Message Provided was Invalid.");
-        if (!message.guild) return console.log("Error: Cannot be used in Direct Messages.");
+        if (!message) return console.log("Discord.js Akinator Error: Message was not Provided.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
+        if (!message.id || !message.channel || !message.channel.id || !message.author) return console.log("Discord.js Akinator Error: Message Provided was Invalid.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
+        if (!message.guild) return console.log("Discord.js Akinator Error: Cannot be used in Direct Messages.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
         if (!language) language = "en";
-        if (!fs.existsSync(`${__dirname}/translations/${language}.json`)) return console.log(`Error: Language "${language}" Not Found. Example: "en" or "fr" or "es".`);
+         if (!fs.existsSync(`${__dirname}/translations/${language}.json`)) return console.log(`Discord.js Akinator Error: Language "${language}" Not Found. Example: "en" or "fr" or "es".\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'`);
         if (!useButtons) useButtons = false;
 
         // defining for easy use
@@ -48,8 +48,8 @@ module.exports = async function (message, language, useButtons) {
         if (games.has(message.author.id)) {
             let alreadyPlayingEmbed = new Discord.MessageEmbed()
                 .setAuthor(usertag, avatar)
-                .setTitle(`❌ ${await translate("You're Already Playing!", language)}`)
-                .setDescription(`**${await translate("You're already Playing a Game of Akinator. Type `S` or `Stop` to cancel your game.", language)}**`)
+                .setTitle(`❌ ${await translate("You're already playing!", language)}`)
+                .setDescription(`**${await translate("You're already playing a game of Akinator. Type `S` or `Stop` to cancel your game.", language)}**`)
                 .setColor("RED")
 
             return message.channel.send({ embeds: [alreadyPlayingEmbed] })
@@ -278,6 +278,6 @@ module.exports = async function (message, language, useButtons) {
         attemptingGuess.delete(message.guild.id)
         games.delete(message.guild.id)
         if (e == "DiscordAPIError: Unknown Message") return;
-        console.log(`Error: ${e}`)
+        console.log(`Discord.js Akinator Error: ${e}`)
     }
 }
