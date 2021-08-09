@@ -63,7 +63,7 @@ let useButtons = true;
 client.on("message", async message => {
     if(message.content.startsWith(`${PREFIX}akinator`)) {
         akinator(message, {
-            language: language //Defaults to "en"
+            language: language, //Defaults to "en"
             useButtons: useButtons //Defaults to "false"
         });
         // language will default to "en" if it's not specified!
