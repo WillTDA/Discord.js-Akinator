@@ -51,16 +51,17 @@ const { Client, Intents } = require("discord.js");
 const akinator = require("discord.js-akinator");
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
-const PREFIX = "!";
-
 client.on("ready", () => {
     console.log("Bot is Online")
 });
 
-let language = "en";
-let useButtons = true;
+const PREFIX = "!";
 
-client.on("message", async message => {
+//Defining akinator options
+const language = "en";
+const useButtons = true;
+
+client.on("messageCreate", async message => {
     if(message.content.startsWith(`${PREFIX}akinator`)) {
         akinator(message, {
             language: language, //Defaults to "en"
