@@ -36,6 +36,14 @@ Let's take a look at how you can install this package into your Discord Bot Proj
 
 `npm i discord.js-akinator --save`
 
+For versions 3.0.0 and Above, you'll also need discord.js v13. This can easily be installed with:
+
+`npm i discord.js@13 --save`
+
+For versions earlier than 3.0.0, you need discord.js v12. However it is recommended you update to patch bugs and security vulnerabilities.
+
+`npm i discord.js@12 --save`
+
 # Example Code
 
 ```js
