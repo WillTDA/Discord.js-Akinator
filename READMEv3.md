@@ -47,9 +47,9 @@ For versions earlier than 3.0.0, you need discord.js v12. However it is recommen
 # Example Code
 
 ```js
-const Discord = require("discord.js");
+const { Client, Intents } = require("discord.js");
 const akinator = require("discord.js-akinator");
-const client = new Discord.Client();
+const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
 
 const PREFIX = "!";
 
