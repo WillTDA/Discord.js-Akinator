@@ -73,9 +73,11 @@ client.on("messageCreate", async message => {
 client.login("Discord Bot Token")
 ```
 
-# Special Thanks
+# Contributors
 
-- [Ashish#0540](https://github.com/3061LRTAGSPKJMORMRT) (For error handling and writing much cleaner code. Thanks!)
+- [ChaosArising (Josh_#9733)](https://github.com/ChaosArising) (Providing compatibility for Discord.js v13)
+
+- [3061LRTAGSPKJMORMRT (Ashish#0540)](https://github.com/3061LRTAGSPKJMORMRT) (Error handling and writing much cleaner code)
 
 # Need Help or Find Any Bugs? Join Our Discord Server!
 
