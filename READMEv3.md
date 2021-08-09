@@ -66,8 +66,6 @@ client.on("message", async message => {
             language: language, //Defaults to "en"
             useButtons: useButtons //Defaults to "false"
         });
-        // language will default to "en" if it's not specified!
-        // useButtons will default to "false" if it's not specified!
     }
 });
 
