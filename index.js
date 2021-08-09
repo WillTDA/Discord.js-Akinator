@@ -33,11 +33,11 @@ const attemptingGuess = new Set();
 module.exports = async function (message, language, useButtons) {
     try {
         // error handling
-        if (!message) return console.log("Discord.js Akinator Error: Message was not Provided.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
-        if (!message.id || !message.channel || !message.channel.id || !message.author) return console.log("Discord.js Akinator Error: Message Provided was Invalid.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
-        if (!message.guild) return console.log("Discord.js Akinator Error: Cannot be used in Direct Messages.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
+        if (!message) return console.log("Error: Message was not Provided.'");
+        if (!message.id || !message.channel || !message.channel.id || !message.author) return console.log("Error: Message Provided was Invalid.");
+        if (!message.guild) return console.log("Error: Cannot be used in Direct Messages.");
         if (!language) language = "en";
-        if (!fs.existsSync(`${__dirname}/translations/${language}.json`)) return console.log(`Discord.js Akinator Error: Language "${language}" Not Found. Example: "en" or "fr" or "es".\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'`);
+        if (!fs.existsSync(`${__dirname}/translations/${language}.json`)) return console.log(`Error: Language "${language}" Not Found. Example: "en" or "fr" or "es".`);
         if (!useButtons) useButtons = false;
 
         // defining for easy use
@@ -49,10 +49,10 @@ module.exports = async function (message, language, useButtons) {
             let alreadyPlayingEmbed = new Discord.MessageEmbed()
                 .setAuthor(usertag, avatar)
                 .setTitle(`❌ ${await translate("You're Already Playing!", language)}`)
-                .setDescription(`**${await translate("You're already Playing a Game of Akinator. Type `S` or `Stop` to Cancel your Game.", language)}**`)
+                .setDescription(`**${await translate("You're already Playing a Game of Akinator. Type `S` or `Stop` to cancel your game.", language)}**`)
                 .setColor("RED")
 
-            return message.channel.send({ embed: alreadyPlayingEmbed })
+            return message.channel.send({ embeds: [alreadyPlayingEmbed] })
         }
 
         // adding the player into the game
@@ -61,10 +61,10 @@ module.exports = async function (message, language, useButtons) {
         let startingEmbed = new Discord.MessageEmbed()
             .setAuthor(usertag, avatar)
             .setTitle(`${await translate("Starting Game...", language)}`)
-            .setDescription(`**${await translate("The Game will Start in a Few Seconds...", language)}**`)
+            .setDescription(`**${await translate("The game will start in a few seconds...", language)}**`)
             .setColor("RANDOM")
 
-        let startingMessage = await message.channel.send({ embed: startingEmbed })
+        let startingMessage = await message.channel.send({ embeds: [startingEmbed] })
 
         // get translation object for the language
         let translations = require(`${__dirname}/translations/${language}.json`);
@@ -92,7 +92,7 @@ module.exports = async function (message, language, useButtons) {
             .setColor("RANDOM")
 
         await startingMessage.delete();
-        let akiMessage = await message.channel.send({ embed: akiEmbed });
+        let akiMessage = await message.channel.send({ embeds: [akiEmbed] });
 
         // if message was deleted, quit the player from the game
         message.client.on("messageDelete", async deletedMessage => {
@@ -120,13 +120,13 @@ module.exports = async function (message, language, useButtons) {
 
                 let guessEmbed = new Discord.MessageEmbed()
                     .setAuthor(usertag, avatar)
-                    .setTitle(`${await translate(`I'm ${Math.round(aki.progress)}% Sure your Character is...`, language)}`)
+                    .setTitle(`${await translate(`I'm ${Math.round(aki.progress)}% sure your character is...`, language)}`)
                     .setDescription(`**${await translate(aki.answers[0].name, language)}**\n${await translate(aki.answers[0].description, language)}\n\n${translations.isThisYourCharacter} **(Type Y/${translations.yes} or N/${translations.no})**`)
                     .addField(translations.ranking, `**#${aki.answers[0].ranking}**`, true)
                     .addField(translations.noOfQuestions, `**${aki.currentStep}**`, true)
                     .setImage(aki.answers[0].absolute_picture_path)
                     .setColor("RANDOM")
-                await akiMessage.edit({ embed: guessEmbed });
+                await akiMessage.edit({ embeds: [guessEmbed] });
 
                 // valid answers if the akinator sends the last question
                 const guessFilter = x => {
@@ -137,13 +137,10 @@ module.exports = async function (message, language, useButtons) {
                         translations.no.toLowerCase(),
                     ].includes(x.content.toLowerCase())));
                 }
-
-                await message.channel.awaitMessages(guessFilter, {
-                    max: 1, time: 60000
-                })
+                await message.channel.awaitMessages({ guessFilter, max: 1, time: 60000 })
                     .then(async responses => {
                         if (!responses.size) {
-                            return akiMessage.edit({ embed: noResEmbed });
+                            return akiMessage.edit({ embeds: [noResEmbed] });
                         }
                         const guessAnswer = await translate(String(responses.first()).toLowerCase(), language)
 
@@ -161,7 +158,7 @@ module.exports = async function (message, language, useButtons) {
                                 .addField(translations.ranking, `**#${aki.answers[0].ranking}**`, true)
                                 .addField(translations.noOfQuestions, `**${aki.currentStep}**`, true)
                                 .setColor("RANDOM")
-                            await akiMessage.edit({ embed: finishedGameCorrect })
+                            await akiMessage.edit({ embeds: [finishedGameCorrect] })
                             notFinished = false;
                             games.delete(message.author.id)
                             return;
@@ -174,7 +171,7 @@ module.exports = async function (message, language, useButtons) {
                                     .setTitle(`Well Played!`)
                                     .setDescription(`**${message.author.username}, ${translations.defeated}**`)
                                     .setColor("RANDOM")
-                                await akiMessage.edit({ embed: finishedGameDefeated })
+                                await akiMessage.edit({ embeds: [finishedGameDefeated] })
                                 notFinished = false;
                                 games.delete(message.author.id)
                             } else {
@@ -193,7 +190,7 @@ module.exports = async function (message, language, useButtons) {
                 .addField(translations.pleaseType, `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**`)
                 .setFooter(translations.stopTip)
                 .setColor("RANDOM")
-            akiMessage.edit({ embed: updatedAkiEmbed })
+            akiMessage.edit({ embeds: [updatedAkiEmbed] })
 
             // all valid answers when answering a regular akinator question
             const filter = x => {
@@ -216,19 +213,15 @@ module.exports = async function (message, language, useButtons) {
                     translations.stop.toLowerCase(),
                 ].includes(x.content.toLowerCase())));
             }
-
-            await message.channel.awaitMessages(filter, {
-                max: 1, time: 60000
-            })
-                .then(async responses => {
+            await message.channel.awaitMessages({ filter, max: 1, time: 60000 })
+                    .then(async responses => {
                     if (!responses.size) {
                         await aki.win()
                         notFinished = false;
                         games.delete(message.author.id)
-                        return akiMessage.edit({ embed: noResEmbed })
+                        return akiMessage.edit({ embeds: [noResEmbed] })
                     }
                     const answer = await translate(String(responses.first()).toLowerCase().replace("'", ""), language)
-
                     // assign points for the possible answers given
                     const answers = {
                         "y": 0,
@@ -253,7 +246,7 @@ module.exports = async function (message, language, useButtons) {
                         .addField(translations.pleaseType, `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**`)
                         .setFooter(`🤔`)
                         .setColor("RANDOM")
-                    await akiMessage.edit({ embed: thinkingEmbed })
+                    await akiMessage.edit({ embeds: [thinkingEmbed] })
 
                     await responses.first().delete();
 
@@ -271,7 +264,7 @@ module.exports = async function (message, language, useButtons) {
                             .setDescription(`**${message.author.username}, ${translations.gameForceEnd}**`)
                             .setColor("RANDOM")
                         await aki.win()
-                        await akiMessage.edit({ embed: stopEmbed })
+                        await akiMessage.edit({ embeds: [stopEmbed] })
                         notFinished = false;
                     } else {
                         await aki.step(answers[answer]);
@@ -285,6 +278,6 @@ module.exports = async function (message, language, useButtons) {
         attemptingGuess.delete(message.guild.id)
         games.delete(message.guild.id)
         if (e == "DiscordAPIError: Unknown Message") return;
-        console.log(`Discord.js Akinator Error: ${e}`)
+        console.log(`Error: ${e}`)
     }
 }
