@@ -58,14 +58,17 @@ client.on("ready", () => {
 const PREFIX = "!";
 
 //Defining akinator options
-const language = "en";
-const useButtons = true;
+
+const language = "en"; //The language to use
+const childMode = false; //Whether to use Akinator's Child Mode
+const useButtons = true; //Whether to use Discord's Buttons
 
 client.on("messageCreate", async message => {
     if(message.content.startsWith(`${PREFIX}akinator`)) {
         akinator(message, {
             language: language, //Defaults to "en"
-            useButtons: useButtons //Defaults to "false"
+            childMode: childMode //Defaults to "false"
+            useButtons: useButtons, //Defaults to "false"
         });
     }
 });
