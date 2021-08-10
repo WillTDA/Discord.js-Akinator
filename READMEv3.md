@@ -14,15 +14,21 @@ New Features Include:
 
 ## <u>FULL TRANSLATION (100+ New Languages!)</u>
 
-Discord.js Akinator no longer relies on other Akinator API servers to translate, as they are all slow and laggy apart from the European one. Also, they only translate the questions and nothing else!
+Discord.js Akinator no longer relies on other Akinator API servers to translate, as they are all slow and laggy apart from the European one. Also, they would only translate the questions and nothing else!
 
-By utilising Google Translate and creating hard-coded translation mappings, translation of OVER 100 NEW LANGUAGES are now supported! Also, every other piece of text can be translated too!
+By utilising Google Translate and creating hard-coded translation mappings, OVER 100 NEW LANGUAGES are now supported! Also, every piece of text is now translatable, not just the questions!
 
 ## <u>BUTTONS!</u>
 
-By adding an extra `Boolean` parameter, you can choose to use the new discord buttons!
+With this new option, you can choose to use the new discord buttons!
 
 Do keep in mind that it is `false` by default.
+
+## <uCHILD MODE!</u>
+
+Want to filter out NSFW questions? Simply set this option to `true`!
+
+Again, this will default to `false`.
 
 ## <u>NO CLIENT PARAMETER NEEDED!</u>
 
