@@ -24,7 +24,7 @@ With this new option, you can choose to use the new discord buttons!
 
 Do keep in mind that it is `false` by default.
 
-## <uCHILD MODE!</u>
+## <u>CHILD MODE!</u>
 
 Want to filter out NSFW questions? Simply set this option to `true`!
 
