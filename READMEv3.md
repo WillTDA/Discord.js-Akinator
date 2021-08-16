@@ -6,7 +6,7 @@ EVERYTHING SAID IN THIS MARKDOWN IS INACCURATE AND WILL NOT WORK UNTIL v3.0.0 IS
 
 # Discord.js Akinator
 
-Create an Akinator Command for Your Discord Bot within Seconds of Installation.
+A Discord.js v13 Module that allows you to Create an Akinator Command for Your Discord Bot within Seconds of Installation.
 
 UPDATE 3.0.0 - Lots of new Changes! (and some breaking, so be careful!)
 
