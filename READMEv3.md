@@ -73,8 +73,8 @@ client.on("messageCreate", async message => {
     if(message.content.startsWith(`${PREFIX}akinator`)) {
         akinator(message, {
             language: language, //Defaults to "en"
-            childMode: childMode //Defaults to "false"
-            useButtons: useButtons, //Defaults to "false"
+            childMode: childMode, //Defaults to "false"
+            useButtons: useButtons //Defaults to "false"
         });
     }
 });
