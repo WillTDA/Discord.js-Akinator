@@ -40,7 +40,7 @@ module.exports = async function (message, language, useButtons) {
         if (!message.id || !message.channel || !message.channel.id || !message.author) return console.log("Discord.js Akinator Error: Message Provided was Invalid.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
         if (!message.guild) return console.log("Discord.js Akinator Error: Cannot be used in Direct Messages.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
         if (!language) language = "en";
-        if (!fs.existsSync(`${__dirname}/translations/${language}.json`)) return console.log(`Discord.js Akinator Error: Language "${language}" Not Found. Example: "en" or "fr" or "es".\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'`);
+         if (!fs.existsSync(`${__dirname}/translations/${language}.json`)) return console.log(`Discord.js Akinator Error: Language "${language}" Not Found. Example: "en" or "fr" or "es".\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'`);
         if (!useButtons) useButtons = false;
 
         // defining for easy use
@@ -51,8 +51,8 @@ module.exports = async function (message, language, useButtons) {
         if (games.has(message.author.id)) {
             let alreadyPlayingEmbed = new Discord.MessageEmbed()
                 .setAuthor(usertag, avatar)
-                .setTitle(`❌ ${await translate("You're Already Playing!", language)}`)
-                .setDescription(`**${await translate("You're already Playing a Game of Akinator. Type `S` or `Stop` to Cancel your Game.", language)}**`)
+                .setTitle(`❌ ${await translate("You're already playing!", language)}`)
+                .setDescription(`**${await translate("You're already playing a game of Akinator. Type `S` or `Stop` to cancel your game.", language)}**`)
                 .setColor("RED")
 
             return message.channel.send({ embeds: [alreadyPlayingEmbed] })
@@ -64,7 +64,7 @@ module.exports = async function (message, language, useButtons) {
         let startingEmbed = new Discord.MessageEmbed()
             .setAuthor(usertag, avatar)
             .setTitle(`${await translate("Starting Game...", language)}`)
-            .setDescription(`**${await translate("The Game will Start in a Few Seconds...", language)}**`)
+            .setDescription(`**${await translate("The game will start in a few seconds...", language)}**`)
             .setColor("RANDOM")
 
         let startingMessage = await message.channel.send({ embeds: [startingEmbed] })
@@ -123,7 +123,7 @@ module.exports = async function (message, language, useButtons) {
 
                 let guessEmbed = new Discord.MessageEmbed()
                     .setAuthor(usertag, avatar)
-                    .setTitle(`${await translate(`I'm ${Math.round(aki.progress)}% Sure your Character is...`, language)}`)
+                    .setTitle(`${await translate(`I'm ${Math.round(aki.progress)}% sure your character is...`, language)}`)
                     .setDescription(`**${await translate(aki.answers[0].name, language)}**\n${await translate(aki.answers[0].description, language)}\n\n${translations.isThisYourCharacter} **(Type Y/${translations.yes} or N/${translations.no})**`)
                     .addField(translations.ranking, `**#${aki.answers[0].ranking}**`, true)
                     .addField(translations.noOfQuestions, `**${aki.currentStep}**`, true)
