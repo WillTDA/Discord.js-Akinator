@@ -4,6 +4,7 @@ const GuildChannel = require('./GuildChannel');
 const Webhook = require('./Webhook');
 const TextBasedChannel = require('./interfaces/TextBasedChannel');
 const MessageManager = require('../managers/MessageManager');
+const ThreadManager = require('../managers/ThreadManager');
 const Collection = require('../util/Collection');
 const DataResolver = require('../util/DataResolver');
 
@@ -15,10 +16,11 @@ const DataResolver = require('../util/DataResolver');
 class TextChannel extends GuildChannel {
   /**
    * @param {Guild} guild The guild the text channel is part of
-   * @param {Object} data The data for the text channel
+   * @param {APIChannel} data The data for the text channel
+   * @param {Client} [client] A safety parameter for the client that instantiated this
    */
-  constructor(guild, data) {
-    super(guild, data);
+  constructor(guild, data, client) {
+    super(guild, data, client);
     /**
      * A manager of the messages sent to this channel
      * @type {MessageManager}
@@ -26,48 +28,84 @@ class TextChannel extends GuildChannel {
     this.messages = new MessageManager(this);
 
     /**
+     * A manager of the threads belonging to this channel
+     * @type {ThreadManager}
+     */
+    this.threads = new ThreadManager(this);
+
+    /**
      * If the guild considers this channel NSFW
      * @type {boolean}
-     * @readonly
      */
     this.nsfw = Boolean(data.nsfw);
-    this._typing = new Map();
   }
 
   _patch(data) {
     super._patch(data);
 
-    /**
-     * The topic of the text channel
-     * @type {?string}
-     */
-    this.topic = data.topic;
+    if ('topic' in data) {
+      /**
+       * The topic of the text channel
+       * @type {?string}
+       */
+      this.topic = data.topic;
+    }
 
-    if (typeof data.nsfw !== 'undefined') this.nsfw = Boolean(data.nsfw);
+    if ('nsfw' in data) {
+      this.nsfw = Boolean(data.nsfw);
+    }
 
-    /**
-     * The ID of the last message sent in this channel, if one was sent
-     * @type {?Snowflake}
-     */
-    this.lastMessageID = data.last_message_id;
+    if ('last_message_id' in data) {
+      /**
+       * The last message id sent in the channel, if one was sent
+       * @type {?Snowflake}
+       */
+      this.lastMessageId = data.last_message_id;
+    }
 
-    /**
-     * The ratelimit per user for this channel in seconds
-     * @type {number}
-     */
-    this.rateLimitPerUser = data.rate_limit_per_user || 0;
+    if ('rate_limit_per_user' in data) {
+      /**
+       * The ratelimit per user for this channel in seconds
+       * <warn>It is not currently possible to set a rate limit per user on a `NewsChannel`.</warn>
+       * @type {number}
+       */
+      this.rateLimitPerUser = data.rate_limit_per_user;
+    }
 
-    /**
-     * The timestamp when the last pinned message was pinned, if there was one
-     * @type {?number}
-     */
-    this.lastPinTimestamp = data.last_pin_timestamp ? new Date(data.last_pin_timestamp).getTime() : null;
+    if ('last_pin_timestamp' in data) {
+      /**
+       * The timestamp when the last pinned message was pinned, if there was one
+       * @type {?number}
+       */
+      this.lastPinTimestamp = data.last_pin_timestamp ? new Date(data.last_pin_timestamp).getTime() : null;
+    }
 
-    if (data.messages) for (const message of data.messages) this.messages.add(message);
+    if ('default_auto_archive_duration' in data) {
+      /**
+       * The default auto archive duration for newly created threads in this channel
+       * @type {?ThreadAutoArchiveDuration}
+       */
+      this.defaultAutoArchiveDuration = data.default_auto_archive_duration;
+    }
+
+    if ('messages' in data) {
+      for (const message of data.messages) this.messages._add(message);
+    }
+  }
+
+  /**
+   * Sets the default auto archive duration for all newly created threads in this channel.
+   * @param {ThreadAutoArchiveDuration} defaultAutoArchiveDuration The new default auto archive duration
+   * @param {string} [reason] Reason for changing the channel's default auto archive duration
+   * @returns {Promise<TextChannel>}
+   */
+  setDefaultAutoArchiveDuration(defaultAutoArchiveDuration, reason) {
+    return this.edit({ defaultAutoArchiveDuration }, reason);
   }
 
   /**
    * Sets the rate limit per user for this channel.
+   * <warn>It is not currently possible to set the rate limit per user on a `NewsChannel`.</warn>
    * @param {number} rateLimitPerUser The new ratelimit in seconds
    * @param {string} [reason] Reason for changing the channel's ratelimits
    * @returns {Promise<TextChannel>}
@@ -84,6 +122,16 @@ class TextChannel extends GuildChannel {
    */
   setNSFW(nsfw, reason) {
     return this.edit({ nsfw }, reason);
+  }
+
+  /**
+   * Sets the type of this channel (only conversion between text and news is supported)
+   * @param {string} type The new channel type
+   * @param {string} [reason] Reason for changing the channel's type
+   * @returns {Promise<GuildChannel>}
+   */
+  setType(type, reason) {
+    return this.edit({ type }, reason);
   }
 
   /**
@@ -104,11 +152,16 @@ class TextChannel extends GuildChannel {
   }
 
   /**
+   * Options used to create a {@link Webhook} for {@link TextChannel} and {@link NewsChannel}.
+   * @typedef {Object} ChannelWebhookCreateOptions
+   * @property {BufferResolvable|Base64Resolvable} [avatar] Avatar for the webhook
+   * @property {string} [reason] Reason for creating the webhook
+   */
+
+  /**
    * Creates a webhook for the channel.
    * @param {string} name The name of the webhook
-   * @param {Object} [options] Options for creating the webhook
-   * @param {BufferResolvable|Base64Resolvable} [options.avatar] Avatar for the webhook
-   * @param {string} [options.reason] Reason for creating the webhook
+   * @param {ChannelWebhookCreateOptions} [options] Options for creating the webhook
    * @returns {Promise<Webhook>} webhook The created webhook
    * @example
    * // Create a webhook for the current channel
@@ -139,12 +192,11 @@ class TextChannel extends GuildChannel {
   get lastMessage() {}
   get lastPinAt() {}
   send() {}
-  startTyping() {}
-  stopTyping() {}
-  get typing() {}
-  get typingCount() {}
+  sendTyping() {}
   createMessageCollector() {}
   awaitMessages() {}
+  createMessageComponentCollector() {}
+  awaitMessageComponent() {}
   bulkDelete() {}
 }
 

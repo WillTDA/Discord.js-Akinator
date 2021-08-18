@@ -10,7 +10,7 @@ const Webhook = require('../structures/Webhook');
  */
 class WebhookClient extends BaseClient {
   /**
-   * @param {Snowflake} id ID of the webhook
+   * @param {Snowflake} id The webhook's id
    * @param {string} token Token of the webhook
    * @param {ClientOptions} [options] Options for the client
    * @example
@@ -24,6 +24,19 @@ class WebhookClient extends BaseClient {
     this.id = id;
     Object.defineProperty(this, 'token', { value: token, writable: true, configurable: true });
   }
+
+  // These are here only for documentation purposes - they are implemented by Webhook
+  /* eslint-disable no-empty-function */
+  send() {}
+  sendSlackMessage() {}
+  fetchMessage() {}
+  edit() {}
+  editMessage() {}
+  delete() {}
+  deleteMessage() {}
+  get createdTimestamp() {}
+  get createdAt() {}
+  get url() {}
 }
 
 Webhook.applyToClass(WebhookClient);

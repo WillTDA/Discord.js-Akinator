@@ -5,23 +5,26 @@ const ActionsManager = require('./actions/ActionsManager');
 const ClientVoiceManager = require('./voice/ClientVoiceManager');
 const WebSocketManager = require('./websocket/WebSocketManager');
 const { Error, TypeError, RangeError } = require('../errors');
+const BaseGuildEmojiManager = require('../managers/BaseGuildEmojiManager');
 const ChannelManager = require('../managers/ChannelManager');
-const GuildEmojiManager = require('../managers/GuildEmojiManager');
 const GuildManager = require('../managers/GuildManager');
 const UserManager = require('../managers/UserManager');
 const ShardClientUtil = require('../sharding/ShardClientUtil');
-const ClientApplication = require('../structures/ClientApplication');
+const ClientPresence = require('../structures/ClientPresence');
 const GuildPreview = require('../structures/GuildPreview');
 const GuildTemplate = require('../structures/GuildTemplate');
 const Invite = require('../structures/Invite');
+const Sticker = require('../structures/Sticker');
+const StickerPack = require('../structures/StickerPack');
 const VoiceRegion = require('../structures/VoiceRegion');
 const Webhook = require('../structures/Webhook');
+const Widget = require('../structures/Widget');
 const Collection = require('../util/Collection');
-const { Events, browser, DefaultOptions } = require('../util/Constants');
+const { Events, InviteScopes, Status } = require('../util/Constants');
 const DataResolver = require('../util/DataResolver');
 const Intents = require('../util/Intents');
+const Options = require('../util/Options');
 const Permissions = require('../util/Permissions');
-const Structures = require('../util/Structures');
 
 /**
  * The main hub for interacting with the Discord API, and the starting point for any bot.
@@ -29,27 +32,21 @@ const Structures = require('../util/Structures');
  */
 class Client extends BaseClient {
   /**
-   * @param {ClientOptions} [options] Options for the client
+   * @param {ClientOptions} options Options for the client
    */
-  constructor(options = {}) {
+  constructor(options) {
     super(Object.assign({ _tokenType: 'Bot' }, options));
 
-    // Obtain shard details from environment or if present, worker threads
-    let data = process.env;
-    try {
-      // Test if worker threads module is present and used
-      data = require('worker_threads').workerData || data;
-    } catch {
-      // Do nothing
-    }
+    const data = require('worker_threads').workerData ?? process.env;
+    const defaults = Options.createDefault();
 
-    if (this.options.shards === DefaultOptions.shards) {
+    if (this.options.shards === defaults.shards) {
       if ('SHARDS' in data) {
         this.options.shards = JSON.parse(data.SHARDS);
       }
     }
 
-    if (this.options.shardCount === DefaultOptions.shardCount) {
+    if (this.options.shardCount === defaults.shardCount) {
       if ('SHARD_COUNT' in data) {
         this.options.shardCount = Number(data.SHARD_COUNT);
       } else if (Array.isArray(this.options.shards)) {
@@ -89,35 +86,34 @@ class Client extends BaseClient {
     this.actions = new ActionsManager(this);
 
     /**
-     * The voice manager of the client (`null` in browsers)
-     * @type {?ClientVoiceManager}
+     * The voice manager of the client
+     * @type {ClientVoiceManager}
      */
-    this.voice = !browser ? new ClientVoiceManager(this) : null;
+    this.voice = new ClientVoiceManager(this);
 
     /**
      * Shard helpers for the client (only if the process was spawned from a {@link ShardingManager})
      * @type {?ShardClientUtil}
      */
-    this.shard =
-      !browser && process.env.SHARDING_MANAGER
-        ? ShardClientUtil.singleton(this, process.env.SHARDING_MANAGER_MODE)
-        : null;
+    this.shard = process.env.SHARDING_MANAGER
+      ? ShardClientUtil.singleton(this, process.env.SHARDING_MANAGER_MODE)
+      : null;
 
     /**
-     * All of the {@link User} objects that have been cached at any point, mapped by their IDs
+     * All of the {@link User} objects that have been cached at any point, mapped by their ids
      * @type {UserManager}
      */
     this.users = new UserManager(this);
 
     /**
-     * All of the guilds the client is currently handling, mapped by their IDs -
+     * All of the guilds the client is currently handling, mapped by their ids -
      * as long as sharding isn't being used, this will be *every* guild the bot is a member of
      * @type {GuildManager}
      */
     this.guilds = new GuildManager(this);
 
     /**
-     * All of the {@link Channel}s that the client is currently handling, mapped by their IDs -
+     * All of the {@link Channel}s that the client is currently handling, mapped by their ids -
      * as long as sharding isn't being used, this will be *every* channel in *every* guild the bot
      * is a member of. Note that DM channels will not be initially cached, and thus not be present
      * in the Manager without their explicit fetching or use.
@@ -125,16 +121,15 @@ class Client extends BaseClient {
      */
     this.channels = new ChannelManager(this);
 
-    const ClientPresence = Structures.get('ClientPresence');
     /**
      * The presence of the Client
      * @private
      * @type {ClientPresence}
      */
-    this.presence = new ClientPresence(this);
+    this.presence = new ClientPresence(this, this.options.presence);
 
     Object.defineProperty(this, 'token', { writable: true });
-    if (!browser && !this.token && 'DISCORD_TOKEN' in process.env) {
+    if (!this.token && 'DISCORD_TOKEN' in process.env) {
       /**
        * Authorization token for the logged in bot.
        * If present, this defaults to `process.env.DISCORD_TOKEN` when instantiating the client
@@ -153,6 +148,12 @@ class Client extends BaseClient {
     this.user = null;
 
     /**
+     * The application of this bot
+     * @type {?ClientApplication}
+     */
+    this.application = null;
+
+    /**
      * Time at which the client was last regarded as being in the `READY` state
      * (each time the client disconnects and successfully reconnects, this will be overwritten)
      * @type {?Date}
@@ -160,17 +161,20 @@ class Client extends BaseClient {
     this.readyAt = null;
 
     if (this.options.messageSweepInterval > 0) {
-      this.setInterval(this.sweepMessages.bind(this), this.options.messageSweepInterval * 1000);
+      this.sweepMessageInterval = setInterval(
+        this.sweepMessages.bind(this),
+        this.options.messageSweepInterval * 1000,
+      ).unref();
     }
   }
 
   /**
-   * All custom emojis that the client has access to, mapped by their IDs
-   * @type {GuildEmojiManager}
+   * All custom emojis that the client has access to, mapped by their ids
+   * @type {BaseGuildEmojiManager}
    * @readonly
    */
   get emojis() {
-    const emojis = new GuildEmojiManager({ client: this });
+    const emojis = new BaseGuildEmojiManager(this);
     for (const guild of this.guilds.cache.values()) {
       if (guild.available) for (const emoji of guild.emojis.cache.values()) emojis.cache.set(emoji.id, emoji);
     }
@@ -183,7 +187,7 @@ class Client extends BaseClient {
    * @readonly
    */
   get readyTimestamp() {
-    return this.readyAt ? this.readyAt.getTime() : null;
+    return this.readyAt?.getTime() ?? null;
   }
 
   /**
@@ -229,11 +233,22 @@ class Client extends BaseClient {
   }
 
   /**
+   * Returns whether the client has logged in, indicative of being able to access
+   * properties such as `user` and `application`.
+   * @returns {boolean}
+   */
+  isReady() {
+    return this.ws.status === Status.READY;
+  }
+
+  /**
    * Logs out, terminates the connection to Discord, and destroys the client.
    * @returns {void}
    */
   destroy() {
     super.destroy();
+    if (this.sweepMessageInterval) clearInterval(this.sweepMessageInterval);
+
     this.ws.destroy();
     this.token = null;
   }
@@ -243,7 +258,7 @@ class Client extends BaseClient {
    * @param {InviteResolvable} invite Invite code or URL
    * @returns {Promise<Invite>}
    * @example
-   * client.fetchInvite('https://discord.gg/bRCvFy9')
+   * client.fetchInvite('https://discord.gg/djs')
    *   .then(invite => console.log(`Obtained invite with code: ${invite.code}`))
    *   .catch(console.error);
    */
@@ -251,7 +266,7 @@ class Client extends BaseClient {
     const code = DataResolver.resolveInviteCode(invite);
     return this.api
       .invites(code)
-      .get({ query: { with_counts: true } })
+      .get({ query: { with_counts: true, with_expiration: true } })
       .then(data => new Invite(this, data));
   }
 
@@ -274,7 +289,7 @@ class Client extends BaseClient {
 
   /**
    * Obtains a webhook from Discord.
-   * @param {Snowflake} id ID of the webhook
+   * @param {Snowflake} id The webhook's id
    * @param {string} [token] Token for the webhook
    * @returns {Promise<Webhook>}
    * @example
@@ -286,7 +301,7 @@ class Client extends BaseClient {
     return this.api
       .webhooks(id, token)
       .get()
-      .then(data => new Webhook(this, data));
+      .then(data => new Webhook(this, { token, ...data }));
   }
 
   /**
@@ -303,6 +318,33 @@ class Client extends BaseClient {
       for (const region of res) regions.set(region.id, new VoiceRegion(region));
       return regions;
     });
+  }
+
+  /**
+   * Obtains a sticker from Discord.
+   * @param {Snowflake} id The sticker's id
+   * @returns {Promise<Sticker>}
+   * @example
+   * client.fetchSticker('id')
+   *   .then(sticker => console.log(`Obtained sticker with name: ${sticker.name}`))
+   *   .catch(console.error);
+   */
+  async fetchSticker(id) {
+    const data = await this.api.stickers(id).get();
+    return new Sticker(this, data);
+  }
+
+  /**
+   * Obtains the list of sticker packs available to Nitro subscribers from Discord.
+   * @returns {Promise<Collection<Snowflake, StickerPack>>}
+   * @example
+   * client.fetchPremiumStickerPacks()
+   *   .then(packs => console.log(`Available sticker packs are: ${packs.map(pack => pack.name).join(', ')}`))
+   *   .catch(console.error);
+   */
+  async fetchPremiumStickerPacks() {
+    const data = await this.api('sticker-packs').get();
+    return new Collection(data.sticker_packs.map(p => [p.id, new StickerPack(this, p)]));
   }
 
   /**
@@ -336,7 +378,7 @@ class Client extends BaseClient {
       channels++;
 
       messages += channel.messages.cache.sweep(
-        message => now - (message.editedTimestamp || message.createdTimestamp) > lifetimeMs,
+        message => now - (message.editedTimestamp ?? message.createdTimestamp) > lifetimeMs,
       );
     }
 
@@ -348,23 +390,12 @@ class Client extends BaseClient {
   }
 
   /**
-   * Obtains the OAuth Application of this bot from Discord.
-   * @returns {Promise<ClientApplication>}
-   */
-  fetchApplication() {
-    return this.api.oauth2
-      .applications('@me')
-      .get()
-      .then(app => new ClientApplication(this, app));
-  }
-
-  /**
    * Obtains a guild preview from Discord, available for all guilds the bot is in and all Discoverable guilds.
    * @param {GuildResolvable} guild The guild to fetch the preview for
    * @returns {Promise<GuildPreview>}
    */
   fetchGuildPreview(guild) {
-    const id = this.guilds.resolveID(guild);
+    const id = this.guilds.resolveId(guild);
     if (!id) throw new TypeError('INVALID_TYPE', 'guild', 'GuildResolvable');
     return this.api
       .guilds(id)
@@ -373,38 +404,85 @@ class Client extends BaseClient {
   }
 
   /**
-   * Generates a link that can be used to invite the bot to a guild.
-   * @param {InviteGenerationOptions|PermissionResolvable} [options] Permissions to request
-   * @returns {Promise<string>}
-   * @example
-   * client.generateInvite({
-   *   permissions: ['SEND_MESSAGES', 'MANAGE_GUILD', 'MENTION_EVERYONE'],
-   * })
-   *   .then(link => console.log(`Generated bot invite link: ${link}`))
-   *   .catch(console.error);
+   * Obtains the widget of a guild from Discord, available for guilds with the widget enabled.
+   * @param {GuildResolvable} guild The guild to fetch the widget for
+   * @returns {Promise<Widget>}
    */
-  async generateInvite(options = {}) {
-    if (Array.isArray(options) || ['string', 'number'].includes(typeof options) || options instanceof Permissions) {
-      process.emitWarning(
-        'Client#generateInvite: Generate invite with an options object instead of a PermissionResolvable',
-        'DeprecationWarning',
-      );
-      options = { permissions: options };
-    }
-    const application = await this.fetchApplication();
+  async fetchWidget(guild) {
+    const id = this.guilds.resolveId(guild);
+    if (!id) throw new TypeError('INVALID_TYPE', 'guild', 'GuildResolvable');
+    const data = await this.api.guilds(id, 'widget.json').get();
+    return new Widget(this, data);
+  }
+
+  /**
+   * Options for {@link Client#generateInvite}.
+   * @typedef {Object} InviteGenerationOptions
+   * @property {InviteScope[]} scopes Scopes that should be requested
+   * @property {PermissionResolvable} [permissions] Permissions to request
+   * @property {GuildResolvable} [guild] Guild to preselect
+   * @property {boolean} [disableGuildSelect] Whether to disable the guild selection
+   */
+
+  /**
+   * Generates a link that can be used to invite the bot to a guild.
+   * @param {InviteGenerationOptions} [options={}] Options for the invite
+   * @returns {string}
+   * @example
+   * const link = client.generateInvite({
+   *   scopes: ['applications.commands'],
+   * });
+   * console.log(`Generated application invite link: ${link}`);
+   * @example
+   * const link = client.generateInvite({
+   *   permissions: [
+   *     Permissions.FLAGS.SEND_MESSAGES,
+   *     Permissions.FLAGS.MANAGE_GUILD,
+   *     Permissions.FLAGS.MENTION_EVERYONE,
+   *   ],
+   *   scopes: ['bot'],
+   * });
+   * console.log(`Generated bot invite link: ${link}`);
+   */
+  generateInvite(options = {}) {
+    if (typeof options !== 'object') throw new TypeError('INVALID_TYPE', 'options', 'object', true);
+    if (!this.application) throw new Error('CLIENT_NOT_READY', 'generate an invite link');
+
     const query = new URLSearchParams({
-      client_id: application.id,
-      permissions: Permissions.resolve(options.permissions),
-      scope: 'bot',
+      client_id: this.application.id,
     });
-    if (typeof options.disableGuildSelect === 'boolean') {
-      query.set('disable_guild_select', options.disableGuildSelect.toString());
+
+    const { scopes } = options;
+    if (typeof scopes === 'undefined') {
+      throw new TypeError('INVITE_MISSING_SCOPES');
     }
-    if (typeof options.guild !== 'undefined') {
-      const guildID = this.guilds.resolveID(options.guild);
-      if (!guildID) throw new TypeError('INVALID_TYPE', 'options.guild', 'GuildResolvable');
-      query.set('guild_id', guildID);
+    if (!Array.isArray(scopes)) {
+      throw new TypeError('INVALID_TYPE', 'scopes', 'Array of Invite Scopes', true);
     }
+    if (!scopes.some(scope => ['bot', 'applications.commands'].includes(scope))) {
+      throw new TypeError('INVITE_MISSING_SCOPES');
+    }
+    const invalidScope = scopes.find(scope => !InviteScopes.includes(scope));
+    if (invalidScope) {
+      throw new TypeError('INVALID_ELEMENT', 'Array', 'scopes', invalidScope);
+    }
+    query.set('scope', scopes.join(' '));
+
+    if (options.permissions) {
+      const permissions = Permissions.resolve(options.permissions);
+      if (permissions) query.set('permissions', permissions);
+    }
+
+    if (options.disableGuildSelect) {
+      query.set('disable_guild_select', true);
+    }
+
+    if (options.guild) {
+      const guildId = this.guilds.resolveId(options.guild);
+      if (!guildId) throw new TypeError('INVALID_TYPE', 'options.guild', 'GuildResolvable');
+      query.set('guild_id', guildId);
+    }
+
     return `${this.options.http.api}${this.api.oauth2.authorize}?${query}`;
   }
 
@@ -431,8 +509,10 @@ class Client extends BaseClient {
    * @private
    */
   _validateOptions(options = this.options) {
-    if (typeof options.ws.intents !== 'undefined') {
-      options.ws.intents = Intents.resolve(options.ws.intents);
+    if (typeof options.intents === 'undefined') {
+      throw new TypeError('CLIENT_MISSING_INTENTS');
+    } else {
+      options.intents = Intents.resolve(options.intents);
     }
     if (typeof options.shardCount !== 'number' || isNaN(options.shardCount) || options.shardCount < 1) {
       throw new TypeError('CLIENT_INVALID_OPTION', 'shardCount', 'a number greater than or equal to 1');
@@ -441,8 +521,8 @@ class Client extends BaseClient {
       throw new TypeError('CLIENT_INVALID_OPTION', 'shards', "'auto', a number or array of numbers");
     }
     if (options.shards && !options.shards.length) throw new RangeError('CLIENT_INVALID_PROVIDED_SHARDS');
-    if (typeof options.messageCacheMaxSize !== 'number' || isNaN(options.messageCacheMaxSize)) {
-      throw new TypeError('CLIENT_INVALID_OPTION', 'messageCacheMaxSize', 'a number');
+    if (typeof options.makeCache !== 'function') {
+      throw new TypeError('CLIENT_INVALID_OPTION', 'makeCache', 'a function');
     }
     if (typeof options.messageCacheLifetime !== 'number' || isNaN(options.messageCacheLifetime)) {
       throw new TypeError('CLIENT_INVALID_OPTION', 'The messageCacheLifetime', 'a number');
@@ -450,18 +530,8 @@ class Client extends BaseClient {
     if (typeof options.messageSweepInterval !== 'number' || isNaN(options.messageSweepInterval)) {
       throw new TypeError('CLIENT_INVALID_OPTION', 'messageSweepInterval', 'a number');
     }
-    if (
-      typeof options.messageEditHistoryMaxSize !== 'number' ||
-      isNaN(options.messageEditHistoryMaxSize) ||
-      options.messageEditHistoryMaxSize < -1
-    ) {
-      throw new TypeError('CLIENT_INVALID_OPTION', 'messageEditHistoryMaxSize', 'a number greater than or equal to -1');
-    }
-    if (typeof options.fetchAllMembers !== 'boolean') {
-      throw new TypeError('CLIENT_INVALID_OPTION', 'fetchAllMembers', 'a boolean');
-    }
-    if (typeof options.disableMentions !== 'string') {
-      throw new TypeError('CLIENT_INVALID_OPTION', 'disableMentions', 'a string');
+    if (typeof options.invalidRequestWarningInterval !== 'number' || isNaN(options.invalidRequestWarningInterval)) {
+      throw new TypeError('CLIENT_INVALID_OPTION', 'invalidRequestWarningInterval', 'a number');
     }
     if (!Array.isArray(options.partials)) {
       throw new TypeError('CLIENT_INVALID_OPTION', 'partials', 'an Array');
@@ -472,24 +542,31 @@ class Client extends BaseClient {
     if (typeof options.restRequestTimeout !== 'number' || isNaN(options.restRequestTimeout)) {
       throw new TypeError('CLIENT_INVALID_OPTION', 'restRequestTimeout', 'a number');
     }
+    if (typeof options.restGlobalRateLimit !== 'number' || isNaN(options.restGlobalRateLimit)) {
+      throw new TypeError('CLIENT_INVALID_OPTION', 'restGlobalRateLimit', 'a number');
+    }
     if (typeof options.restSweepInterval !== 'number' || isNaN(options.restSweepInterval)) {
       throw new TypeError('CLIENT_INVALID_OPTION', 'restSweepInterval', 'a number');
     }
     if (typeof options.retryLimit !== 'number' || isNaN(options.retryLimit)) {
       throw new TypeError('CLIENT_INVALID_OPTION', 'retryLimit', 'a number');
     }
+    if (typeof options.failIfNotExists !== 'boolean') {
+      throw new TypeError('CLIENT_INVALID_OPTION', 'failIfNotExists', 'a boolean');
+    }
+    if (!Array.isArray(options.userAgentSuffix)) {
+      throw new TypeError('CLIENT_INVALID_OPTION', 'userAgentSuffix', 'an array of strings');
+    }
+    if (
+      typeof options.rejectOnRateLimit !== 'undefined' &&
+      !(typeof options.rejectOnRateLimit === 'function' || Array.isArray(options.rejectOnRateLimit))
+    ) {
+      throw new TypeError('CLIENT_INVALID_OPTION', 'rejectOnRateLimit', 'an array or a function');
+    }
   }
 }
 
 module.exports = Client;
-
-/**
- * Options for {@link Client#generateInvite}.
- * @typedef {Object} InviteGenerationOptions
- * @property {PermissionResolvable} [permissions] Permissions to request
- * @property {GuildResolvable} [guild] Guild to preselect
- * @property {boolean} [disableGuildSelect] Whether to disable the guild selection
- */
 
 /**
  * Emitted for general warnings.
