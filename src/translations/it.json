@@ -11,14 +11,15 @@
     "dontKnowNoComma": "Non lo so",
     "probably": "Probabilmente",
     "probablyNot": "Probabilmente no",
-    "back": "Indietro",
+    "back": "Di ritorno",
     "stop": "Fermare",
+    "thinking": "Pensiero...",
     "isThisYourCharacter": "È il tuo personaggio?",
     "ranking": "classifica",
     "noOfQuestions": "Numero di domande",
     "wellPlayed": "Ben fatto!",
     "guessedRightOneMoreTime": "Ho indovinato ancora una volta!",
-    "character": "Personaggio",
+    "character": "Carattere",
     "defeated": "Bravo! Mi hai sconfitto ...",
     "gameForceEnd": "Il tuo gioco è stato concluso con successo!"
 }

@@ -13,12 +13,13 @@
     "probablyNot": "Հավանաբար ոչ",
     "back": "Ետեվ",
     "stop": "Կանգ առնել",
+    "thinking": "Մտածում ...",
     "isThisYourCharacter": "Սա է ձեր բնավորությունը:",
     "ranking": "Դասակարգման",
     "noOfQuestions": "Հարցերի քանակը",
     "wellPlayed": "Լավ խաղաց!",
     "guessedRightOneMoreTime": "Ես ճիշտ կռահեցի եւս մեկ անգամ:",
     "character": "Բնավորություն",
-    "defeated": "Բրաուն: Դուք ինձ հաղթեցիք ...",
+    "defeated": "Բրաուն! Դուք ինձ հաղթեցիք ...",
     "gameForceEnd": "Ձեր խաղը հաջողությամբ ավարտվեց:"
 }

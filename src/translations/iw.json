@@ -13,12 +13,13 @@
     "probablyNot": "כנראה שלא",
     "back": "חזור",
     "stop": "תפסיק",
+    "thinking": "חושב...",
     "isThisYourCharacter": "האם זה הדמות שלך?",
     "ranking": "דירוג",
     "noOfQuestions": "מספר השאלות",
     "wellPlayed": "משוחק יפה!",
-    "guessedRightOneMoreTime": "ניחשתי זמן רב יותר!",
-    "character": "אופי",
+    "guessedRightOneMoreTime": "ניחשתי ז\"ל עוד פעם אחת!",
+    "character": "דמות",
     "defeated": "בראבו! יש לך הביס אותי ...",
     "gameForceEnd": "המשחק שלך הסתיים בהצלחה!"
 }

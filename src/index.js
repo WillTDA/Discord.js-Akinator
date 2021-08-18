@@ -252,7 +252,7 @@ module.exports = async function (message, language, useButtons) {
                         .setTitle(`${translations.question} ${aki.currentStep + 1}`)
                         .setDescription(`**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, language)}**`)
                         .addField(translations.pleaseType, `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**`)
-                        .setFooter(`🤔`) //change to "translations.thinking" after rebuilding mappings
+                        .setFooter(translations.thinking)
                         .setColor("RANDOM")
                     if (useButtons) await response.update({ embeds: [thinkingEmbed], components: [] })
                     else await akiMessage.edit({ embeds: [thinkingEmbed], components: [] })
