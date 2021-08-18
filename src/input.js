@@ -1,6 +1,6 @@
 const buttonMenu = require("./buttonMenu");
 const Discord = require("discord.js");
-const translate = require("./src/translate")
+const translate = require("./translate");
 
 /**
  * @param {boolean} useButtons If true, use buttons. If false, use text input
