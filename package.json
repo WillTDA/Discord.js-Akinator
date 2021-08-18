@@ -20,6 +20,6 @@
   "dependencies": {
     "@vitalets/google-translate-api": "^7.0.0",
     "aki-api": "^5.2.1",
-    "discord.js": "^13.0.0-dev.4886ae2.1627300977"
+    "discord.js": "^13.1.0"
   }
 }
