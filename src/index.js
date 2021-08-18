@@ -175,7 +175,7 @@ module.exports = async function (message, options = {}) {
                 let guessEmbed = new Discord.MessageEmbed()
                     .setAuthor(usertag, avatar)
                     .setTitle(`${await translate(`I'm ${Math.round(aki.progress)}% sure your character is...`, options.language)}`)
-                    .setDescription(`**${await translate(aki.answers[0].name, options.language)}**\n${await translate(aki.answers[0].description, options.language)}\n\n${translations.isThisYourCharacter} **(Type Y/${translations.yes} or N/${translations.no})**`)
+                    .setDescription(`**${await translate(aki.answers[0].name, options.language)}**\n${await translate(aki.answers[0].description, options.language)}\n\n${translations.isThisYourCharacter} ${!options.useButtons ? "**(Type Y/${translations.yes} or N/${translations.no})**" : ""}`)
                     .addField(translations.ranking, `**#${aki.answers[0].ranking}**`, true)
                     .addField(translations.noOfQuestions, `**${aki.currentStep}**`, true)
                     .setImage(aki.answers[0].absolute_picture_path)
