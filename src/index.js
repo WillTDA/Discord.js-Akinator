@@ -150,7 +150,7 @@ module.exports = async function (message, language, useButtons) {
                                 .addField(translations.ranking, `**#${aki.answers[0].ranking}**`, true)
                                 .addField(translations.noOfQuestions, `**${aki.currentStep}**`, true)
                                 .setColor("RANDOM")
-                            await akiMessage.edit({ embeds: [finishedGameCorrect] })
+                            await akiMessage.edit({ embeds: [finishedGameCorrect], components: [] })
                             notFinished = false;
                             games.delete(message.author.id)
                             return;
@@ -163,7 +163,7 @@ module.exports = async function (message, language, useButtons) {
                                     .setTitle(`Well Played!`)
                                     .setDescription(`**${message.author.username}, ${translations.defeated}**`)
                                     .setColor("RANDOM")
-                                await akiMessage.edit({ embeds: [finishedGameDefeated] })
+                                await akiMessage.edit({ embeds: [finishedGameDefeated], components: [] })
                                 notFinished = false;
                                 games.delete(message.author.id)
                             } else {
@@ -190,7 +190,7 @@ module.exports = async function (message, language, useButtons) {
                         await aki.win()
                         notFinished = false;
                         games.delete(message.author.id)
-                        return akiMessage.edit({ embeds: [noResEmbed] })
+                        return akiMessage.edit({ embeds: [noResEmbed], components: [] })
                     }
                     const answer = response.toLowerCase();
 
@@ -234,7 +234,7 @@ module.exports = async function (message, language, useButtons) {
                             .setDescription(`**${message.author.username}, ${translations.gameForceEnd}**`)
                             .setColor("RANDOM")
                         await aki.win()
-                        await akiMessage.edit({ embeds: [stopEmbed] })
+                        await akiMessage.edit({ embeds: [stopEmbed], components: [] })
                         notFinished = false;
                     } else {
                         await aki.step(answers[answer]);
