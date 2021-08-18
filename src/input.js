@@ -66,30 +66,7 @@ module.exports = async function input(useButtons, message, botMessage, isGuessFi
 
         let choice = await buttonMenu(message.client, message, botMessage, answerTypes, 60000);
         if (!choice) return null;
-
-        await botMessage.delete(); //for some reason the command progresses further when this line is not here.
-
-        if (choice === "✅") {
-            return "y"
-        }
-        else if (choice === "❌") {
-            return "n"
-        }
-        else if (choice === "❓") {
-            return "i"
-        }
-        else if (choice === "👍") {
-            return "p"
-        }
-        else if (choice === "👎") {
-            return "pn"
-        }
-        else if (choice === "⏪") {
-            return "b"
-        }
-        else if (choice === "🛑") {
-            return "s"
-        }
+        else return choice;
     }
     else {
         let filter;

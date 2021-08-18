@@ -35,17 +35,17 @@ module.exports = async function (client, message, botMessage, buttons, time) {
 
     botMessage = await botMessage.edit({ embeds: [botMessage.embeds[0]], components: buttonRows });
     // create our collector
-    const filter = (interaction) => (interaction.user == message.author.id) && (interaction.componentType == "BUTTON");
+    const filter = (i) => i.user == message.author.id;
 
     let selection;
 
     await message.channel.awaitMessageComponent({
         filter: filter,
         time: 60000,
-        max: 1,
+        componentType: "BUTTON"
     })
-        .then((interaction) => {
-            selection = interaction.customId;
+        .then(async (i) => {
+            selection = i;
         }).catch(() => {
             // do nothing
         });

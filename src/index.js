@@ -6,6 +6,35 @@ const input = require("./input");
 const games = new Set();
 const attemptingGuess = new Set();
 
+// this simply gets the user's reply from a button interaction (that is, if the user has chosen to enable buttons)
+
+function getButtonReply(interaction) {
+    interaction = interaction.customId;
+
+    if (interaction === "✅") { //yes
+        return "y"
+    }
+    else if (interaction === "❌") { //no
+        return "n"
+    }
+    else if (interaction === "❓") { //don't know
+        return "i"
+    }
+    else if (interaction === "👍") { //probably
+        return "p"
+    }
+    else if (interaction === "👎") { //probably not
+        return "pn"
+    }
+    else if (interaction === "⏪") { //back
+        return "b"
+    }
+    else if (interaction === "🛑") { //stop game
+        return "s"
+    }
+    else return null;
+}
+
 /**
     * @param {Discord.Message} message The Message Sent by the User.
     * @param {"af" | "sq" | "am" | "ar" | "hy" | "az" | "eu" | "be" | "bn" | "bs" | "bg" | "ca" | "ceb" | "ny" | "co" | "hr" | "cs" | "da" | "nl" | "en" | "eo" | "et" | "tl" | "fi" | "fr" | "fy" | "gl" | "ka" | "de" | "el" | "gu" | "ht" | "ha" | "haw" | "he" | "iw" | "hi" | "hmn" | "hu" | "is" | "ig" | "id" | "ga" | "it" | "ja" | "jw" | "kn" | "kk" | "km" | "ko" | "ku" | "ky" | "lo" | "la" | "lv" | "lt" | "lb" | "mk" | "mg" | "ms" | "ml" | "mt" | "mi" | "mr" | "mn" | "my" | "ne" | "no" | "ps" | "fa" | "pl" | "pt" | "pa" | "ro" | "ru" | "sm" | "gd" | "sr" | "st" | "sn" | "sd" | "si" | "sk" | "sl" | "so" | "es" | "su" | "sw" | "sv" | "tg" | "ta" | "te" | "th" | "tr" | "uk" | "ur" | "uz" | "vi" | "cy" | "xh" | "yi" | "yo" | "zu"} language (OPTIONAL): The Region/Language Code you want to Use. Defaults to "en".
@@ -37,10 +66,10 @@ module.exports = async function (message, language, useButtons) {
         //check if discord.js' version is compatible. must be at least 13.0.0. if not, throw an error.
         if (Discord.version.split(".").map(Number).slice(0, 3)[0] <= 12) return console.log("Discord.js Akinator Error: Discord.js v13 or Higher is Required.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
         if (!message) return console.log("Discord.js Akinator Error: Message was not Provided.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
-        if (!(message instanceof Discord.Message) && !(message instanceof Discord.Interaction)) return console.log("Discord.js Akinator Error: Message or Interaction provided was Invalid.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
+        if (!message instanceof Discord.Message && !message instanceof Discord.Interaction) return console.log("Discord.js Akinator Error: Message or Interaction provided was Invalid.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
         if (!message.guild) return console.log("Discord.js Akinator Error: Cannot be used in Direct Messages.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
         if (!language) language = "en";
-         if (!fs.existsSync(`${__dirname}/translations/${language}.json`)) return console.log(`Discord.js Akinator Error: Language "${language}" Not Found. Example: "en" or "fr" or "es".\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'`);
+        if (!fs.existsSync(`${__dirname}/translations/${language}.json`)) return console.log(`Discord.js Akinator Error: Language "${language}" Not Found. Example: "en" or "fr" or "es".\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'`);
         if (!useButtons) useButtons = false;
 
         // defining for easy use
@@ -130,13 +159,15 @@ module.exports = async function (message, language, useButtons) {
                     .setImage(aki.answers[0].absolute_picture_path)
                     .setColor("RANDOM")
                 await akiMessage.edit({ embeds: [guessEmbed] });
+                akiMessage.embeds[0] = guessEmbed;
 
                 await input(useButtons, message, akiMessage, true, translations, language)
                     .then(async response => {
                         if (response === null) {
                             return akiMessage.edit({ embeds: [noResEmbed] });
                         }
-                        const guessAnswer = response.toLowerCase();
+                        let reply = getButtonReply(response) || response
+                        const guessAnswer = reply.toLowerCase();
 
                         attemptingGuess.delete(message.guild.id)
 
@@ -150,7 +181,8 @@ module.exports = async function (message, language, useButtons) {
                                 .addField(translations.ranking, `**#${aki.answers[0].ranking}**`, true)
                                 .addField(translations.noOfQuestions, `**${aki.currentStep}**`, true)
                                 .setColor("RANDOM")
-                            await akiMessage.edit({ embeds: [finishedGameCorrect], components: [] })
+                            if (useButtons) await response.update({ embeds: [finishedGameCorrect], components: [] })
+                            else await akiMessage.edit({ embeds: [finishedGameCorrect], components: [] })
                             notFinished = false;
                             games.delete(message.author.id)
                             return;
@@ -175,14 +207,17 @@ module.exports = async function (message, language, useButtons) {
 
             if (!notFinished) return;
 
-            let updatedAkiEmbed = new Discord.MessageEmbed()
-                .setAuthor(usertag, avatar)
-                .setTitle(`${translations.question} ${aki.currentStep + 1}`)
-                .setDescription(`**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, language)}**`)
-                .addField(translations.pleaseType, `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**`)
-                .setFooter(translations.stopTip)
-                .setColor("RANDOM")
-            await akiMessage.edit({ embeds: [updatedAkiEmbed] })
+            if (aki.currentStep !== 0) {
+                let updatedAkiEmbed = new Discord.MessageEmbed()
+                    .setAuthor(usertag, avatar)
+                    .setTitle(`${translations.question} ${aki.currentStep + 1}`)
+                    .setDescription(`**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, language)}**`)
+                    .addField(translations.pleaseType, `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**`)
+                    .setFooter(translations.stopTip)
+                    .setColor("RANDOM")
+                await akiMessage.edit({ embeds: [updatedAkiEmbed] })
+                akiMessage.embeds[0] = updatedAkiEmbed
+            }
 
             await input(useButtons, message, akiMessage, false, translations, language)
                 .then(async response => {
@@ -192,7 +227,8 @@ module.exports = async function (message, language, useButtons) {
                         games.delete(message.author.id)
                         return akiMessage.edit({ embeds: [noResEmbed], components: [] })
                     }
-                    const answer = response.toLowerCase();
+                    let reply = getButtonReply(response) || response
+                    const answer = reply.toLowerCase();
 
                     // assign points for the possible answers given
                     const answers = {
@@ -216,9 +252,10 @@ module.exports = async function (message, language, useButtons) {
                         .setTitle(`${translations.question} ${aki.currentStep + 1}`)
                         .setDescription(`**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, language)}**`)
                         .addField(translations.pleaseType, `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**`)
-                        .setFooter(`🤔`)
+                        .setFooter(`🤔`) //change to "translations.thinking" after rebuilding mappings
                         .setColor("RANDOM")
-                    await akiMessage.edit({ embeds: [thinkingEmbed] })
+                    if (useButtons) await response.update({ embeds: [thinkingEmbed], components: [] })
+                    else await akiMessage.edit({ embeds: [thinkingEmbed], components: [] })
 
                     if (answer == "b" || answer == translations.back.toLowerCase()) {
                         if (aki.currentStep >= 1) {
