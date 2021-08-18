@@ -33,27 +33,22 @@ module.exports = async function (client, message, botMessage, buttons, time) {
     buttonRows.push(buttonRow)
     if (buttons.length >= 5) buttonRows.push(buttonRow2)
 
-    console.log(botMessage)
-
     botMessage = await botMessage.edit({ embeds: [botMessage.embeds[0]], components: buttonRows });
     // create our collector
-    const filter = (interaction) => interaction.user.id === message.author.id;
+    const filter = (interaction) => (interaction.user == message.author.id) && (interaction.componentType == "BUTTON");
 
     let selection;
 
-    let buttonCollector = message.channel.createMessageComponentCollector({
+    await message.channel.awaitMessageComponent({
         filter: filter,
         time: 60000,
         max: 1,
     })
-    
-    buttonCollector.on("collect", async (collected) => {
-        selection = collected;
-        buttonCollector.empty();
-        buttonCollector.stop();
-    })
+        .then((interaction) => {
+            selection = interaction.customId;
+        }).catch(() => {
+            // do nothing
+        });
 
-    //log the selection
-    console.log(`Selected Button: ${selection}`);
     return selection;
 }

@@ -146,7 +146,7 @@ module.exports = async function (message, language, useButtons) {
                                 .setAuthor(usertag, avatar)
                                 .setTitle(translations.wellPlayed)
                                 .setDescription(`**${message.author.username}, ${translations.guessedRightOneMoreTime}**`)
-                                .addField(translations.character, `**${await translate(aki.answers[0].name, lagnuage)}**`, true)
+                                .addField(translations.character, `**${await translate(aki.answers[0].name, language)}**`, true)
                                 .addField(translations.ranking, `**#${aki.answers[0].ranking}**`, true)
                                 .addField(translations.noOfQuestions, `**${aki.currentStep}**`, true)
                                 .setColor("RANDOM")

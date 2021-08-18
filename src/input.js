@@ -43,20 +43,31 @@ module.exports = async function input(useButtons, message, botMessage, isGuessFi
             .setEmoji("👎")
             .setCustomId("👎")
 
+        let back = new Discord.MessageButton()
+            .setLabel(translations.back)
+            .setStyle("SECONDARY")
+            .setEmoji("🔙")
+            .setCustomId("🔙")
+
+        let stop = new Discord.MessageButton()
+            .setLabel(translations.stop)
+            .setStyle("DANGER")
+            .setEmoji("🛑")
+            .setCustomId("🛑")
+
         let answerTypes = [];
 
         if (isGuessFilter) {
             answerTypes = [yes, no]
         }
         else {
-            answerTypes = [yes, no, idk, probably, probablyNot]
+            answerTypes = [yes, no, idk, probably, probablyNot, back, stop]
         }
 
         let choice = await buttonMenu(message.client, message, botMessage, answerTypes, 60000);
-        console.log(choice)
         if (!choice) return null;
 
-        await botMessage.delete();
+        await botMessage.delete(); //for some reason the command progresses further when this line is not here.
 
         if (choice === "✅") {
             return "y"
@@ -72,6 +83,12 @@ module.exports = async function input(useButtons, message, botMessage, isGuessFi
         }
         else if (choice === "👎") {
             return "pn"
+        }
+        else if (choice === "⏪") {
+            return "b"
+        }
+        else if (choice === "🛑") {
+            return "s"
         }
     }
     else {
@@ -107,8 +124,10 @@ module.exports = async function input(useButtons, message, botMessage, isGuessFi
                 ].includes(x.content.toLowerCase())));
             }
         }
-        let response = await message.channel.awaitMessages(filter, {
-            max: 1, time: 60000
+        let response = await message.channel.awaitMessages({
+            filter: filter,
+            max: 1,
+            time: 60000
         })
 
         if (!response.size) {

@@ -55,7 +55,7 @@ For versions earlier than 3.0.0, you need discord.js v12. However it is recommen
 ```js
 const { Client, Intents } = require("discord.js");
 const akinator = require("discord.js-akinator");
-const client = new Client({ intents: [Intents.FLAGS.GUILDS] });
+const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
 
 client.on("ready", () => {
     console.log("Bot is Online")
