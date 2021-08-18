@@ -63,9 +63,9 @@ client.on("ready", () => {
 
 const PREFIX = "!";
 
-//Defining akinator options
+//Defining options
 
-const language = "en"; //The language to use
+const language = "en"; //The Language of the Game
 const childMode = false; //Whether to use Akinator's Child Mode
 const useButtons = true; //Whether to use Discord's Buttons
 
