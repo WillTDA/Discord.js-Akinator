@@ -37,7 +37,7 @@ module.exports = async function (message, language, useButtons) {
         //check if discord.js' version is compatible. must be at least 13.0.0. if not, throw an error.
         if (Discord.version.split(".").map(Number).slice(0, 3)[0] <= 12) return console.log("Discord.js Akinator Error: Discord.js v13 or Higher is Required.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
         if (!message) return console.log("Discord.js Akinator Error: Message was not Provided.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
-        if (!message.id || !message.channel || !message.channel.id || !message.author) return console.log("Discord.js Akinator Error: Message Provided was Invalid.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
+        if (!(message instanceof Discord.Message) && !(message instanceof Discord.Interaction)) return console.log("Discord.js Akinator Error: Message or Interaction provided was Invalid.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
         if (!message.guild) return console.log("Discord.js Akinator Error: Cannot be used in Direct Messages.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
         if (!language) language = "en";
          if (!fs.existsSync(`${__dirname}/translations/${language}.json`)) return console.log(`Discord.js Akinator Error: Language "${language}" Not Found. Example: "en" or "fr" or "es".\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'`);
@@ -150,7 +150,7 @@ module.exports = async function (message, language, useButtons) {
                                 .addField(translations.ranking, `**#${aki.answers[0].ranking}**`, true)
                                 .addField(translations.noOfQuestions, `**${aki.currentStep}**`, true)
                                 .setColor("RANDOM")
-                            await akiMessage.edit({ embeds: [finishedGameCorrect] })
+                            await akiMessage.edit({ embeds: [finishedGameCorrect], components: [] })
                             notFinished = false;
                             games.delete(message.author.id)
                             return;
@@ -163,7 +163,7 @@ module.exports = async function (message, language, useButtons) {
                                     .setTitle(`Well Played!`)
                                     .setDescription(`**${message.author.username}, ${translations.defeated}**`)
                                     .setColor("RANDOM")
-                                await akiMessage.edit({ embeds: [finishedGameDefeated] })
+                                await akiMessage.edit({ embeds: [finishedGameDefeated], components: [] })
                                 notFinished = false;
                                 games.delete(message.author.id)
                             } else {
@@ -190,7 +190,7 @@ module.exports = async function (message, language, useButtons) {
                         await aki.win()
                         notFinished = false;
                         games.delete(message.author.id)
-                        return akiMessage.edit({ embeds: [noResEmbed] })
+                        return akiMessage.edit({ embeds: [noResEmbed], components: [] })
                     }
                     const answer = response.toLowerCase();
 
@@ -234,7 +234,7 @@ module.exports = async function (message, language, useButtons) {
                             .setDescription(`**${message.author.username}, ${translations.gameForceEnd}**`)
                             .setColor("RANDOM")
                         await aki.win()
-                        await akiMessage.edit({ embeds: [stopEmbed] })
+                        await akiMessage.edit({ embeds: [stopEmbed], components: [] })
                         notFinished = false;
                     } else {
                         await aki.step(answers[answer]);
