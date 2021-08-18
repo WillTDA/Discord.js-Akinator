@@ -41,7 +41,8 @@ module.exports = async function (client, message, botMessage, buttons, time) {
 
     let selection;
 
-    let buttonCollector = message.channel.createMessageComponentCollector(filter, {
+    let buttonCollector = message.channel.createMessageComponentCollector({
+        filter: filter,
         time: 60000,
         max: 1,
     })
