@@ -85,9 +85,8 @@ module.exports = async function (message, options = {}) {
         options.language = options.language || "en";
         options.childMode = options.childMode || false;
         options.useButtons = options.useButtons || false;
+
         // error handling
-        //check if discord.js' version is compatible. must be at least 13.0.0. if not, throw an error.
-        if (Discord.version.split(".").map(Number).slice(0, 3)[0] <= 12) return console.log("Discord.js Akinator Error: Discord.js v13 or Higher is Required.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
         if (!message) return console.log("Discord.js Akinator Error: Message was not Provided.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
         if (!message instanceof Discord.Message) return console.log("Discord.js Akinator Error: Message Provided was Invalid.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
         if (!message.guild) return console.log("Discord.js Akinator Error: Cannot be used in Direct Messages.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
@@ -141,9 +140,10 @@ module.exports = async function (message, options = {}) {
             .setAuthor(usertag, avatar)
             .setTitle(`${translations.question} ${aki.currentStep + 1}`)
             .setDescription(`**${translations.progress}: 0%\n${await translate(aki.question, options.language)}**`)
-            .addField(translations.pleaseType, `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**`)
             .setFooter(translations.stopTip)
             .setColor("RANDOM")
+
+        if (!options.useButtons) akiEmbed.addField(translations.pleaseType, `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**`)
 
         await startingMessage.delete();
         let akiMessage = await message.channel.send({ embeds: [akiEmbed] });
@@ -186,7 +186,10 @@ module.exports = async function (message, options = {}) {
                 await input(options.useButtons, message, akiMessage, true, translations, options.language)
                     .then(async response => {
                         if (response === null) {
-                            return akiMessage.edit({ embeds: [noResEmbed] });
+                            notFinished = false;
+                            games.delete(message.author.id)
+                            akiMessage.edit({ embeds: [noResEmbed], components: [] })
+                            return;
                         }
                         let reply = getButtonReply(response) || response
                         const guessAnswer = reply.toLowerCase();
@@ -234,9 +237,10 @@ module.exports = async function (message, options = {}) {
                     .setAuthor(usertag, avatar)
                     .setTitle(`${translations.question} ${aki.currentStep + 1}`)
                     .setDescription(`**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, options.language)}**`)
-                    .addField(translations.pleaseType, `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**`)
                     .setFooter(translations.stopTip)
                     .setColor("RANDOM")
+                if (!options.useButtons) updatedAkiEmbed.addField(translations.pleaseType, `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**`)
+
                 await akiMessage.edit({ embeds: [updatedAkiEmbed] })
                 akiMessage.embeds[0] = updatedAkiEmbed
             }
@@ -273,11 +277,13 @@ module.exports = async function (message, options = {}) {
                         .setAuthor(usertag, avatar)
                         .setTitle(`${translations.question} ${aki.currentStep + 1}`)
                         .setDescription(`**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, options.language)}**`)
-                        .addField(translations.pleaseType, `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**`)
                         .setFooter(translations.thinking)
                         .setColor("RANDOM")
+                    if (!options.useButtons) thinkingEmbed.addField(translations.pleaseType, `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**`)
+
                     if (options.useButtons) await response.update({ embeds: [thinkingEmbed], components: [] })
                     else await akiMessage.edit({ embeds: [thinkingEmbed], components: [] })
+                    akiMessage.embeds[0] = thinkingEmbed
 
                     if (answer == "b" || answer == translations.back.toLowerCase()) {
                         if (aki.currentStep >= 1) {
@@ -307,7 +313,8 @@ module.exports = async function (message, options = {}) {
         attemptingGuess.delete(message.guild.id)
         games.delete(message.guild.id)
         if (e == "DiscordAPIError: Unknown Message") return;
+        else if (e == "DiscordAPIError: Cannot send an empty message") return console.log("Discord.js Akinator Error: Discord.js v13 or Higher is Required.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
+        console.log("Discord.js Akinator Error:")
         console.log(e);
-        //console.log(`Discord.js Akinator Error: ${e}`)
     }
 }

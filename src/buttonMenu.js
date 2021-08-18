@@ -19,19 +19,25 @@ module.exports = async function (client, message, botMessage, buttons, time) {
     //sort buttons into rows of four, as to build our menu
     let buttonRow = new MessageActionRow()
     let buttonRow2 = new MessageActionRow()
+    let buttonRow3 = new MessageActionRow()
     let buttonRows = []
 
     for (let i = 0; i < buttons.length; i++) {
         if (i < 3) {
             buttonRow.addComponents(buttons[i]);
         }
-        else {
+        else if (i < 5) {
             buttonRow2.addComponents(buttons[i])
         }
+        else {
+            buttonRow3.addComponents(buttons[i])
+        }
+
     }
 
     buttonRows.push(buttonRow)
     if (buttons.length >= 5) buttonRows.push(buttonRow2)
+    if (buttons.length >= 7) buttonRows.push(buttonRow3)
 
     botMessage = await botMessage.edit({ embeds: [botMessage.embeds[0]], components: buttonRows });
     // create our collector

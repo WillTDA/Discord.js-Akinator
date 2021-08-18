@@ -46,8 +46,8 @@ module.exports = async function input(useButtons, message, botMessage, isGuessFi
         let back = new Discord.MessageButton()
             .setLabel(translations.back)
             .setStyle("SECONDARY")
-            .setEmoji("🔙")
-            .setCustomId("🔙")
+            .setEmoji("⏪")
+            .setCustomId("⏪")
 
         let stop = new Discord.MessageButton()
             .setLabel(translations.stop)
