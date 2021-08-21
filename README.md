@@ -10,7 +10,7 @@ A Discord.js v13 Module that allows you to Create an Akinator Command for Your D
 
 - 🌎 <b>100+ Languages Supported!</b> | Lightning fast translation has been made possible by Google Translate and hard-coded mappings!
 
-- ▶️ <b>Buttons!</b> | With this option, you can choose to use discord's buttons!
+- ▶️ <b>Buttons!</b> | Don't want to type out responses to questions? Use discord's buttons to easily click your answer of choice!
 
 - 🙋 <b>Child Mode!</b> | Want to filter out NSFW questions? Simply set this option to `true`!
 
