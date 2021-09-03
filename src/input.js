@@ -4,12 +4,12 @@ const translate = require("./translate");
 
 /**
  * @param {boolean} useButtons If true, use buttons. If false, use text input
- * @param {Discord.Message} message The Message Sent by the User.
+ * @param {any} input The Message Sent by the User.
  * @param {Discord.Message} botMessage The Message for the Bot to Send, also the message which will contain the buttons (Max. 8). MUST BE AN EMBED!
  * 
  */
 
-module.exports = async function input(useButtons, message, botMessage, isGuessFilter, translations, language) {
+module.exports = async function awaitInput(useButtons, input, botMessage, isGuessFilter, translations, language) {
     //check if useButtons is true. If so, use buttons.  If not, use text input
     if (useButtons) {
 
@@ -64,7 +64,7 @@ module.exports = async function input(useButtons, message, botMessage, isGuessFi
             answerTypes = [yes, no, idk, probably, probablyNot, back, stop]
         }
 
-        let choice = await buttonMenu(message.client, message, botMessage, answerTypes, 60000);
+        let choice = await buttonMenu(input.client, input, botMessage, answerTypes, 60000);
         if (!choice) return null;
         else return choice;
     }
@@ -72,7 +72,7 @@ module.exports = async function input(useButtons, message, botMessage, isGuessFi
         let filter;
         if (isGuessFilter) {
             filter = x => {
-                return (x.author.id === message.author.id && ([
+                return (x.author.id === input.author.id && ([
                     "y",
                     translations.yes.toLowerCase(),
                     "n",
@@ -81,7 +81,7 @@ module.exports = async function input(useButtons, message, botMessage, isGuessFi
             }
         } else {
             filter = x => {
-                return (x.author.id === message.author.id && ([
+                return (x.author.id === input.author.id && ([
                     "y",
                     translations.yes.toLowerCase(),
                     "n",
@@ -101,7 +101,7 @@ module.exports = async function input(useButtons, message, botMessage, isGuessFi
                 ].includes(x.content.toLowerCase())));
             }
         }
-        let response = await message.channel.awaitMessages({
+        let response = await input.channel.awaitMessages({
             filter: filter,
             max: 1,
             time: 60000
