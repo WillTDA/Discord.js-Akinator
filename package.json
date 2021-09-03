@@ -16,7 +16,7 @@
     "aki-api"
   ],
   "author": "WillTDA",
-  "license": "ISC",
+  "license": "Apache-2.0",
   "dependencies": {
     "@vitalets/google-translate-api": "^7.0.0",
     "aki-api": "^5.2.1",

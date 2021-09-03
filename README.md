@@ -4,35 +4,21 @@
 
 A Discord.js v13 Module that allows you to Create an Akinator Command for Your Discord Bot within Seconds of Installation.
 
-UPDATE 3.0.0 - Lots of New Changes! (and some breaking, so be careful!)
+[![NPM](https://nodei.co/npm/discord.js-akinator.png)](https://npmjs.com/package/discord.js-akinator)
 
-New Features Include:
+[![Downloads](https://img.shields.io/npm/dt/discord.js-akinator?logo=npm&style=flat-square)](https://npmjs.com/package/discord.js-akinator) [![Discord Server](https://img.shields.io/discord/667479986214666272?logo=discord&logoColor=white&style=flat-square)](https://discord.gg/P2g24jp)
 
-## <u>FULL TRANSLATION (100+ New Languages!)</u>
+## Features
 
-Discord.js Akinator no longer relies on other Akinator API servers to translate, as they are all slow and laggy apart from the European one. Also, they would only translate the questions and nothing else!
+- 🌎 <b>100+ Languages Supported!</b> | Lightning fast translation has been made possible by Google Translate and hard-coded mappings!
 
-By utilising Google Translate and creating hard-coded translation mappings, OVER 100 NEW LANGUAGES are now supported! Also, every piece of text is now translatable, not just the questions!
+- ▶️ <b>Buttons!</b> | Don't want to type out responses to questions? This package gives you the option to use discord's buttons to easily click your answer of choice!
 
-## <u>BUTTONS!</u>
+- 🙋 <b>Child Mode!</b> | Want to filter out NSFW questions? You can choose to enable Akinator's Child Mode to keep your games squeaky clean!
 
-With this new option, you can choose to use the new discord buttons!
+- ⚡️ <b>Quick & Easy Setup</b> | This package was built with the intentions of working out-of-the-box. Only one parameter is required at least!
 
-Do keep in mind that it is `false` by default.
-
-## <u>CHILD MODE!</u>
-
-Want to filter out NSFW questions? Simply set this option to `true`!
-
-Again, this will default to `false`.
-
-## <u>NO CLIENT PARAMETER NEEDED!</u>
-
-The package no longer requires you to pass in a `Discord.Client` object to function.
-
-Just pass in the `Discord.Message` and it'll handle the rest!
-
-# Install Package
+## Install Package
 
 Let's take a look at how you can install this package into your Discord Bot Project.
 
@@ -42,11 +28,11 @@ For versions 3.0.0 and Above, you'll also need discord.js v13. This can easily b
 
 `npm i discord.js@13 --save`
 
-For versions earlier than 3.0.0, you'll need discord.js v12. However it is recommended you update to patch bugs and security vulnerabilities, as well as getting the newest features from this package!
+For versions earlier than 3.0.0, you'll need discord.js v12. However it is recommended you update to patch bugs and security vulnerabilities, as well as get the newest features from this package!
 
 `npm i discord.js@12 --save`
 
-# Example Code
+## Example Code
 
 ```js
 const { Client, Intents } = require("discord.js");
@@ -78,12 +64,14 @@ client.on("messageCreate", async message => {
 client.login("Discord Bot Token")
 ```
 
-# Contributors
+## Contributors
 
 - [ChaosArising (Josh_#9733)](https://github.com/ChaosArising) (Providing compatibility for Discord.js v13)
 
 - [3061LRTAGSPKJMORMRT (Ashish#0540)](https://github.com/3061LRTAGSPKJMORMRT) (Error handling and writing much cleaner code)
 
-# Need Help or Find Any Bugs? Join Our Discord Server!
+## Contact Us
 
-https://discord.gg/P2g24jp
+- 👋 Need Help? [Join Our Discord Server](https://discord.gg/P2g24jp)!
+
+- 👾 Found a Bug, or Inaccurate Translations? [Open an Issue](https://github.com/WillTDA/Discord.js-Akinator-Package-Dev/issues), or Fork and [Submit a Pull Request](https://github.com/WillTDA/Discord.js-Akinator-Package-Dev/pulls) on our [GitHub Repository](https://github.com/WillTDA/Discord.js-Akinator-Package-Dev)!
