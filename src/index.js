@@ -139,9 +139,12 @@ module.exports = async function (input, options = {}) {
 
         let startingMessage;
 
-        if (input.user) startingMessage = await input.reply({ embeds: [startingEmbed] })
-        else startingMessage = await input.channel.send({ embeds: [startingEmbed] })
-
+        if (input.commandName && !input.replied) { // check if it's a slash command and hasn't been replied to yet
+            input.reply({ embeds: [startingEmbed] })
+        } else {
+            input.channel.send({ embeds: [startingEmbed] })    
+        }
+        
         // get translation object for the language
         let translations = require(`${__dirname}/translations/${options.language}.json`);
 
