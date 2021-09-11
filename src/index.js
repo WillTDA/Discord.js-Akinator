@@ -124,8 +124,12 @@ module.exports = async function (input, options = {}) {
                 .setDescription(`**${await translate(`You're already playing a game of Akinator. ${!options.useButtons ? `Type \`S\` or \`Stop\`` : `Press the \`Stop\` button on the previous game's message`} to cancel your game.`, options.language)}**`)
                 .setColor("RED")
 
-            if (input.user) return input.reply({ embeds: [alreadyPlayingEmbed] })
-            else return input.channel.send({ embeds: [alreadyPlayingEmbed] })
+            if (input.commandName && !input.replied) { // check if it's a slash command and see if it's already been replied
+                input.reply({ embeds: [alreadyPlayingEmbed] })
+            } else {
+                input.channel.send({ embeds: [alreadyPlayingEmbed] })
+            }
+            return;
         }
 
         // adding the player into the game
@@ -139,9 +143,12 @@ module.exports = async function (input, options = {}) {
 
         let startingMessage;
 
-        if (input.user) startingMessage = await input.reply({ embeds: [startingEmbed] })
-        else startingMessage = await input.channel.send({ embeds: [startingEmbed] })
-
+        if (input.commandName && !input.replied) { // check if it's a slash command and hasn't been replied to yet
+            startingMessage = await input.reply({ embeds: [startingEmbed] })
+        } else {
+            startingMessage = await input.channel.send({ embeds: [startingEmbed] })    
+        }
+        
         // get translation object for the language
         let translations = require(`${__dirname}/translations/${options.language}.json`);
 
