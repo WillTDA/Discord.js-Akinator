@@ -14,6 +14,8 @@ A Discord.js v13 Module that allows you to Create an Akinator Command for Your D
 
 - ▶️ <b>Buttons!</b> | Don't want to type out responses to questions? This package gives you the option to use discord's buttons to easily click your answer of choice!
 
+- 🎮 <b>Multiple Game Types!</b> | This package will allow you to choose whether Akinator will guess an Animal, Character or Object!
+
 - 🙋 <b>Child Mode!</b> | Want to filter out NSFW questions? You can choose to enable Akinator's Child Mode to keep your games squeaky clean!
 
 - ⚡️ <b>Quick & Easy Setup</b> | This package was built with the intentions of working out-of-the-box. Only one parameter is required at least!
