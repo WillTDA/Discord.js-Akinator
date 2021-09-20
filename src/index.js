@@ -143,7 +143,7 @@ module.exports = async function (input, options = {}) {
 
         let startingMessage;
 
-        if (input.commandName && !input.replied) { // check if it's a slash command and hasn't been replied to yet
+        if (input.commandName && (!input.replied || !input.deferred)) { // check if it's a slash command and hasn't been replied or deferred
             startingMessage = await input.reply({ embeds: [startingEmbed] })
         } else {
             startingMessage = await input.channel.send({ embeds: [startingEmbed] })    
