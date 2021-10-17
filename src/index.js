@@ -124,7 +124,7 @@ module.exports = async function (input, options = {}) {
                 .setDescription(`**${await translate(`You're already playing a game of Akinator. ${!options.useButtons ? `Type \`S\` or \`Stop\`` : `Press the \`Stop\` button on the previous game's message`} to cancel your game.`, options.language)}**`)
                 .setColor("RED")
 
-            if (input.commandName && (!input.replied || !input.deferred)) { // check if it's a slash command and see if it's already been replied or deferred
+            if ((input.commandName) && (!input.replied) && (!input.deferred)) { // check if it's a slash command and see if it's already been replied or deferred
                 input.reply({ embeds: [alreadyPlayingEmbed] })
             } else {
                 input.channel.send({ embeds: [alreadyPlayingEmbed] })
@@ -143,7 +143,7 @@ module.exports = async function (input, options = {}) {
 
         let startingMessage;
 
-        if (input.commandName && (!input.replied || !input.deferred)) { // check if it's a slash command and hasn't been replied or deferred
+        if ((input.commandName) && (!input.replied) && (!input.deferred)) { // check if it's a slash command and hasn't been replied or deferred
             startingMessage = await input.reply({ embeds: [startingEmbed] })
         } else {
             startingMessage = await input.channel.send({ embeds: [startingEmbed] })    
