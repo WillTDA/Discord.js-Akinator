@@ -1,4 +1,3 @@
-const Discord = require("discord.js");
 const { Aki } = require("aki-api");
 const fs = require("fs");
 const translate = require("./translate");
@@ -123,11 +122,12 @@ module.exports = async function (input, options = {}) {
 
         // check if a game is being hosted by the player
         if (games.has(inputData.author.id)) {
-            let alreadyPlayingEmbed = new Discord.MessageEmbed()
-                .setAuthor(usertag, avatar)
-                .setTitle(`❌ ${await translate("You're already playing!", options.language)}`)
-                .setDescription(`**${await translate(`You're already playing a game of Akinator. ${!options.useButtons ? `Type \`S\` or \`Stop\`` : `Press the \`Stop\` button on the previous game's message`} to cancel your game.`, options.language)}**`)
-                .setColor(options.embedColor)
+            let alreadyPlayingEmbed = {
+                title: `❌ ${await translate("You're already playing!", options.language)}`,
+                description: `**${await translate(`You're already playing a game of Akinator. ${!options.useButtons ? `Type \`S\` or \`Stop\`` : `Press the \`Stop\` button on the previous game's message`} to cancel your game.`, options.language)}**`,
+                color: options.embedColor,
+                author: { name: usertag, iconURL: avatar }
+            }
 
             if ((input.commandName) && (!input.replied) && (!input.deferred)) { // check if it's a slash command and see if it's already been replied or deferred
                 input.reply({ embeds: [alreadyPlayingEmbed] })
@@ -140,11 +140,12 @@ module.exports = async function (input, options = {}) {
         // adding the player into the game
         games.add(inputData.author.id)
 
-        let startingEmbed = new Discord.MessageEmbed()
-            .setAuthor(usertag, avatar)
-            .setTitle(`${await translate("Starting Game...", options.language)}`)
-            .setDescription(`**${await translate("The game will start in a few seconds...", options.language)}**`)
-            .setColor(options.embedColor)
+        let startingEmbed = {
+            title: `${await translate("Starting Game...", options.language)}`,
+            description: `**${await translate("The game will start in a few seconds...", options.language)}**`,
+            color: options.embedColor,
+            author: { name: usertag, iconURL: avatar }
+        }
 
         let startingMessage;
 
@@ -166,20 +167,25 @@ module.exports = async function (input, options = {}) {
         let stepsSinceLastGuess = 0;
         let hasGuessed = false;
 
-        let noResEmbed = new Discord.MessageEmbed()
-            .setAuthor(usertag, avatar)
-            .setTitle(translations.gameEnded)
-            .setDescription(`**${inputData.author.username}, ${translations.gameEndedDesc}**`)
-            .setColor(options.embedColor)
+        let noResEmbed = {
+            title: translations.gameEnded,
+            description: `**${inputData.author.username}, ${translations.gameEndDesc}**`,
+            color: options.embedColor,
+            author: { name: usertag, iconURL: avatar }
+        }
 
-        let akiEmbed = new Discord.MessageEmbed()
-            .setAuthor(usertag, avatar)
-            .setTitle(`${translations.question} ${aki.currentStep + 1}`)
-            .setDescription(`**${translations.progress}: 0%\n${await translate(aki.question, options.language)}**`)
-            .setFooter(translations.stopTip)
-            .setColor(options.embedColor)
+        let akiEmbed = {
+            title: `${translations.question} ${aki.currentStep + 1}`,
+            description: `**${translations.progress}: 0%\n${await translate(aki.question, options.language)}**`,
+            color: options.embedColor,
+            fields: [],
+            author: { name: usertag, iconURL: avatar },
+            footer: { text: translations.stopTip }
+        }
 
-        if (!options.useButtons) akiEmbed.addField(translations.pleaseType, `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**`)
+        if (!options.useButtons) { 
+            akiEmbed.fields.push({ name: translations.pleaseType, value: `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**` }) 
+        }
 
         if (input.user) await input.deleteReply();
         else await startingMessage.delete();
@@ -210,14 +216,18 @@ module.exports = async function (input, options = {}) {
                 stepsSinceLastGuess = 0;
                 hasGuessed = true;
 
-                let guessEmbed = new Discord.MessageEmbed()
-                    .setAuthor(usertag, avatar)
-                    .setTitle(`${await translate(`I'm ${Math.round(aki.progress)}% sure your character is...`, options.language)}`)
-                    .setDescription(`**${aki.answers[0].name}**\n${await translate(aki.answers[0].description, options.language)}\n\n${translations.isThisYourCharacter} ${!options.useButtons ? `**(Type Y/${translations.yes} or N/${translations.no})**` : ""}`)
-                    .addField(translations.ranking, `**#${aki.answers[0].ranking}**`, true)
-                    .addField(translations.noOfQuestions, `**${aki.currentStep}**`, true)
-                    .setImage(aki.answers[0].absolute_picture_path)
-                    .setColor(options.embedColor)
+                let guessEmbed = {
+                    title: `${await translate(`I'm ${Math.round(aki.progress)}% sure your character is...`, options.language)}`,
+                    description: `**${aki.answers[0].name}**\n${await translate(aki.answers[0].description, options.language)}\n\n${translations.isThisYourCharacter} ${!options.useButtons ? `**(Type Y/${translations.yes} or N/${translations.no})**` : ""}`,
+                    color: options.embedColor,
+                    image: { url: aki.answers[0].absolute_picture_path },
+                    author: { name: usertag, iconURL: avatar },
+                    fields: [
+                        { name: translations.ranking, value: `**#${aki.answers[0].ranking}**`, inline: true }, 
+                        { name: translations.noOfQuestions, value: `**${aki.currentStep}**`, inline: true }
+                    ],
+                }
+                    
                 await akiMessage.edit({ embeds: [guessEmbed] });
                 akiMessage.embeds[0] = guessEmbed;
 
@@ -236,14 +246,18 @@ module.exports = async function (input, options = {}) {
 
                         // if they answered yes
                         if (guessAnswer == "y" || guessAnswer == translations.yes.toLowerCase()) {
-                            let finishedGameCorrect = new Discord.MessageEmbed()
-                                .setAuthor(usertag, avatar)
-                                .setTitle(translations.wellPlayed)
-                                .setDescription(`**${inputData.author.username}, ${translations.guessedRightOneMoreTime}**`)
-                                .addField(translations.character, `**${await translate(aki.answers[0].name, options.language)}**`, true)
-                                .addField(translations.ranking, `**#${aki.answers[0].ranking}**`, true)
-                                .addField(translations.noOfQuestions, `**${aki.currentStep}**`, true)
-                                .setColor(options.embedColor)
+                            let finishedGameCorrect = {
+                                title: translations.wellPlayed,
+                                description: `**${inputData.author.username}, ${translations.guessedRightOneMoreTime}**`,
+                                color: options.embedColor,
+                                author: { name: usertag, iconURL: avatar },
+                                fields: [
+                                    { name: translations.character, value: `**${await translate(aki.answers[0].name, options.language)}**`, inline: true },
+                                    { name: translations.ranking, value: `**#${aki.answers[0].ranking}**`, inline: true },
+                                    { name: translations.noOfQuestions, value: `**${aki.currentStep}**`, inline: true }
+                                ]
+                            }
+                                
                             if (options.useButtons) await response.update({ embeds: [finishedGameCorrect], components: [] })
                             else await akiMessage.edit({ embeds: [finishedGameCorrect], components: [] })
                             notFinished = false;
@@ -253,11 +267,13 @@ module.exports = async function (input, options = {}) {
                             // otherwise
                         } else if (guessAnswer == "n" || guessAnswer == translations.no.toLowerCase()) {
                             if (aki.currentStep >= 78) {
-                                let finishedGameDefeated = new Discord.MessageEmbed()
-                                    .setAuthor(usertag, avatar)
-                                    .setTitle(`Well Played!`)
-                                    .setDescription(`**${inputData.author.username}, ${translations.defeated}**`)
-                                    .setColor(options.embedColor)
+                                let finishedGameDefeated = {
+                                    title: "Well Played!",
+                                    description: `**${inputData.author.username}, ${translations.defeated}**`,
+                                    color: options.embedColor,
+                                    author: { name: usertag, iconURL: avatar }
+                                }
+                                    
                                 if (options.useButtons) await response.update({ embeds: [finishedGameDefeated], components: [] })
                                 else await akiMessage.edit({ embeds: [finishedGameDefeated], components: [] })
                                 notFinished = false;
@@ -274,13 +290,16 @@ module.exports = async function (input, options = {}) {
             if (!notFinished) return;
 
             if (aki.currentStep !== 0) {
-                let updatedAkiEmbed = new Discord.MessageEmbed()
-                    .setAuthor(usertag, avatar)
-                    .setTitle(`${translations.question} ${aki.currentStep + 1}`)
-                    .setDescription(`**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, options.language)}**`)
-                    .setFooter(translations.stopTip)
-                    .setColor(options.embedColor)
-                if (!options.useButtons) updatedAkiEmbed.addField(translations.pleaseType, `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**`)
+                let updatedAkiEmbed = {
+                    title: `${translations.question} ${aki.currentStep + 1}`,
+                    description: `**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, options.language)}**`,
+                    color: options.embedColor,
+                    fields: [],
+                    author: { name: usertag, iconURL: avatar },
+                    footer: { text: translations.stopTip }
+                }
+                    
+                if (!options.useButtons) updatedAkiEmbed.fields.push({ name: translations.pleaseType, value: `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**` })
 
                 await akiMessage.edit({ embeds: [updatedAkiEmbed] })
                 akiMessage.embeds[0] = updatedAkiEmbed
@@ -314,13 +333,16 @@ module.exports = async function (input, options = {}) {
                         "probably not": 4,
                     }
 
-                    let thinkingEmbed = new Discord.MessageEmbed()
-                        .setAuthor(usertag, avatar)
-                        .setTitle(`${translations.question} ${aki.currentStep + 1}`)
-                        .setDescription(`**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, options.language)}**`)
-                        .setFooter(translations.thinking)
-                        .setColor(options.embedColor)
-                    if (!options.useButtons) thinkingEmbed.addField(translations.pleaseType, `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**`)
+                    let thinkingEmbed = {
+                        title: `${translations.question} ${aki.currentStep + 1}`,
+                        description: `**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, options.language)}**`,
+                        color: options.embedColor,
+                        fields: [],
+                        author: { name: usertag, iconURL: avatar },
+                        footer: { text: translations.thinking }
+                    }
+                        
+                    if (!options.useButtons) thinkingEmbed.fields.push({ name: translations.pleaseType, value: `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**` })
 
                     if (options.useButtons) await response.update({ embeds: [thinkingEmbed], components: [] })
                     else await akiMessage.edit({ embeds: [thinkingEmbed], components: [] })
@@ -334,11 +356,13 @@ module.exports = async function (input, options = {}) {
                         // stop the game if the user selected to stop
                     } else if (answer == "s" || answer == translations.stop.toLowerCase()) {
                         games.delete(inputData.author.id)
-                        let stopEmbed = new Discord.MessageEmbed()
-                            .setAuthor(usertag, avatar)
-                            .setTitle(translations.gameEnded)
-                            .setDescription(`**${inputData.author.username}, ${translations.gameForceEnd}**`)
-                            .setColor(options.embedColor)
+                        let stopEmbed = {
+                            title: translations.gameEnded,
+                            description: `**${inputData.author.username}, ${translations.gameForceEnd}**`,
+                            color: options.embedColor,
+                            author: { name: usertag, iconURL: avatar }
+                        }
+                            
                         await aki.win()
                         await akiMessage.edit({ embeds: [stopEmbed], components: [] })
                         notFinished = false;
