@@ -31,13 +31,13 @@ module.exports = async function (client, input, botMessage, buttons, time) {
             errorButton = true
             i = 9999
         } else if (i < 3) {
-            buttonRow.push(buttons[i]);
+            buttonRow.components.push(buttons[i]);
         }
         else if (i < 5) {
-            buttonRow2.push(buttons[i])
+            buttonRow2.components.push(buttons[i])
         }
         else {
-            buttonRow3.push(buttons[i])
+            buttonRow3.components.push(buttons[i])
         }
 
     }
