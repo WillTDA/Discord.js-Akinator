@@ -13,13 +13,13 @@ module.exports = async function awaitInput(useButtons, input, botMessage, isGues
     //check if useButtons is true. If so, use buttons.  If not, use text input
     if (useButtons) {
 
-        let yes = { type: 2, label: translations.yes, style: 2, emoji: "✅", custom_id: "✅" }
-        let no = { type: 2, label: translations.no, style: 2, emoji: "❌", custom_id: "❌" }
-        let idk = { type: 2, label: translations.dontKnow, style: 2, emoji: "❓", custom_id: "❓" }
-        let probably = { type: 2, label: translations.probably, style: 2, emoji: "👍", custom_id: "👍" }
-        let probablyNot = { type: 2, label: translations.probablyNot, style: 2, emoji: "👎", custom_id: "👎" }
-        let back = { type: 2, label: translations.back, style: 2, emoji: "⏪", custom_id: "⏪" }
-        let stop = { type: 2, label: translations.stop, style: 4, emoji: "🛑", custom_id: "🛑" }
+        let yes = { type: 2, label: translations.yes, style: 2, emoji: { name: "✅" }, custom_id: "✅" }
+        let no = { type: 2, label: translations.no, style: 2, emoji: { name: "❌" }, custom_id: "❌" }
+        let idk = { type: 2, label: translations.dontKnow, style: 2, emoji: { name: "❓" }, custom_id: "❓" }
+        let probably = { type: 2, label: translations.probably, style: 2, emoji: { name: "👍" }, custom_id: "👍" }
+        let probablyNot = { type: 2, label: translations.probablyNot, style: 2, emoji: { name: "👎" }, custom_id: "👎" }
+        let back = { type: 2, label: translations.back, style: 2, emoji: { name: "⏪" }, custom_id: "⏪" }
+        let stop = { type: 2, label: translations.stop, style: 4, emoji: { name: "🛑" }, custom_id: "🛑" }
 
         let answerTypes = [];
 
