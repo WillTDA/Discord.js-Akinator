@@ -54,10 +54,9 @@ module.exports = async function (client, input, botMessage, buttons, time) {
 
     let selection;
 
-    await botMessage.channel.awaitMessageComponent({
+    await botMessage.awaitMessageComponent({
         filter: filter,
-        time: 60000,
-        componentType: "BUTTON"
+        time: 60000
     })
         .then(async (i) => {
             selection = i;
