@@ -13,47 +13,13 @@ module.exports = async function awaitInput(useButtons, input, botMessage, isGues
     //check if useButtons is true. If so, use buttons.  If not, use text input
     if (useButtons) {
 
-        let yes = new Discord.MessageButton()
-            .setLabel(translations.yes)
-            .setStyle("SECONDARY")
-            .setEmoji("✅")
-            .setCustomId("✅")
-
-        let no = new Discord.MessageButton()
-            .setLabel(translations.no)
-            .setStyle("SECONDARY")
-            .setEmoji("❌")
-            .setCustomId("❌")
-
-        let idk = new Discord.MessageButton()
-            .setLabel(translations.dontKnow)
-            .setStyle("SECONDARY")
-            .setEmoji("❓")
-            .setCustomId("❓")
-
-        let probably = new Discord.MessageButton()
-            .setLabel(translations.probably)
-            .setStyle("SECONDARY")
-            .setEmoji("👍")
-            .setCustomId("👍")
-
-        let probablyNot = new Discord.MessageButton()
-            .setLabel(translations.probablyNot)
-            .setStyle("SECONDARY")
-            .setEmoji("👎")
-            .setCustomId("👎")
-
-        let back = new Discord.MessageButton()
-            .setLabel(translations.back)
-            .setStyle("SECONDARY")
-            .setEmoji("⏪")
-            .setCustomId("⏪")
-
-        let stop = new Discord.MessageButton()
-            .setLabel(translations.stop)
-            .setStyle("DANGER")
-            .setEmoji("🛑")
-            .setCustomId("🛑")
+        let yes = { type: 2, label: translations.yes, style: 2, emoji: "✅", custom_id: "✅" }
+        let no = { type: 2, label: translations.no, style: 2, emoji: "❌", custom_id: "❌" }
+        let idk = { type: 2, label: translations.dontKnow, style: 2, emoji: "❓", custom_id: "❓" }
+        let probably = { type: 2, label: translations.probably, style: 2, emoji: "👍", custom_id: "👍" }
+        let probablyNot = { type: 2, label: translations.probablyNot, style: 2, emoji: "👎", custom_id: "👎" }
+        let back = { type: 2, label: translations.back, style: 2, emoji: "⏪", custom_id: "⏪" }
+        let stop = { type: 2, label: translations.stop, style: 4, emoji: "🛑", custom_id: "🛑" }
 
         let answerTypes = [];
 
