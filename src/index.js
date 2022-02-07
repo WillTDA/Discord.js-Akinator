@@ -343,7 +343,8 @@ module.exports = async function (input, options = {}) {
         attemptingGuess.delete(inputData.guild.id)
         if (e == "DiscordAPIError: Unknown Message") return;
         else if (e == "DiscordAPIError: Cannot send an empty message") return console.log("Discord.js Akinator Error: Discord.js v13 or Higher is Required.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
+        
         console.log("Discord.js Akinator Error:")
-        console.log(e);
+        throw new Error(e);
     }
 }
