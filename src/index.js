@@ -208,6 +208,7 @@ module.exports = async function (input, options = {}) {
                             akiMessage.edit({ embeds: [noResEmbed], components: [] })
                             return;
                         }
+                        await response.deferUpdate()
                         let reply = getButtonReply(response) || response
                         const guessAnswer = reply.toLowerCase();
 
@@ -227,7 +228,7 @@ module.exports = async function (input, options = {}) {
                                 ]
                             }
                                 
-                            if (options.useButtons) await response.update({ embeds: [finishedGameCorrect], components: [] })
+                            if (options.useButtons) await response.editReply({ embeds: [finishedGameCorrect], components: [] })
                             else await akiMessage.edit({ embeds: [finishedGameCorrect], components: [] })
                             notFinished = false;
                             return;
@@ -242,11 +243,11 @@ module.exports = async function (input, options = {}) {
                                     author: { name: usertag, iconURL: avatar }
                                 }
                                     
-                                if (options.useButtons) await response.update({ embeds: [finishedGameDefeated], components: [] })
+                                if (options.useButtons) await response.editReply({ embeds: [finishedGameDefeated], components: [] })
                                 else await akiMessage.edit({ embeds: [finishedGameDefeated], components: [] })
                                 notFinished = false;
                             } else {
-                                if (options.useButtons) await response.update({ embeds: [guessEmbed], components: [] })
+                                if (options.useButtons) await response.editReply({ embeds: [guessEmbed], components: [] })
                                 else await akiMessage.edit({ embeds: [guessEmbed], components: [] })
                                 aki.progress = 50
                             }
@@ -279,6 +280,7 @@ module.exports = async function (input, options = {}) {
                         notFinished = false;
                         return akiMessage.edit({ embeds: [noResEmbed], components: [] })
                     }
+                    await response.deferUpdate()
                     let reply = getButtonReply(response) || response
                     const answer = reply.toLowerCase();
 
@@ -310,7 +312,7 @@ module.exports = async function (input, options = {}) {
                         
                     if (!options.useButtons) thinkingEmbed.fields.push({ name: translations.pleaseType, value: `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**` })
 
-                    if (options.useButtons) await response.update({ embeds: [thinkingEmbed], components: [] })
+                    if (options.useButtons) await response.editReply({ embeds: [thinkingEmbed], components: [] })
                     else await akiMessage.edit({ embeds: [thinkingEmbed], components: [] })
                     akiMessage.embeds[0] = thinkingEmbed
 
