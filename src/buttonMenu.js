@@ -1,5 +1,4 @@
 const Discord = require("discord.js");
-const { MessageButton, MessageActionRow } = require("discord.js");
 
 /**
  * @param {Discord.Client} client The Discord Client.
@@ -17,20 +16,20 @@ module.exports = async function (client, input, botMessage, buttons, time) {
     if (!buttons) return console.log("Button Menu Error: No Buttons Provided!")
     if (!time) return console.log("Button Menu Error: No Time Provided!")
     
-    let buttonRow = new MessageActionRow()
-    let buttonRow2 = new MessageActionRow()
-    let buttonRow3 = new MessageActionRow()
+    let buttonRow = { type: 1, components: [] }
+    let buttonRow2 = { type: 1, components: [] }
+    let buttonRow3 = { type: 1, components: [] }
     let buttonRows = []
 
     for (let i = 0; i < buttons.length; i++) {
         if (i < 3) {
-            buttonRow.addComponents(buttons[i]);
+            buttonRow.components.push(buttons[i]);
         }
         else if (i < 5) {
-            buttonRow2.addComponents(buttons[i])
+            buttonRow2.components.push(buttons[i])
         }
         else {
-            buttonRow3.addComponents(buttons[i])
+            buttonRow3.components.push(buttons[i])
         }
 
     }
@@ -45,10 +44,9 @@ module.exports = async function (client, input, botMessage, buttons, time) {
 
     let selection;
 
-    await botMessage.channel.awaitMessageComponent({
+    await botMessage.awaitMessageComponent({
         filter: filter,
         time: 60000,
-        componentType: "BUTTON"
     })
         .then(async (i) => {
             selection = i;
