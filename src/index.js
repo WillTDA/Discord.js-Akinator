@@ -94,7 +94,9 @@ module.exports = async function (input, options = {}) {
         options.childMode = options.childMode || false;
         options.gameType = options.gameType || "character";
         options.useButtons = options.useButtons || false;
-        options.embedColor = options.embedColor || "RANDOM";
+        options.embedColor = Discord.Util.resolveColor(options.embedColor || "RANDOM")
+        
+        
 
         options.language = options.language.toLowerCase();
         options.gameType = options.gameType.toLowerCase();
