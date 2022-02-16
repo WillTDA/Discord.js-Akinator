@@ -40,7 +40,14 @@ module.exports = async function (client, input, botMessage, buttons, time) {
 
     botMessage = await botMessage.edit({ embeds: [botMessage.embeds[0]], components: buttonRows });
     // create our collector
-    const filter = (i) => i.user == input.author.id;
+    const filter = (i) => { 
+        if (i.user == input.author.id) {
+            return true;
+        } else {
+            i.deferUpdate();
+            return false
+        }
+    }
 
     let selection;
 
