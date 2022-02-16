@@ -211,7 +211,7 @@ module.exports = async function (input, options = {}) {
                             akiMessage.edit({ embeds: [noResEmbed], components: [] })
                             return;
                         }
-                        await response.deferUpdate()
+                        if (options.useButtons !== false) await response.deferUpdate()
                         let reply = getButtonReply(response) || response
                         const guessAnswer = reply.toLowerCase();
 
@@ -283,7 +283,7 @@ module.exports = async function (input, options = {}) {
                         notFinished = false;
                         return akiMessage.edit({ embeds: [noResEmbed], components: [] })
                     }
-                    await response.deferUpdate()
+                    if (options.useButtons !== false) await response.deferUpdate()
                     let reply = getButtonReply(response) || response
                     const answer = reply.toLowerCase();
 
