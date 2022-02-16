@@ -4,7 +4,7 @@ const Discord = require("discord.js");
  * @param {Discord.Client} client The Discord Client.
  * @param {any} input The Message Sent by the User.
  * @param {Discord.Message} botMessage The Message for the Bot to Send, also the message which will contain the buttons (Max. 8). MUST BE AN EMBED!
- * @param {MessageButton[]} buttons An Array of Buttons.
+ * @param {Discord.MessageButton[]} buttons An Array of Buttons.
  * @param {Number} time Time in Milliseconds the Menu should last for.
  */
 
