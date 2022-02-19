@@ -3,6 +3,7 @@ const fs = require("fs");
 const translate = require("./translate");
 const awaitInput = require("./input");
 const attemptingGuess = new Set();
+const Discord = require("discord.js")
 
 // this simply gets the user's reply from a button interaction (that is, if the user has chosen to enable buttons)
 function getButtonReply(interaction) {
@@ -93,7 +94,9 @@ module.exports = async function (input, options = {}) {
         options.childMode = options.childMode || false;
         options.gameType = options.gameType || "character";
         options.useButtons = options.useButtons || false;
-        options.embedColor = options.embedColor || "RANDOM";
+        options.embedColor = Discord.Util.resolveColor(options.embedColor || "RANDOM")
+        
+        
 
         options.language = options.language.toLowerCase();
         options.gameType = options.gameType.toLowerCase();
@@ -125,7 +128,7 @@ module.exports = async function (input, options = {}) {
             title: `${await translate("Starting Game...", options.language)}`,
             description: `**${await translate("The game will start in a few seconds...", options.language)}**`,
             color: options.embedColor,
-            author: { name: usertag, iconURL: avatar }
+            author: { name: usertag, icon_url: avatar }
         }
 
         let startingMessage;
@@ -152,7 +155,7 @@ module.exports = async function (input, options = {}) {
             title: translations.gameEnded,
             description: `**${inputData.author.username}, ${translations.gameEndDesc}**`,
             color: options.embedColor,
-            author: { name: usertag, iconURL: avatar }
+            author: { name: usertag, icon_url: avatar }
         }
 
         let akiEmbed = {
@@ -160,7 +163,7 @@ module.exports = async function (input, options = {}) {
             description: `**${translations.progress}: 0%\n${await translate(aki.question, options.language)}**`,
             color: options.embedColor,
             fields: [],
-            author: { name: usertag, iconURL: avatar },
+            author: { name: usertag, icon_url: avatar },
             footer: { text: translations.stopTip }
         }
 
@@ -191,7 +194,7 @@ module.exports = async function (input, options = {}) {
                     description: `**${aki.answers[0].name}**\n${await translate(aki.answers[0].description, options.language)}\n\n${translations.isThisYourCharacter} ${!options.useButtons ? `**(Type Y/${translations.yes} or N/${translations.no})**` : ""}`,
                     color: options.embedColor,
                     image: { url: aki.answers[0].absolute_picture_path },
-                    author: { name: usertag, iconURL: avatar },
+                    author: { name: usertag, icon_url: avatar },
                     fields: [
                         { name: translations.ranking, value: `**#${aki.answers[0].ranking}**`, inline: true }, 
                         { name: translations.noOfQuestions, value: `**${aki.currentStep}**`, inline: true }
@@ -208,6 +211,7 @@ module.exports = async function (input, options = {}) {
                             akiMessage.edit({ embeds: [noResEmbed], components: [] })
                             return;
                         }
+                        if (options.useButtons !== false) await response.deferUpdate()
                         let reply = getButtonReply(response) || response
                         const guessAnswer = reply.toLowerCase();
 
@@ -219,7 +223,7 @@ module.exports = async function (input, options = {}) {
                                 title: translations.wellPlayed,
                                 description: `**${inputData.author.username}, ${translations.guessedRightOneMoreTime}**`,
                                 color: options.embedColor,
-                                author: { name: usertag, iconURL: avatar },
+                                author: { name: usertag, icon_url: avatar },
                                 fields: [
                                     { name: translations.character, value: `**${await translate(aki.answers[0].name, options.language)}**`, inline: true },
                                     { name: translations.ranking, value: `**#${aki.answers[0].ranking}**`, inline: true },
@@ -227,7 +231,7 @@ module.exports = async function (input, options = {}) {
                                 ]
                             }
                                 
-                            if (options.useButtons) await response.update({ embeds: [finishedGameCorrect], components: [] })
+                            if (options.useButtons) await response.editReply({ embeds: [finishedGameCorrect], components: [] })
                             else await akiMessage.edit({ embeds: [finishedGameCorrect], components: [] })
                             notFinished = false;
                             return;
@@ -239,14 +243,14 @@ module.exports = async function (input, options = {}) {
                                     title: "Well Played!",
                                     description: `**${inputData.author.username}, ${translations.defeated}**`,
                                     color: options.embedColor,
-                                    author: { name: usertag, iconURL: avatar }
+                                    author: { name: usertag, icon_url: avatar }
                                 }
                                     
-                                if (options.useButtons) await response.update({ embeds: [finishedGameDefeated], components: [] })
+                                if (options.useButtons) await response.editReply({ embeds: [finishedGameDefeated], components: [] })
                                 else await akiMessage.edit({ embeds: [finishedGameDefeated], components: [] })
                                 notFinished = false;
                             } else {
-                                if (options.useButtons) await response.update({ embeds: [guessEmbed], components: [] })
+                                if (options.useButtons) await response.editReply({ embeds: [guessEmbed], components: [] })
                                 else await akiMessage.edit({ embeds: [guessEmbed], components: [] })
                                 aki.progress = 50
                             }
@@ -262,7 +266,7 @@ module.exports = async function (input, options = {}) {
                     description: `**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, options.language)}**`,
                     color: options.embedColor,
                     fields: [],
-                    author: { name: usertag, iconURL: avatar },
+                    author: { name: usertag, icon_url: avatar },
                     footer: { text: translations.stopTip }
                 }
                     
@@ -279,6 +283,7 @@ module.exports = async function (input, options = {}) {
                         notFinished = false;
                         return akiMessage.edit({ embeds: [noResEmbed], components: [] })
                     }
+                    if (options.useButtons !== false) await response.deferUpdate()
                     let reply = getButtonReply(response) || response
                     const answer = reply.toLowerCase();
 
@@ -304,13 +309,13 @@ module.exports = async function (input, options = {}) {
                         description: `**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, options.language)}**`,
                         color: options.embedColor,
                         fields: [],
-                        author: { name: usertag, iconURL: avatar },
+                        author: { name: usertag, icon_url: avatar },
                         footer: { text: translations.thinking }
                     }
                         
                     if (!options.useButtons) thinkingEmbed.fields.push({ name: translations.pleaseType, value: `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**` })
 
-                    if (options.useButtons) await response.update({ embeds: [thinkingEmbed], components: [] })
+                    if (options.useButtons) await response.editReply({ embeds: [thinkingEmbed], components: [] })
                     else await akiMessage.edit({ embeds: [thinkingEmbed], components: [] })
                     akiMessage.embeds[0] = thinkingEmbed
 
@@ -325,7 +330,7 @@ module.exports = async function (input, options = {}) {
                             title: translations.gameEnded,
                             description: `**${inputData.author.username}, ${translations.gameForceEnd}**`,
                             color: options.embedColor,
-                            author: { name: usertag, iconURL: avatar }
+                            author: { name: usertag, icon_url: avatar }
                         }
                             
                         await aki.win()
