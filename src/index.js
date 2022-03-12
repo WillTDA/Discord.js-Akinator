@@ -175,6 +175,7 @@ module.exports = async function (input, options = {}) {
         else await startingMessage.delete();
 
         let akiMessage = await inputData.channel.send({ embeds: [akiEmbed] });
+        let updatedAkiEmbed = akiMessage.embeds[0];
 
         // repeat while the game is not finished
         while (notFinished) {
@@ -260,8 +261,8 @@ module.exports = async function (input, options = {}) {
 
             if (!notFinished) return;
 
-            if (aki.currentStep !== 0) {
-                let updatedAkiEmbed = {
+            if (updatedAkiEmbed !== akiMessage.embeds[0]) {
+                updatedAkiEmbed = {
                     title: `${translations.question} ${aki.currentStep + 1}`,
                     description: `**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, options.language)}**`,
                     color: options.embedColor,
