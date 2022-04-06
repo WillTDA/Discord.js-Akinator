@@ -153,7 +153,7 @@ module.exports = async function (input, options = {}) {
 
         let noResEmbed = {
             title: translations.gameEnded,
-            description: `**${inputData.author.username}, ${translations.gameEndDesc}**`,
+            description: `**${inputData.author.username}, ${translations.gameEndedDesc}**`,
             color: options.embedColor,
             author: { name: usertag, icon_url: avatar }
         }
