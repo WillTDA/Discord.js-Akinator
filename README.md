@@ -80,4 +80,4 @@ client.login("Discord Bot Token")
 
 - 👋 Need Help? [Join Our Discord Server](https://discord.gg/P2g24jp)!
 
-- 👾 Found a Bug, or Inaccurate Translations? [Open an Issue](https://github.com/WillTDA/Discord.js-Akinator-Package-Dev/issues), or Fork and [Submit a Pull Request](https://github.com/WillTDA/Discord.js-Akinator-Package-Dev/pulls) on our [GitHub Repository](https://github.com/WillTDA/Discord.js-Akinator-Package-Dev)!
+- 👾 Found a Bug, or Inaccurate Translations? [Open an Issue](https://github.com/WillTDA/Discord.js-Akinator/issues), or Fork and [Submit a Pull Request](https://github.com/WillTDA/Discord.js-Akinator/pulls) on our [GitHub Repository](https://github.com/WillTDA/Discord.js-Akinator)!
