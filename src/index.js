@@ -46,7 +46,7 @@ function getButtonReply(interaction) {
     * - `useButtons` - Whether to use Discord's Buttons.
     * - `embedColor` - The Color of the Message Embeds.
     * 
-    * @param {Discord.Message | Discord.CommandInteraction} input The Message Sent by the User.
+    * @param {Discord.Message | Discord.CommandInteraction} input The Message or Slash Command Sent by the User.
     * @param {object} options The Options for the Game.
     * @param {string} [options.language="en"] The Language of the Game. Defaults to "en".
     * @param {boolean} [options.childMode=false] Whether to use Akinator's Child Mode. Defaults to "false".
