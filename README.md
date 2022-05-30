@@ -18,7 +18,9 @@ A Discord.js v13 Module that allows you to Create an Akinator Command for Your D
 
 - 🙋 <b>Child Mode!</b> | Want to filter out NSFW questions? You can choose to enable Akinator's Child Mode to keep your games squeaky clean!
 
-- ⚡️ <b>Quick & Easy Setup</b> | This package was built with the intentions of working out-of-the-box. Only one parameter is required at least!
+- ⚡️ <b>Quick & Easy Setup!</b> | This package was built with the intentions of working out-of-the-box. Only one parameter is required at least!
+
+- 🤖 <b>Slash Command & Message Support!</b> | No matter how your bot receives its commands, you can simply pass in a `CommandInteraction` or `Message` and it will work!
 
 ## Install Package
 
