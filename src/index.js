@@ -164,7 +164,7 @@ module.exports = async function (input, options = {}) {
             color: options.embedColor,
             fields: [],
             author: { name: usertag, icon_url: avatar },
-            footer: { text: translations.stopTip }
+            footer: { text: !input.user ? translations.stopTip : "" }
         }
 
         if (!options.useButtons) { 
@@ -268,7 +268,7 @@ module.exports = async function (input, options = {}) {
                     color: options.embedColor,
                     fields: [],
                     author: { name: usertag, icon_url: avatar },
-                    footer: { text: translations.stopTip }
+                    footer: { text: !input.user ? translations.stopTip : "" }
                 }
                     
                 if (!options.useButtons) updatedAkiEmbed.fields.push({ name: translations.pleaseType, value: `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**` })
