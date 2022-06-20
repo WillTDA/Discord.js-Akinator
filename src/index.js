@@ -95,8 +95,8 @@ module.exports = async function (input, options = {}) {
         options.gameType = options.gameType || "character";
         options.useButtons = options.useButtons || false;
         options.embedColor = Discord.Util.resolveColor(options.embedColor || "RANDOM")
-        
-        
+
+
 
         options.language = options.language.toLowerCase();
         options.gameType = options.gameType.toLowerCase();
@@ -107,12 +107,12 @@ module.exports = async function (input, options = {}) {
         if (!input.guild) return console.log("Discord.js Akinator Error: Cannot be used in Direct Messages.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
         if (!fs.existsSync(`${__dirname}/translations/${options.language}.json`)) return console.log(`Discord.js Akinator Error: Language "${options.language}" Not Found. Examples are: "en" or "fr" or "es".\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'`);
         if (!["animal", "character", "object"].includes(options.gameType)) return console.log(`Discord.js Akinator Error: Game Type "${options.gameType}" Not Found. Choose from: "animal", "character" or "object".\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'`);
-        
+
         try {
             inputData.client = input.client,
-            inputData.guild = input.guild,
-            inputData.author = input.author ? input.author : input.user,
-            inputData.channel = input.channel
+                inputData.guild = input.guild,
+                inputData.author = input.author ? input.author : input.user,
+                inputData.channel = input.channel
         } catch {
             return console.log("Discord.js Akinator Error: Failed to Parse Input for Use.\nJoin Our Discord Server for Support at 'https://discord.gg/P2g24jp'");
         }
@@ -163,12 +163,12 @@ module.exports = async function (input, options = {}) {
             description: `**${translations.progress}: 0%\n${await translate(aki.question, options.language)}**`,
             color: options.embedColor,
             fields: [],
-            author: { name: usertag, icon_url: avatar },
-            footer: { text: translations.stopTip }
+            author: { name: usertag, icon_url: avatar }
         }
 
-        if (!options.useButtons) { 
-            akiEmbed.fields.push({ name: translations.pleaseType, value: `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**` }) 
+        if (!options.useButtons) {
+            akiEmbed.footer = { text: translations.stopTip }
+            akiEmbed.fields.push({ name: translations.pleaseType, value: `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**` })
         }
 
         if (input.user) await input.deleteReply();
@@ -197,11 +197,11 @@ module.exports = async function (input, options = {}) {
                     image: { url: aki.answers[0].absolute_picture_path },
                     author: { name: usertag, icon_url: avatar },
                     fields: [
-                        { name: translations.ranking, value: `**#${aki.answers[0].ranking}**`, inline: true }, 
+                        { name: translations.ranking, value: `**#${aki.answers[0].ranking}**`, inline: true },
                         { name: translations.noOfQuestions, value: `**${aki.currentStep}**`, inline: true }
                     ],
                 }
-                    
+
                 await akiMessage.edit({ embeds: [guessEmbed] });
                 akiMessage.embeds[0] = guessEmbed;
 
@@ -231,7 +231,7 @@ module.exports = async function (input, options = {}) {
                                     { name: translations.noOfQuestions, value: `**${aki.currentStep}**`, inline: true }
                                 ]
                             }
-                                
+
                             if (options.useButtons) await response.editReply({ embeds: [finishedGameCorrect], components: [] })
                             else await akiMessage.edit({ embeds: [finishedGameCorrect], components: [] })
                             notFinished = false;
@@ -246,7 +246,7 @@ module.exports = async function (input, options = {}) {
                                     color: options.embedColor,
                                     author: { name: usertag, icon_url: avatar }
                                 }
-                                    
+
                                 if (options.useButtons) await response.editReply({ embeds: [finishedGameDefeated], components: [] })
                                 else await akiMessage.edit({ embeds: [finishedGameDefeated], components: [] })
                                 notFinished = false;
@@ -267,12 +267,13 @@ module.exports = async function (input, options = {}) {
                     description: `**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, options.language)}**`,
                     color: options.embedColor,
                     fields: [],
-                    author: { name: usertag, icon_url: avatar },
-                    footer: { text: translations.stopTip }
+                    author: { name: usertag, icon_url: avatar }
                 }
-                    
-                if (!options.useButtons) updatedAkiEmbed.fields.push({ name: translations.pleaseType, value: `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**` })
 
+                if (!options.useButtons) {
+                    updatedAkiEmbed.footer = { text: translations.stopTip }
+                    updatedAkiEmbed.fields.push({ name: translations.pleaseType, value: `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**` })
+                }
                 await akiMessage.edit({ embeds: [updatedAkiEmbed] })
                 akiMessage.embeds[0] = updatedAkiEmbed
             }
@@ -313,7 +314,7 @@ module.exports = async function (input, options = {}) {
                         author: { name: usertag, icon_url: avatar },
                         footer: { text: translations.thinking }
                     }
-                        
+
                     if (!options.useButtons) thinkingEmbed.fields.push({ name: translations.pleaseType, value: `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**` })
 
                     if (options.useButtons) await response.editReply({ embeds: [thinkingEmbed], components: [] })
@@ -333,7 +334,7 @@ module.exports = async function (input, options = {}) {
                             color: options.embedColor,
                             author: { name: usertag, icon_url: avatar }
                         }
-                            
+
                         await aki.win()
                         await akiMessage.edit({ embeds: [stopEmbed], components: [] })
                         notFinished = false;
@@ -349,7 +350,7 @@ module.exports = async function (input, options = {}) {
         attemptingGuess.delete(inputData.guild.id)
         if (e == "DiscordAPIError: Unknown Message") return;
         else if (e == "DiscordAPIError: Cannot send an empty message") return console.log("Discord.js Akinator Error: Discord.js v13 or Higher is Required.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
-        
+
         console.log("Discord.js Akinator Error:")
         throw new Error(e);
     }
