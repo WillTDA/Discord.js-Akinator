@@ -2,7 +2,7 @@
     🔮 Discord.js Akinator 🔮
 </h1>
 
-A Discord.js v13 Module that allows you to Create an Akinator Command for Your Discord Bot within Seconds of Installation.
+A Discord.js v13 or Discord.js v14 Module that allows you to Create an Akinator Command for Your Discord Bot within Seconds of Installation.
 
 [![NPM](https://nodei.co/npm/discord.js-akinator.png)](https://npmjs.com/package/discord.js-akinator)
 
@@ -28,9 +28,9 @@ Let's take a look at how you can install this package into your Discord Bot Proj
 
 `npm i discord.js-akinator --save`
 
-For versions 3.0.0 and Above, you'll also need discord.js v13. This can easily be installed with:
+Version 3.0.0 or later requires discord.js v13 or v14. This can be easily installed in the following way: 
 
-`npm i discord.js@13 --save`
+`npm i discord.js@13 --save`　or `npm i discord.js@dev --save`
 
 For versions earlier than 3.0.0, you'll need discord.js v12. However it is recommended you update to patch bugs and security vulnerabilities, as well as get the newest features from this package!
 
@@ -38,6 +38,7 @@ For versions earlier than 3.0.0, you'll need discord.js v12. However it is recom
 
 ## Example Code
 
+v13
 ```js
 const { Client, Intents } = require("discord.js");
 const akinator = require("discord.js-akinator");
@@ -72,6 +73,41 @@ client.on("messageCreate", async message => {
 client.login("Discord Bot Token")
 ```
 
+v14
+
+```js
+const { Client, IntentsBitField } = require("discord.js");
+const akinator = require("discord.js-akinator");
+const client = new Client({ intents: [IntentsBitField.Flags.GUILDS, IntentsBitField.Flags.GUILD_MESSAGES] });
+
+client.on("ready", () => {
+    console.log("Bot is Online")
+});
+
+const PREFIX = "!";
+
+//Example options
+
+const language = "en"; //The Language of the Game
+const childMode = false; //Whether to use Akinator's Child Mode
+const gameType = "character"; //The Type of Akinator Game to Play. ("animal", "character" or "object")
+const useButtons = true; //Whether to use Discord's Buttons
+const embedColor = "#1F1E33"; //The Color of the Message Embeds
+
+client.on("messageCreate", async message => {
+    if(message.content.startsWith(`${PREFIX}akinator`)) {
+        akinator(message, {
+            language: language, //Defaults to "en"
+            childMode: childMode, //Defaults to "false"
+            gameType: gameType, //Defaults to "character"
+            useButtons: useButtons, //Defaults to "false"
+            embedColor: embedColor //Defaults to "RANDOM"
+        });
+    }
+});
+
+client.login("Discord Bot Token")
+```
 ## Contributors
 
 - [ChaosArising (Josh_#9733)](https://github.com/ChaosArising) (Providing compatibility for Discord.js v13)
