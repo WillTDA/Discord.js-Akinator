@@ -78,7 +78,7 @@ v14
 ```js
 const { Client, IntentsBitField } = require("discord.js");
 const akinator = require("discord.js-akinator");
-const client = new Client({ intents: [IntentsBitField.Flags.GUILDS, IntentsBitField.Flags.GUILD_MESSAGES] });
+const client = new Client({ intents: [IntentsBitField.Flags.Guilds, IntentsBitField.Flags.GuildMessages] });
 
 client.on("ready", () => {
     console.log("Bot is Online")
