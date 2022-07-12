@@ -1,7 +1,7 @@
 {
   "name": "discord.js-akinator",
   "version": "3.4.5",
-  "description": "A Discord.js v13 Module that allows you to Create an Akinator Command for Your Discord Bot within Seconds of Installation.",
+  "description": "A Discord.js v13 or Discord.js v14 Module that allows you to Create an Akinator Command for Your Discord Bot within Seconds of Installation.",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
