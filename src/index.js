@@ -36,7 +36,7 @@ function getButtonReply(interaction) {
 /**
     * Play a Game of Akinator.
     * 
-    * Simply pass in the Discord `Message` or `CommandInteraction` Sent by the User to Setup the Game.
+    * Simply pass in the Discord `Message` or `CommandInteraction` sent by the user to this function to start the game.
     * 
     * __Game Options__
     * 
@@ -54,39 +54,12 @@ function getButtonReply(interaction) {
     * @param {boolean} [options.useButtons=false] Whether to use Discord's Buttons. Defaults to "false".
     * @param {Discord.ColorResolvable} [options.embedColor="RANDOM"] The Color of the Message Embeds. Defaults to "RANDOM".
     * @returns {Promise<Discord.Message>} Discord.js Akinator Game
-    * @example
-    * const { Client, Intents } = require("discord.js");
-    * const akinator = require("discord.js-akinator");
-    * const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_MESSAGES] });
-    *
-    * client.on("ready", () => {
-    *     console.log("Bot is Online")
-    * });
-    * 
-    * const PREFIX = "!";
-    * 
-    * //Example options
-    * 
-    * const language = "en"; //The Language of the Game
-    * const childMode = false; //Whether to use Akinator's Child Mode
-    * const gameType = "character"; //The Type of Akinator Game to Play. ("animal", "character" or "object")
-    * const useButtons = true; //Whether to use Discord's Buttons
-    * const embedColor = "#1F1E33"; //The Color of the Message Embeds
-    * 
-    * client.on("messageCreate", async message => {
-    *     if(message.content.startsWith(`${PREFIX}akinator`)) {
-    *         akinator(message, {
-    *             language: language, //Defaults to "en"
-    *             childMode: childMode, //Defaults to "false"
-    *             gameType: gameType, //Defaults to "character"
-    *             useButtons: useButtons, //Defaults to "false"
-    *             embedColor: embedColor //Defaults to "RANDOM"
-    *         });
-    *     }
-    * });
-*/
+    */
 
 module.exports = async function (input, options = {}) {
+    // check discord.js version
+    if (Discord.version.split(".")[0] < 14) return console.log("Discord.js Akinator Error: Discord.js v14 or Higher is Required.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
+
     let inputData = {};
     try {
         // configuring game options if not specified
@@ -94,7 +67,7 @@ module.exports = async function (input, options = {}) {
         options.childMode = options.childMode || false;
         options.gameType = options.gameType || "character";
         options.useButtons = options.useButtons || false;
-        options.embedColor = Discord.Util.resolveColor(options.embedColor || "RANDOM")
+        options.embedColor = Discord.resolveColor(options.embedColor || "RANDOM");
 
 
 
@@ -349,8 +322,6 @@ module.exports = async function (input, options = {}) {
         // log any errors that come
         attemptingGuess.delete(inputData.guild.id)
         if (e == "DiscordAPIError: Unknown Message") return;
-        else if (e == "DiscordAPIError: Cannot send an empty message") return console.log("Discord.js Akinator Error: Discord.js v13 or Higher is Required.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
-
         console.log("Discord.js Akinator Error:")
         throw new Error(e);
     }
