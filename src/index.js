@@ -94,8 +94,8 @@ module.exports = async function (input, options = {}) {
         attemptingGuess.delete(inputData.guild.id);
 
         // defining for easy use
-        let usertag = inputData.author.tag
-        let avatar = inputData.author.displayAvatarURL()
+        let usertag = inputData.author.tag;
+        let avatar = inputData.author.displayAvatarURL({ dynamic: true });
 
         let startingEmbed = {
             title: `${await translate("Starting Game...", options.language)}`,
@@ -106,10 +106,14 @@ module.exports = async function (input, options = {}) {
 
         let startingMessage;
 
-        if ((input.commandName) && (!input.replied) && (!input.deferred)) { // check if it's a slash command and hasn't been replied or deferred
-            startingMessage = await input.reply({ embeds: [startingEmbed] })
+        if ((input.commandName !== undefined) && (!input.replied) && (!input.deferred)) { // check if it's a slash command and hasn't been replied or deferred
+            await input.deferReply();
+            startingMessage = await input.editReply({ embeds: [startingEmbed] })
         } else {
-            startingMessage = await input.channel.send({ embeds: [startingEmbed] })
+            if (input.commandName !== undefined) { //check if it's a slash command
+                startingMessage = await input.editReply({ embeds: [startingEmbed] })
+            }
+            else { startingMessage = await input.channel.send({ embeds: [startingEmbed] }) } // else, the input is a message
         }
 
         // get translation object for the language
@@ -144,10 +148,12 @@ module.exports = async function (input, options = {}) {
             akiEmbed.fields.push({ name: translations.pleaseType, value: `**Y** or **${translations.yes}**\n**N** or **${translations.no}**\n**I** or **IDK**\n**P** or **${translations.probably}**\n**PN** or **${translations.probablyNot}**\n**B** or **${translations.back}**` })
         }
 
-        if (input.user) await input.deleteReply();
-        else await startingMessage.delete();
+        let akiMessage;
 
-        let akiMessage = await inputData.channel.send({ embeds: [akiEmbed] });
+        if (input.commandName !== undefined) { //check if it's a slash command
+            akiMessage = await input.editReply({ embeds: [akiEmbed] })
+        } else { akiMessage = await startingMessage.edit({ embeds: [akiEmbed] }); } // else, the input is a message
+
         let updatedAkiEmbed = akiMessage.embeds[0];
 
         // repeat while the game is not finished
@@ -199,7 +205,7 @@ module.exports = async function (input, options = {}) {
                                 color: options.embedColor,
                                 author: { name: usertag, icon_url: avatar },
                                 fields: [
-                                    { name: translations.character, value: `**${await translate(aki.answers[0].name, options.language)}**`, inline: true },
+                                    { name: translations.character, value: `**${aki.answers[0].name}**`, inline: true },
                                     { name: translations.ranking, value: `**#${aki.answers[0].ranking}**`, inline: true },
                                     { name: translations.noOfQuestions, value: `**${aki.currentStep}**`, inline: true }
                                 ]
@@ -323,6 +329,6 @@ module.exports = async function (input, options = {}) {
         attemptingGuess.delete(inputData.guild.id)
         if (e == "DiscordAPIError: Unknown Message") return;
         console.log("Discord.js Akinator Error:")
-        throw new Error(e);
+        console.log(e);
     }
 }

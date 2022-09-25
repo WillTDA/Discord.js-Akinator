@@ -26,10 +26,10 @@ module.exports = async function (client, input, botMessage, buttons, time) {
             buttonRow.components.push(buttons[i]);
         }
         else if (i < 5) {
-            buttonRow2.components.push(buttons[i])
+            buttonRow2.components.push(buttons[i]);
         }
         else {
-            buttonRow3.components.push(buttons[i])
+            buttonRow3.components.push(buttons[i]);
         }
 
     }
