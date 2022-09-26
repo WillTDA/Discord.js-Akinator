@@ -38,7 +38,7 @@ function getButtonReply(interaction) {
     * @param {"character" | "animal" | "object"} [options.gameType="character"] The Type of Akinator Game to Play. Defaults to "character".
     * @param {boolean} [options.useButtons=false] Whether to use Discord's Buttons. Defaults to "false".
     * @param {Discord.ColorResolvable} [options.embedColor="Random"] The Color of the Message Embeds. Defaults to "RANDOM".
-    * @returns {Promise<Discord.Message>} Discord.js Akinator Game
+    * @returns {Promise<void>} Discord.js Akinator Game
     */
 
 module.exports = async function (input, options = {}) {

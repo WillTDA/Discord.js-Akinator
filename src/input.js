@@ -3,16 +3,18 @@ const Discord = require("discord.js");
 const translate = require("./translate");
 
 /**
- * @param {boolean} useButtons If true, use buttons. If false, use text input
- * @param {any} input The Message Sent by the User.
- * @param {Discord.Message} botMessage The Message for the Bot to Send, also the message which will contain the buttons (Max. 8). MUST BE AN EMBED!
+ * @param {boolean} useButtons If true, use buttons. If false, use text input.
+ * @param {Discord.Message | Discord.CommandInteraction} input The Message or Slash Command Sent by the user.
+ * @param {Discord.Message} botMessage The message for the bot to send, also the message which will contain the buttons (Max. 8). MUST BE AN EMBED!
+ * @param {boolean} isGuessFilter Specifies whether to only show buttons used when Akinator is guessing.
+ * @param {any} translations Active translation file.
+ * @param {string} language The language of the game.
  * 
  */
 
 module.exports = async function awaitInput(useButtons, input, botMessage, isGuessFilter, translations, language) {
-    //check if useButtons is true. If so, use buttons.  If not, use text input
+    //check if useButtons is true. If so, use buttons. If not, use text input
     if (useButtons) {
-
         let yes = { type: 2, label: translations.yes, style: 2, custom_id: "✅", emoji: { name: "✅" } }
         let no = { type: 2, label: translations.no, style: 2, custom_id: "❌", emoji: { name: "❌" } }
         let idk = { type: 2, label: translations.dontKnow, style: 2, custom_id: "❓", emoji: { name: "❓" } }

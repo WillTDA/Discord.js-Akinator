@@ -69,10 +69,8 @@ With Discord.js Akinator, you can choose whether you want to use a message, or a
 ### Using Discord's Slash Commands as Input:
 
 ```js
-const { InteractionType } = require("discord.js"); // Importing the Interaction Type Enums
-
 client.on("interactionCreate", async interaction => {
-    if (interaction.type !== InteractionType.ApplicationCommand) return; // If the interaction is not a slash command, do nothing
+    if (!interaction.isChatInputCommand()) return; // If the interaction is not a slash command, do nothing
     if (interaction.commandName === "akinator") { // If the user sends "/akinator"...
         akinator(interaction, {
             language: language, // Defaults to "en"

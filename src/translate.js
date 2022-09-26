@@ -2,8 +2,8 @@ const translator = require('@vitalets/google-translate-api');
 
 /**
  * 
- * @param {String} string 
- * @param {String} language 
+ * @param {String} string String to translate.
+ * @param {String} language Language to translate to.
  */
 
 module.exports = async function translate(string, language) {
