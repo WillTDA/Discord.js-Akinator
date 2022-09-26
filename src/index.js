@@ -1,9 +1,9 @@
+const Discord = require("discord.js")
 const { Aki } = require("aki-api");
 const fs = require("fs");
 const translate = require("./translate");
 const awaitInput = require("./input");
 const attemptingGuess = new Set();
-const Discord = require("discord.js")
 
 // this simply gets the user's reply from a button interaction (that is, if the user has chosen to enable buttons)
 function getButtonReply(interaction) {

@@ -1,5 +1,5 @@
-const buttonMenu = require("./buttonMenu");
 const Discord = require("discord.js");
+const buttonMenu = require("./buttonMenu");
 const translate = require("./translate");
 
 /**
