@@ -153,8 +153,8 @@ module.exports = async function (input, options = {}) {
                 hasGuessed = true;
 
                 let guessEmbed = {
-                    title: `${await translate(`I'm ${Math.round(aki.progress)}% sure your character is...`, options.language)}`,
-                    description: `**${aki.answers[0].name}**\n${await translate(aki.answers[0].description, options.language)}\n\n${translations.isThisYourCharacter} ${!options.useButtons ? `**(Type Y/${translations.yes} or N/${translations.no})**` : ""}`,
+                    title: `${await translate(`I'm ${Math.round(aki.progress)}% sure your ${options.gameType} is...`, options.language)}`,
+                    description: `**${aki.answers[0].name}**\n${await translate(aki.answers[0].description, options.language)}\n\n${options.gameType == "animal" ? translations.isThisYourAnimal : options.gameType == "character" ? translations.isThisYourCharacter : translations.isThisYourObject} ${!options.useButtons ? `**(Type Y/${translations.yes} or N/${translations.no})**` : ""}`,
                     color: options.embedColor,
                     image: { url: aki.answers[0].absolute_picture_path },
                     author: { name: usertag, icon_url: avatar },
@@ -188,7 +188,7 @@ module.exports = async function (input, options = {}) {
                                 color: options.embedColor,
                                 author: { name: usertag, icon_url: avatar },
                                 fields: [
-                                    { name: translations.character, value: `**${aki.answers[0].name}**`, inline: true },
+                                    { name: translations[options.gameType], value: `**${aki.answers[0].name}**`, inline: true },
                                     { name: translations.ranking, value: `**#${aki.answers[0].ranking}**`, inline: true },
                                     { name: translations.noOfQuestions, value: `**${aki.currentStep}**`, inline: true }
                                 ]
