@@ -8,30 +8,15 @@ const Discord = require("discord.js")
 // this simply gets the user's reply from a button interaction (that is, if the user has chosen to enable buttons)
 function getButtonReply(interaction) {
     interaction = interaction.customId;
-
-    if (interaction === "✅") { //yes
-        return "y"
-    }
-    else if (interaction === "❌") { //no
-        return "n"
-    }
-    else if (interaction === "❓") { //don't know
-        return "i"
-    }
-    else if (interaction === "👍") { //probably
-        return "p"
-    }
-    else if (interaction === "👎") { //probably not
-        return "pn"
-    }
-    else if (interaction === "⏪") { //back
-        return "b"
-    }
-    else if (interaction === "🛑") { //stop game
-        return "s"
-    }
+    if (interaction === "✅") return "y"; // yes
+    else if (interaction === "❌") return "n"; //no
+    else if (interaction === "❓") return "i"; // don't know
+    else if (interaction === "👍") return "p"; // probably
+    else if (interaction === "👎") return "pn"; // probably not
+    else if (interaction === "⏪") return "b"; // back
+    else if (interaction === "🛑") return "s"; // stop game
     else return null;
-}
+};
 
 /**
     * Play a Game of Akinator.
@@ -329,4 +314,4 @@ module.exports = async function (input, options = {}) {
         console.log("Discord.js Akinator Error:")
         console.log(e);
     }
-}
+};

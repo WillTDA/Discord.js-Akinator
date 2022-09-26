@@ -78,7 +78,9 @@ module.exports = async function awaitInput(useButtons, input, botMessage, isGues
         }
         else {
             await response.first().delete();
-            return await translate(String(response.first()).toLowerCase(), language)
+            const responseText = String(response.first()).toLowerCase();
+            if (["y", "n", "i", "idk", "p", "pn", "b", "s"].includes(responseText)) return responseText; //skip translation for these responses
+            return await translate(responseText, language);
         }
 
     }
