@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Fe wnes i ddyfalu yn iawn un tro arall!",
     "character": "Chymeriad",
     "defeated": "Bravo! Rydych chi wedi fy nhrechu ...",
-    "gameForceEnd": "Daeth eich gêm i ben yn llwyddiannus!"
+    "gameForceEnd": "Daeth eich gêm i ben yn llwyddiannus!",
+    "startingGame": "Gêm Ddechrau ...",
+    "startingGameDesc": "Bydd y gêm yn cychwyn mewn ychydig eiliadau ..."
 }

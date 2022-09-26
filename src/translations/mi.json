@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "I aroha ahau ki tetahi atu wa!",
     "character": "Āhua",
     "defeated": "Bravo! Kua hinga koe i ahau ...",
-    "gameForceEnd": "I mutu pai to kēmu!"
+    "gameForceEnd": "I mutu pai to kēmu!",
+    "startingGame": "Te tiimata ...",
+    "startingGameDesc": "Ka tiimata te takaro i roto i etahi hēkona ..."
 }

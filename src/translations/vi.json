@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Tôi đoán đúng một lần nữa!",
     "character": "Tính cách",
     "defeated": "Bravo! Bạn đã đánh bại tôi ...",
-    "gameForceEnd": "Trò chơi của bạn đã kết thúc thành công!"
+    "gameForceEnd": "Trò chơi của bạn đã kết thúc thành công!",
+    "startingGame": "Đang bắt đầu trò chơi...",
+    "startingGameDesc": "Trò chơi sẽ bắt đầu trong vài giây ..."
 }

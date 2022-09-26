@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Coniectans dextris et unus plus vicis !",
     "character": "ingenium",
     "defeated": "euge ! Vos ipsi vicerunt me ...",
-    "gameForceEnd": "prospere consummata ludum !"
+    "gameForceEnd": "prospere consummata ludum !",
+    "startingGame": "Satus Ludus ...",
+    "startingGameDesc": "In ludo incipiet in brevi ..."
 }

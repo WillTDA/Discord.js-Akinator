@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "मी आणखी एक अंदाज लावला!",
     "character": "वर्ण",
     "defeated": "ब्राव्हो! तू मला पराभूत केलेस ...",
-    "gameForceEnd": "आपला गेम यशस्वीरित्या संपला!"
+    "gameForceEnd": "आपला गेम यशस्वीरित्या संपला!",
+    "startingGame": "प्रारंभ खेळ ...",
+    "startingGameDesc": "खेळ काही सेकंदात सुरू होईल ..."
 }

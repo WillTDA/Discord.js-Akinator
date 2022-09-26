@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Ako guessed tama isa pang oras!",
     "character": "Karakter",
     "defeated": "Bravo! Natalo mo ako ...",
-    "gameForceEnd": "Matagumpay na natapos ang iyong laro!"
+    "gameForceEnd": "Matagumpay na natapos ang iyong laro!",
+    "startingGame": "Simula ng laro ...",
+    "startingGameDesc": "Magsisimula ang laro sa loob ng ilang segundo ..."
 }

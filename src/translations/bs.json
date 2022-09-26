@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Pogodio sam se odmah još jednom!",
     "character": "Lik",
     "defeated": "Bravo! Pobijedili ste me ...",
-    "gameForceEnd": "Vaša igra je uspješno završena!"
+    "gameForceEnd": "Vaša igra je uspješno završena!",
+    "startingGame": "Početna igra ...",
+    "startingGameDesc": "Igra će početi za nekoliko sekundi ..."
 }

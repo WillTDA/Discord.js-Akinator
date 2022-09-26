@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Aš darau dar kartą!",
     "character": "Charakteris",
     "defeated": "BRAVO! Jūs nugalėjote mane ...",
-    "gameForceEnd": "Jūsų žaidimas buvo sėkmingai baigtas!"
+    "gameForceEnd": "Jūsų žaidimas buvo sėkmingai baigtas!",
+    "startingGame": "Pradinis žaidimas ...",
+    "startingGameDesc": "Žaidimas prasidės po kelių sekundžių ..."
 }

@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Ndakafungidzira imwezve imwe nguva!",
     "character": "Hunhu",
     "defeated": "Bravo! Wakandikunda ...",
-    "gameForceEnd": "Mutambo wako wakabviswa!"
+    "gameForceEnd": "Mutambo wako wakabviswa!",
+    "startingGame": "Kutanga Game ...",
+    "startingGameDesc": "Mutambo wacho unotanga mumasekondi mashoma ..."
 }

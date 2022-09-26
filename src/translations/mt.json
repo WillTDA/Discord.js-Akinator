@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Qed nassumi dritt wieħed ieħor!",
     "character": "Karattru",
     "defeated": "Bravo! Int għelebni ...",
-    "gameForceEnd": "Il-logħba tiegħek intemmet b'suċċess!"
+    "gameForceEnd": "Il-logħba tiegħek intemmet b'suċċess!",
+    "startingGame": "Logħba tal-bidu ...",
+    "startingGameDesc": "Il-logħba tibda fi ftit sekondi ..."
 }

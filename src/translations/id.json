@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Saya menebak dengan benar sekali lagi!",
     "character": "Karakter",
     "defeated": "BRAVO! Anda telah mengalahkan saya ...",
-    "gameForceEnd": "Game Anda berhasil berakhir!"
+    "gameForceEnd": "Game Anda berhasil berakhir!",
+    "startingGame": "Memulai permainan...",
+    "startingGameDesc": "Permainan akan dimulai dalam beberapa detik ..."
 }

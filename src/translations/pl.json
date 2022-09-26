@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Uczyściłem się jeszcze raz!",
     "character": "Postać",
     "defeated": "Brawo! Pokonałeś mnie ...",
-    "gameForceEnd": "Twoja gra została pomyślnie zakończona!"
+    "gameForceEnd": "Twoja gra została pomyślnie zakończona!",
+    "startingGame": "Zaczynanie gry...",
+    "startingGameDesc": "Gra rozpocznie się za kilka sekund ..."
 }

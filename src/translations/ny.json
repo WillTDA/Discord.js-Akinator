@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Ndinaganizanso nthawi ina!",
     "character": "Munthu",
     "defeated": "Bravo! Mwandigonjetsera ...",
-    "gameForceEnd": "Masewera anu adatha!"
+    "gameForceEnd": "Masewera anu adatha!",
+    "startingGame": "Masewera Oyambira ...",
+    "startingGameDesc": "Masewerawa ayamba m'masekondi angapo ..."
 }

@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "나는 한 번 더 짐작했다!",
     "character": "성격",
     "defeated": "브라보! 당신은 나를 물리 쳤습니다 ...",
-    "gameForceEnd": "당신의 게임이 성공적으로 끝났습니다!"
+    "gameForceEnd": "당신의 게임이 성공적으로 끝났습니다!",
+    "startingGame": "게임 시작 ...",
+    "startingGameDesc": "게임은 몇 초 안에 시작됩니다 ..."
 }

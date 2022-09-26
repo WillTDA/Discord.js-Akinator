@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Nilidhani wakati mmoja zaidi!",
     "character": "Tabia.",
     "defeated": "Bravo! Umeshinda ...",
-    "gameForceEnd": "Mchezo wako ulifanikiwa kumalizika!"
+    "gameForceEnd": "Mchezo wako ulifanikiwa kumalizika!",
+    "startingGame": "Kuanzia Mchezo ...",
+    "startingGameDesc": "Mchezo utaanza kwa sekunde chache ..."
 }

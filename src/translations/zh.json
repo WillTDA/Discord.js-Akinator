@@ -20,6 +20,8 @@
     "wellPlayed": "打的好！",
     "guessedRightOneMoreTime": "我猜再了一次！",
     "character": "特点",
-    "defeated": "太棒了！ 你击败了我......",
-    "gameForceEnd": "你的游戏成功结束了！"
+    "defeated": "太棒了！ 你击败了我...",
+    "gameForceEnd": "你的游戏成功结束了！",
+    "startingGame": "开始游戏...",
+    "startingGameDesc": "游戏将在几秒钟后开始..."
 }

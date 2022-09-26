@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "ניחשתי ז\"ל עוד פעם אחת!",
     "character": "דמות",
     "defeated": "בראבו! יש לך הביס אותי ...",
-    "gameForceEnd": "המשחק שלך הסתיים בהצלחה!"
+    "gameForceEnd": "המשחק שלך הסתיים בהצלחה!",
+    "startingGame": "מתחיל משחק...",
+    "startingGameDesc": "המשחק יתחיל בעוד כמה שניות ..."
 }

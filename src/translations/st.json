@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Ke ne ke nahana hore hantle nako e 'ngoe hape!",
     "character": "Semelo",
     "defeated": "Bravo! U nkhaletse ...",
-    "gameForceEnd": "Papali ea hau e felile ka katleho!"
+    "gameForceEnd": "Papali ea hau e felile ka katleho!",
+    "startingGame": "Papali ea ho qala ...",
+    "startingGameDesc": "Papali e tla qala ka metsotsoana e seng mekae ..."
 }

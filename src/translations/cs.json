@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Hádal jsem ještě jednou!",
     "character": "Charakter",
     "defeated": "Bravo! Porazil jsi mě ...",
-    "gameForceEnd": "Vaše hra byla úspěšně ukončena!"
+    "gameForceEnd": "Vaše hra byla úspěšně ukončena!",
+    "startingGame": "Počáteční hra ...",
+    "startingGameDesc": "Hra začne za pár sekund ..."
 }

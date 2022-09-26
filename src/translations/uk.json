@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Я здогадався ще раз!",
     "character": "Характер",
     "defeated": "Браво! Ви перемогли мене ...",
-    "gameForceEnd": "Ваша гра була успішно закінчена!"
+    "gameForceEnd": "Ваша гра була успішно закінчена!",
+    "startingGame": "Початок гри ...",
+    "startingGameDesc": "Гра розпочнеться через кілька секунд ..."
 }

@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Kuring ditebak langsung sakali deui!",
     "character": "Perbawa",
     "defeated": "Bravo! Anjeun parantos éléh ...",
-    "gameForceEnd": "Game anjeun suksés réngsé!"
+    "gameForceEnd": "Game anjeun suksés réngsé!",
+    "startingGame": "Mimitian kaulinan ...",
+    "startingGameDesc": "Kaulinan bakal ngamimitian dina sababaraha detik ..."
 }

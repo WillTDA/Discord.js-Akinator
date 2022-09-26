@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Ma arvasin veel üks kord!",
     "character": "Iseloom",
     "defeated": "Bravo! Sa oled lüüa mind ...",
-    "gameForceEnd": "Teie mäng lõppes edukalt!"
+    "gameForceEnd": "Teie mäng lõppes edukalt!",
+    "startingGame": "Mäng ...",
+    "startingGameDesc": "Mäng algab mõne sekundi pärast ..."
 }

@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Am ghicit încă o dată!",
     "character": "Caracter",
     "defeated": "Bravo! M-ai învins ...",
-    "gameForceEnd": "Jocul tău a fost încheiat cu succes!"
+    "gameForceEnd": "Jocul tău a fost încheiat cu succes!",
+    "startingGame": "Incepe jocul...",
+    "startingGameDesc": "Jocul va începe în câteva secunde ..."
 }

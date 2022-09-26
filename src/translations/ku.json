@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Min careke din texmîn kir!",
     "character": "Şexsîyet",
     "defeated": "Bravo! We min têk çû ...",
-    "gameForceEnd": "Lîstika we bi serfirazî bi dawî bû!"
+    "gameForceEnd": "Lîstika we bi serfirazî bi dawî bû!",
+    "startingGame": "Lîstika destpêkirinê ...",
+    "startingGameDesc": "Lîstik dê di çend seconds de dest pê bike ..."
 }

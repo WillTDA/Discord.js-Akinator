@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "አንድ ተጨማሪ ጊዜ እገፋፋለሁ!",
     "character": "ቁምፊ",
     "defeated": "ብራ vo! አሸነፈኝ ...",
-    "gameForceEnd": "ጨዋታዎ በተሳካ ሁኔታ ተጠናቅቋል!"
+    "gameForceEnd": "ጨዋታዎ በተሳካ ሁኔታ ተጠናቅቋል!",
+    "startingGame": "ጨዋታ ጀምሮ ...",
+    "startingGameDesc": "ጨዋታው በጥቂት ሰከንዶች ውስጥ ይጀምራል ..."
 }

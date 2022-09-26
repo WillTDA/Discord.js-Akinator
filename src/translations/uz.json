@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Men yana bir bor kerak edi!",
     "character": "Xarakter",
     "defeated": "Bravo! Siz meni mag'lub qildingiz ...",
-    "gameForceEnd": "Sizning o'yiningiz muvaffaqiyatli yakunlandi!"
+    "gameForceEnd": "Sizning o'yiningiz muvaffaqiyatli yakunlandi!",
+    "startingGame": "Boshlang'ich o'yin ...",
+    "startingGameDesc": "O'yin bir necha soniya ichida boshlanadi ..."
 }

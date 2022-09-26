@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Ondo pentsatu nuen denbora gehiago!",
     "character": "Gizon puska",
     "defeated": "Bravo! Garaitu nauzu ...",
-    "gameForceEnd": "Zure jokoa ondo amaitu da!"
+    "gameForceEnd": "Zure jokoa ondo amaitu da!",
+    "startingGame": "Hasierako jokoa ...",
+    "startingGameDesc": "Partida segundo batzuetan hasiko da ..."
 }

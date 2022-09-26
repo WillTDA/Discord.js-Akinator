@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Ndiqinisekisile ixesha elinye!",
     "character": "Umlinganiswa",
     "defeated": "Bravo! Undoyisile ...",
-    "gameForceEnd": "Umdlalo wakho waphela ngempumelelo!"
+    "gameForceEnd": "Umdlalo wakho waphela ngempumelelo!",
+    "startingGame": "Ukuqala umdlalo ...",
+    "startingGameDesc": "Umdlalo uza kuqala kwimizuzwana embalwa ..."
 }

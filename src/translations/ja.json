@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "もう1回、当てました！",
     "character": "キャラクター",
     "defeated": "ブラボー! あなたは私を倒した...",
-    "gameForceEnd": "あなたのゲームは正常に終了しました！"
+    "gameForceEnd": "あなたのゲームは正常に終了しました！",
+    "startingGame": "ゲームの開始...",
+    "startingGameDesc": "ゲームは数秒で始まります..."
 }

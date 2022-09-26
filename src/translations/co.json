@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Aghju pensatu ghjustu una volta più!",
     "character": "Caratteru",
     "defeated": "Bravo! M'hai scunfittu ...",
-    "gameForceEnd": "U vostru ghjocu hè statu finitu cun successu!"
+    "gameForceEnd": "U vostru ghjocu hè statu finitu cun successu!",
+    "startingGame": "Cumenciu à cumunsione ...",
+    "startingGameDesc": "U ghjocu hà da cumincià in pochi seconde ..."
 }

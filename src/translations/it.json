@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Ho indovinato ancora una volta!",
     "character": "Carattere",
     "defeated": "Bravo! Mi hai sconfitto ...",
-    "gameForceEnd": "Il tuo gioco è stato concluso con successo!"
+    "gameForceEnd": "Il tuo gioco è stato concluso con successo!",
+    "startingGame": "Gioco di partenza ...",
+    "startingGameDesc": "Il gioco inizierà tra pochi secondi ..."
 }

@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Hádal som ešte raz!",
     "character": "Znak",
     "defeated": "BRAVO! Porazili ste ma ...",
-    "gameForceEnd": "Vaša hra bola úspešne ukončená!"
+    "gameForceEnd": "Vaša hra bola úspešne ukončená!",
+    "startingGame": "Začínajúca hra ...",
+    "startingGameDesc": "Hra sa začne o pár sekúnd ..."
 }

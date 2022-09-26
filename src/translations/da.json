@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Jeg gættede rigtigt endnu en gang!",
     "character": "Karakter",
     "defeated": "Bravo! Du har besejret mig ...",
-    "gameForceEnd": "Dit spil blev afsluttet med succes!"
+    "gameForceEnd": "Dit spil blev afsluttet med succes!",
+    "startingGame": "Startspil ...",
+    "startingGameDesc": "Spillet starter om få sekunder ..."
 }

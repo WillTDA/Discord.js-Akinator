@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Tha mi a 'dèanamh a-mach gu ceart aon uair eile!",
     "character": "Caractar",
     "defeated": "Bravo! Tha thu air a 'chùis a dhèanamh orm ...",
-    "gameForceEnd": "Chaidh do gheama a thighinn gu crìch gu soirbheachail!"
+    "gameForceEnd": "Chaidh do gheama a thighinn gu crìch gu soirbheachail!",
+    "startingGame": "Gèam tòiseachaidh ...",
+    "startingGameDesc": "Tòisichidh an geama ann am beagan dhiog ..."
 }

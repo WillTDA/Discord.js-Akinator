@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Nahiangay ako sa usa pa ka oras!",
     "character": "Magdudula",
     "defeated": "Bravo! Gipildi mo ako ...",
-    "gameForceEnd": "Malampuson nga natapos ang imong dula!"
+    "gameForceEnd": "Malampuson nga natapos ang imong dula!",
+    "startingGame": "Sugod sa dula ...",
+    "startingGameDesc": "Magsugod ang dula sa pipila ka segundo ..."
 }

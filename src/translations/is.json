@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Ég giska á réttan tíma!",
     "character": "Eðli",
     "defeated": "Bravo! Þú hefur sigrað mig ...",
-    "gameForceEnd": "Leikurinn þinn var lokaður með góðum árangri!"
+    "gameForceEnd": "Leikurinn þinn var lokaður með góðum árangri!",
+    "startingGame": "Byrjunarleikur ...",
+    "startingGameDesc": "Leikurinn byrjar eftir nokkrar sekúndur ..."
 }

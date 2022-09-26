@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Doğrudanmı bir daha olduğunu təxmin etdim!",
     "character": "Xasiyyət",
     "defeated": "! Məni məğlub etdin ...",
-    "gameForceEnd": "Oyununuz uğurla başa çatdı!"
+    "gameForceEnd": "Oyununuz uğurla başa çatdı!",
+    "startingGame": "Başlanğıc oyunu ...",
+    "startingGameDesc": "Oyun bir neçə saniyədən sonra başlayacaq ..."
 }

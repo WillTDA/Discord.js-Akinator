@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "لقد خمنت الحق مرة أخرى!",
     "character": "حرف",
     "defeated": "أحسنت! لقد هزمتني ...",
-    "gameForceEnd": "انتهت لعبتك بنجاح!"
+    "gameForceEnd": "انتهت لعبتك بنجاح!",
+    "startingGame": "بداية اللعبة ...",
+    "startingGameDesc": "ستبدأ اللعبة في بضع ثوان ..."
 }

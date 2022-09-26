@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Ik heb nog een keer geraden!",
     "character": "Karakter",
     "defeated": "Bravo! Je hebt me verslagen ...",
-    "gameForceEnd": "Je spel is succesvol afgelopen!"
+    "gameForceEnd": "Je spel is succesvol afgelopen!",
+    "startingGame": "Spel wordt gestart...",
+    "startingGameDesc": "De game begint over een paar seconden ..."
 }

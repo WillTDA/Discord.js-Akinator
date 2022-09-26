@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Mwen dvine dwa yon lòt fwa ankò!",
     "character": "Pèsonaj",
     "defeated": "Bravo! Ou te bat mwen ...",
-    "gameForceEnd": "Jwèt ou te avèk siksè te fini!"
+    "gameForceEnd": "Jwèt ou te avèk siksè te fini!",
+    "startingGame": "Kòmanse jwèt ...",
+    "startingGameDesc": "Jwèt la ap kòmanse nan yon kèk segond ..."
 }

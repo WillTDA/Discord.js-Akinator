@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "ฉันเดาได้อีกครั้ง!",
     "character": "อักขระ",
     "defeated": "ไชโย! คุณพ่ายแพ้ฉัน ...",
-    "gameForceEnd": "เกมของคุณสิ้นสุดลงเรียบร้อยแล้ว!"
+    "gameForceEnd": "เกมของคุณสิ้นสุดลงเรียบร้อยแล้ว!",
+    "startingGame": "เกมเริ่มต้น ...",
+    "startingGameDesc": "เกมจะเริ่มในไม่กี่วินาที ..."
 }

@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Sa ou taumateina le tasi taimi!",
     "character": "Uiga",
     "defeated": "Bravo! Ua e faatoilaloina au ...",
-    "gameForceEnd": "Na Maʻeu ma le manuia lau taʻaloga!"
+    "gameForceEnd": "Na Maʻeu ma le manuia lau taʻaloga!",
+    "startingGame": "Amataina taʻaloga ...",
+    "startingGameDesc": "O le taʻaloga o le a amata i ni nai sekone ..."
 }

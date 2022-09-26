@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Manaʻo wau e kūpono i hoʻokahi manawa!",
     "character": "Hualike",
     "defeated": "ʻAno! Ua lanakilaʻoe iaʻu ...",
-    "gameForceEnd": "Ua pau kāu pāʻani!"
+    "gameForceEnd": "Ua pau kāu pāʻani!",
+    "startingGame": "Hoʻomaka Kā'ī ...",
+    "startingGameDesc": "E hoʻomaka ka pāʻani i nā kekona kekona ..."
 }

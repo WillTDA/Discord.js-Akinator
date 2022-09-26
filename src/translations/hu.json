@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Azt hiszem, még egyszer még egyszer!",
     "character": "karakter",
     "defeated": "Bravo! Legyőzte ...",
-    "gameForceEnd": "A játék sikeresen befejeződött!"
+    "gameForceEnd": "A játék sikeresen befejeződött!",
+    "startingGame": "Kezdő játék ...",
+    "startingGameDesc": "A játék néhány másodperc múlva kezdődik ..."
 }

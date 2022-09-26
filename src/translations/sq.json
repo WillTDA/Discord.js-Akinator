@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Kam menduar të drejtë edhe një herë!",
     "character": "Karakter",
     "defeated": "Bravo! Ju keni mposhtur mua ...",
-    "gameForceEnd": "Loja juaj u përfundua me sukses!"
+    "gameForceEnd": "Loja juaj u përfundua me sukses!",
+    "startingGame": "Lojë fillestare ...",
+    "startingGameDesc": "Loja do të fillojë në disa sekonda ..."
 }

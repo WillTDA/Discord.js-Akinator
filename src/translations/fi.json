@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Luulin oikein vielä kerran!",
     "character": "Merkki",
     "defeated": "Bravo! Olet voittanut minut ...",
-    "gameForceEnd": "Peli päättyi onnistuneesti!"
+    "gameForceEnd": "Peli päättyi onnistuneesti!",
+    "startingGame": "Aloituspeli ...",
+    "startingGameDesc": "Peli alkaa muutamassa sekunnissa ..."
 }

@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Мен тағы бір рет дұрыс деп ойладым!",
     "character": "Кейіпкер",
     "defeated": "Bravo! Сіз мені жеңдіңіз ...",
-    "gameForceEnd": "Сіздің ойын сәтті аяқталды!"
+    "gameForceEnd": "Сіздің ойын сәтті аяқталды!",
+    "startingGame": "Ойынның басталуы ...",
+    "startingGameDesc": "Ойын бірнеше секундтан кейін басталады ..."
 }

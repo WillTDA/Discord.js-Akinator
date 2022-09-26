@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Ik ried mar noch ien kear!",
     "character": "Personaazje",
     "defeated": "Bravo! Jo hawwe my ferslein ...",
-    "gameForceEnd": "Jo spultsje is mei súkses beëinige!"
+    "gameForceEnd": "Jo spultsje is mei súkses beëinige!",
+    "startingGame": "Begjin spultsje ...",
+    "startingGameDesc": "It spultsje sil yn in pear sekonden begjinne ..."
 }

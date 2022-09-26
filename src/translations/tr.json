@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Doğru bir kez daha tahmin ettim!",
     "character": "Karakter",
     "defeated": "Bravo! Beni yendin ...",
-    "gameForceEnd": "Oyunun başarıyla sona erdi!"
+    "gameForceEnd": "Oyunun başarıyla sona erdi!",
+    "startingGame": "Oyun başlıyor...",
+    "startingGameDesc": "Oyun birkaç saniye içinde başlayacak ..."
 }

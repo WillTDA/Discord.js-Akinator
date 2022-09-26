@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Thuigim go raibh mé ceart níos mó ama!",
     "character": "Nádúr",
     "defeated": "Bravo! Tá tú tar éis briseadh orm ...",
-    "gameForceEnd": "Cuireadh deireadh le do chluiche go rathúil!"
+    "gameForceEnd": "Cuireadh deireadh le do chluiche go rathúil!",
+    "startingGame": "Cluiche ag tosú ...",
+    "startingGameDesc": "Tosóidh an cluiche i gceann cúpla soicind ..."
 }

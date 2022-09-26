@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Na yi masu laifi a lokaci daya!",
     "character": "Hali",
     "defeated": "Bravo! Kun ci abinci ...",
-    "gameForceEnd": "An samu nasarar Gasar ku!"
+    "gameForceEnd": "An samu nasarar Gasar ku!",
+    "startingGame": "Fara Wasan ...",
+    "startingGameDesc": "Wasan zai fara ne a cikin 'yan seconds ..."
 }

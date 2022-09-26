@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Es uzminēju tieši vienu reizi!",
     "character": "Raksturs",
     "defeated": "Bravo! Jūs esat uzvarējis mani ...",
-    "gameForceEnd": "Jūsu spēle tika veiksmīgi beigusies!"
+    "gameForceEnd": "Jūsu spēle tika veiksmīgi beigusies!",
+    "startingGame": "Sākot spēli ...",
+    "startingGameDesc": "Spēle sāksies pēc dažām sekundēm ..."
 }

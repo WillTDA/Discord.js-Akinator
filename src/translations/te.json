@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "నేను మరోసారి ఊహిస్తున్నాను!",
     "character": "పాత్ర",
     "defeated": "బ్రేవో! మీరు నన్ను ఓడించారు ...",
-    "gameForceEnd": "మీ ఆట విజయవంతంగా ముగిసింది!"
+    "gameForceEnd": "మీ ఆట విజయవంతంగా ముగిసింది!",
+    "startingGame": "ప్రారంభ ఆట ...",
+    "startingGameDesc": "ఆట కొన్ని సెకన్లలో ప్రారంభమవుతుంది ..."
 }

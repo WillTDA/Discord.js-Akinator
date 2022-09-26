@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Mi konjektis ankoraŭ unu fojon!",
     "character": "Karaktero",
     "defeated": "Bravo! Vi venkis min ...",
-    "gameForceEnd": "Via ludo sukcese finiĝis!"
+    "gameForceEnd": "Via ludo sukcese finiĝis!",
+    "startingGame": "Komencanta Ludo ...",
+    "startingGameDesc": "La ludo komenciĝos post kelkaj sekundoj ..."
 }

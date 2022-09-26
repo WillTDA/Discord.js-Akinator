@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Mino ny fotoana iray indray mandeha aho!",
     "character": "toetra",
     "defeated": "Bravo! Nandresy ahy ianao ...",
-    "gameForceEnd": "Tapitra soa aman-tsara ny lalao nataonao!"
+    "gameForceEnd": "Tapitra soa aman-tsara ny lalao nataonao!",
+    "startingGame": "Fanombohana lalao ...",
+    "startingGameDesc": "Hanomboka ao anatin'ny segondra vitsy ny lalao ..."
 }

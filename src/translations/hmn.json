@@ -21,5 +21,7 @@
     "guessedRightOneMoreTime": "Kuv twv txoj cai ib zaug ntxiv!",
     "character": "Tus neeg",
     "defeated": "Bravo! Koj tau swb kuv ...",
-    "gameForceEnd": "Koj kev ua si tau xaus!"
+    "gameForceEnd": "Koj kev ua si tau xaus!",
+    "startingGame": "Pib kev ua si ...",
+    "startingGameDesc": "Qhov kev ua si yuav pib ob peb feeb ..."
 }

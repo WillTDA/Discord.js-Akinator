@@ -69,8 +69,6 @@ module.exports = async function (input, options = {}) {
         options.useButtons = options.useButtons || false;
         options.embedColor = Discord.resolveColor(options.embedColor || "Random");
 
-
-
         options.language = options.language.toLowerCase();
         options.gameType = options.gameType.toLowerCase();
 
@@ -97,9 +95,12 @@ module.exports = async function (input, options = {}) {
         let usertag = inputData.author.tag;
         let avatar = inputData.author.displayAvatarURL({ dynamic: true });
 
+        // get translation object for the language
+        let translations = require(`${__dirname}/translations/${options.language}.json`);
+
         let startingEmbed = {
-            title: `${await translate("Starting Game...", options.language)}`,
-            description: `**${await translate("The game will start in a few seconds...", options.language)}**`,
+            title: `${translations.startingGame}`,
+            description: `**${translations.startingGameDesc}**`,
             color: options.embedColor,
             author: { name: usertag, icon_url: avatar }
         }
@@ -115,9 +116,6 @@ module.exports = async function (input, options = {}) {
             }
             else { startingMessage = await input.channel.send({ embeds: [startingEmbed] }) } // else, the input is a message
         }
-
-        // get translation object for the language
-        let translations = require(`${__dirname}/translations/${options.language}.json`);
 
         // starts the game
         let gameTypeRegion = options.gameType == "animal" ? "en_animals" : options.gameType == "character" ? "en" : "en_objects";
