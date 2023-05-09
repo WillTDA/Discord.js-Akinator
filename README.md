@@ -1,12 +1,14 @@
 <h1 align="center">
-    🔮 Discord.js Akinator 🔮
+    🔮 Discord.js Akinator 🔮 | By: <a href="https://diamonddigital.dev/"><img align="center" style="width:25%;height:auto" src="https://diamonddigital.dev/img/png/ddd_logo_text_transparent.png" alt="Diamond Digital Development Logo"></a>
 </h1>
 
-A Discord.js v14 Module that allows you to Create an Akinator Command for Your Discord Bot within Seconds of Installation.
+<center style="margin-bottom:1rem;">A Discord.js v14 module that allows you to create an Akinator command for your discord bot in a matter of seconds.</center>
 
 [![NPM](https://nodei.co/npm/discord.js-akinator.png)](https://npmjs.com/package/discord.js-akinator)
 
-[![Downloads](https://img.shields.io/npm/dt/discord.js-akinator?logo=npm&style=flat-square)](https://npmjs.com/package/discord.js-akinator) [![Discord Server](https://img.shields.io/discord/667479986214666272?logo=discord&logoColor=white&style=flat-square)](https://discord.gg/P2g24jp)
+[![Downloads](https://img.shields.io/npm/dt/discord.js-akinator?logo=npm&style=flat-square)](https://npmjs.com/package/discord.js-akinator) [![Discord Server](https://img.shields.io/discord/667479986214666272?logo=discord&logoColor=white&style=flat-square)](https://diamonddigital.dev/discord)
+
+<a href="https://www.buymeacoffee.com/willtda" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
 
 ## Features
 
@@ -14,7 +16,7 @@ A Discord.js v14 Module that allows you to Create an Akinator Command for Your D
 
 - ▶️ <b>Buttons!</b> | Don't want to type out responses to questions? This package gives you the option to use discord's buttons to easily click your answer of choice!
 
-- 🎮 <b>Multiple Game Types!</b> | This package will allow you to choose whether Akinator will guess an Animal, Character or Object!
+- 🎮 <b>Multiple Game Types!</b> | This package will allow you to choose whether Akinator will guess an animal, character or object!
 
 - 🙋 <b>Child Mode!</b> | Want to filter out NSFW questions? You can choose to enable Akinator's Child Mode to keep your games squeaky clean!
 
@@ -22,19 +24,19 @@ A Discord.js v14 Module that allows you to Create an Akinator Command for Your D
 
 - 🤖 <b>Slash Command & Message Support!</b> | No matter how your bot receives its commands, you can simply pass in a `CommandInteraction` or `Message` and it will work!
 
-## Install Package
+## Installation & Compatibility List
 
-Let's take a look at how you can install this package into your Discord Bot Project.
+To install this package, simply run the following command in your terminal:
 
 `npm i discord.js-akinator --save`
 
-For versions 4.0.0 and above, you'll also need Discord.js v14. This can easily be installed with:
+**Please Note:** The latest release of this package is only compatible with Discord.js v14. If you are using Discord.js v13 or v12, please refer to the table below to find the version that suits your needs.
 
-`npm i discord.js@14 --save`
-
-For versions earlier than 4.0.0, you'll need Discord.js v13 instead. However it is recommended you update to patch bugs and security vulnerabilities, as well as get the newest features from this package!
-
-`npm i discord.js@13 --save`
+| Discord.js Version | Recommended Package Version |
+|--------------------|-----------------------------|
+| v14.x.x            | v4.x.x (`@latest`)          |
+| v13.x.x            | v3.x.x (`@3.4.5`)           |
+| v12.x.x            | v2.1.0 or earlier           |
 
 ## Code Examples
 
@@ -113,6 +115,11 @@ client.on("messageCreate", async message => {
 
 ## Contact Us
 
-- 👋 Need Help? [Join Our Discord Server](https://discord.gg/P2g24jp)!
+- 👋 Need Help? [Join Our Discord Server](https://diamonddigital.dev/discord)!
 
 - 👾 Found a Bug, or Inaccurate Translations? [Open an Issue](https://github.com/WillTDA/Discord.js-Akinator/issues), or Fork and [Submit a Pull Request](https://github.com/WillTDA/Discord.js-Akinator/pulls) on our [GitHub Repository](https://github.com/WillTDA/Discord.js-Akinator)!
+<hr>
+<center>
+<strong>Created and maintained by</strong>
+<a href="https://diamonddigital.dev/"><img align="center" style="width:25%;height:auto" src="https://diamonddigital.dev/img/png/ddd_logo_text_transparent.png" alt="Diamond Digital Development Logo"></a>
+</center>

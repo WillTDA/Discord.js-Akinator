@@ -16,6 +16,6 @@ module.exports = async function translate(string, language) {
     if (language === "zhcn" || language === "zh-cn") language = "zh-CN";
     if (language === "zhtw" || language === "zh-tw") language = "zh-TW";
 
-    let translation = await translator(string, { to: language }).catch(e => console.log(e));
+    let translation = await translator.translate(string, { to: language }).catch(e => console.log(e));
     return translation.text;
 }

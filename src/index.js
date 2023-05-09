@@ -1,6 +1,10 @@
+//adding intermediate certs for akinator api
+const fs = require("fs");
+const https = require('https');
+https.globalAgent.options.ca = fs.readFileSync(process.cwd() + "/node_modules/node_extra_ca_certs_mozilla_bundle/ca_bundle/ca_intermediate_root_bundle.pem");
+
 const Discord = require("discord.js")
 const { Aki } = require("aki-api");
-const fs = require("fs");
 const translate = require("./translate");
 const awaitInput = require("./input");
 const attemptingGuess = new Set();
