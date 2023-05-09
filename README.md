@@ -1,5 +1,5 @@
 <h1 align="center">
-    🔮 Discord.js Akinator 🔮 | By: <a href="https://diamonddigital.dev/"><img align="center" style="width:25%;height:auto" src="https://diamonddigital.dev/img/png/ddd_logo_text_transparent.png" alt="Diamond Digital Development Logo"></a>
+    🔮 Discord.js Akinator 🔮
 </h1>
 
 <center style="margin-bottom:1rem;">A Discord.js v14 module that allows you to create an Akinator command for your discord bot in a matter of seconds.</center>
