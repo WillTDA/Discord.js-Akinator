@@ -1,4 +1,3 @@
-//adding intermediate certs for akinator api
 const Discord = require("discord.js")
 const { Aki } = require("aki-api");
 const fs = require("fs");
