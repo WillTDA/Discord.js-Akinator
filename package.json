@@ -23,8 +23,7 @@
   "license": "Apache-2.0",
   "dependencies": {
     "@vitalets/google-translate-api": "^9.1.0",
-    "aki-api": "^6.0.8",
-    "discord.js": "^14.11.0",
-    "node_extra_ca_certs_mozilla_bundle": "^1.0.5"
+    "aki-api": "^6.0.9",
+    "discord.js": "^14.11.0"
   }
 }

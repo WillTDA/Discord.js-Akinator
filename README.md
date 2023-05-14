@@ -120,6 +120,6 @@ client.on("messageCreate", async message => {
 - 👾 Found a Bug, or Inaccurate Translations? [Open an Issue](https://github.com/WillTDA/Discord.js-Akinator/issues), or Fork and [Submit a Pull Request](https://github.com/WillTDA/Discord.js-Akinator/pulls) on our [GitHub Repository](https://github.com/WillTDA/Discord.js-Akinator)!
 <hr>
 <center>
-<strong>Created and maintained by</strong>
-<a href="https://diamonddigital.dev/"><img align="center" style="width:25%;height:auto" src="https://diamonddigital.dev/img/png/ddd_logo_text_transparent.png" alt="Diamond Digital Development Logo"></a>
+<a href="https://diamonddigital.dev/"><strong>Created and maintained by</strong>
+<img align="center" style="width:25%;height:auto" src="https://diamonddigital.dev/img/png/ddd_logo_text_transparent.png" alt="Diamond Digital Development Logo"></a>
 </center>
