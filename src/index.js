@@ -5,16 +5,16 @@ const translate = require("./translate");
 const awaitInput = require("./input");
 const attemptingGuess = new Set();
 
-// this simply gets the user's reply from a button interaction (that is, if the user has chosen to enable buttons)
+//this simply gets the user's reply from a button interaction (that is, if the user has chosen to enable buttons)
 function getButtonReply(interaction) {
     interaction = interaction.customId;
-    if (interaction === "✅") return "y"; // yes
+    if (interaction === "✅") return "y"; //yes
     else if (interaction === "❌") return "n"; //no
-    else if (interaction === "❓") return "i"; // don't know
-    else if (interaction === "👍") return "p"; // probably
-    else if (interaction === "👎") return "pn"; // probably not
-    else if (interaction === "⏪") return "b"; // back
-    else if (interaction === "🛑") return "s"; // stop game
+    else if (interaction === "❓") return "i"; //don't know
+    else if (interaction === "👍") return "p"; //probably
+    else if (interaction === "👎") return "pn"; //probably not
+    else if (interaction === "⏪") return "b"; //back
+    else if (interaction === "🛑") return "s"; //stop game
     else return null;
 };
 
@@ -25,29 +25,30 @@ function getButtonReply(interaction) {
     * 
     * __Game Options__
     * 
-    * - `language` - The Language of the Game.
+    * - `language` - The language of the game.
     * - `childMode` - Whether to use Akinator's Child Mode.
-    * - `gameType` - The Type of Akinator Game to Play. (`animal`, `character` or `object`)
-    * - `useButtons` - Whether to use Discord's Buttons.
-    * - `embedColor` - The Color of the Message Embeds.
+    * - `gameType` - The type of Akinator game to be played. (`animal`, `character` or `object`)
+    * - `useButtons` - Whether to use Discord's buttons instead of message input.
+    * - `embedColor` - The color of the message embeds.
+    * - `cacheTranslations` - Whether to cache translations to reduce API calls and boost performance.
     * 
     * @param {Discord.Message | Discord.CommandInteraction} input The Message or Slash Command Sent by the User.
     * @param {object} options The Options for the Game.
-    * @param {string} [options.language="en"] The Language of the Game. Defaults to "en".
+    * @param {string} [options.language="en"] The language of the game. Defaults to "en".
     * @param {boolean} [options.childMode=false] Whether to use Akinator's Child Mode. Defaults to "false".
-    * @param {"character" | "animal" | "object"} [options.gameType="character"] The Type of Akinator Game to Play. Defaults to "character".
-    * @param {boolean} [options.useButtons=false] Whether to use Discord's Buttons. Defaults to "false".
-    * @param {Discord.ColorResolvable} [options.embedColor="Random"] The Color of the Message Embeds. Defaults to "RANDOM".
+    * @param {"character" | "animal" | "object"} [options.gameType="character"] The type of Akinator game to be played. Defaults to "character".
+    * @param {boolean} [options.useButtons=false] Whether to use Discord's buttons instead of message input. Defaults to "false".
+    * @param {Discord.ColorResolvable} [options.embedColor="Random"] The color of the message embeds. Defaults to "Random".
     * @returns {Promise<void>} Discord.js Akinator Game
     */
 
 module.exports = async function (input, options = {}) {
-    // check discord.js version
+    //check discord.js version
     if (Discord.version.split(".")[0] < 14) return console.log(`Discord.js Akinator Error: Discord.js v14 or later is required.\nPlease check the README for finding a compatible version for Discord.js v${Discord.version.split(".")[0]}\nNeed help? Join our Discord server at 'https://discord.gg/P2g24jp'`);
 
     let inputData = {};
     try {
-        // configuring game options if not specified
+        //configuring game options if not specified
         options.language = options.language || "en";
         options.childMode = options.childMode || false;
         options.gameType = options.gameType || "character";
@@ -57,7 +58,7 @@ module.exports = async function (input, options = {}) {
         options.language = options.language.toLowerCase();
         options.gameType = options.gameType.toLowerCase();
 
-        // error handling
+        //error handling
         if (!input) return console.log("Discord.js Akinator Error: Message or CommandInteraction was not provided.\nNeed help? Join our Discord server at 'https://discord.gg/P2g24jp'");
         if (!input.client) return console.log("Discord.js Akinator Error: Message or CommandInteration provided was invalid.\nNeed help? Join our Discord server at 'https://discord.gg/P2g24jp'");
         if (!input.guild) return console.log("Discord.js Akinator Error: Cannot be used in Direct Messages.\nNeed help? Join our Discord server at 'https://discord.gg/P2g24jp'");
@@ -76,11 +77,11 @@ module.exports = async function (input, options = {}) {
         //auto-resetting 
         attemptingGuess.delete(inputData.guild.id);
 
-        // defining for easy use
+        //defining for easy use
         let usertag = inputData.author.tag;
         let avatar = inputData.author.displayAvatarURL({ dynamic: true });
 
-        // get translation object for the language
+        //get translation object for the language
         let translations = require(`${__dirname}/translations/${options.language}.json`);
 
         let startingEmbed = {
@@ -92,17 +93,17 @@ module.exports = async function (input, options = {}) {
 
         let startingMessage;
 
-        if ((input.commandName !== undefined) && (!input.replied) && (!input.deferred)) { // check if it's a slash command and hasn't been replied or deferred
+        if ((input.commandName !== undefined) && (!input.replied) && (!input.deferred)) { //check if it's a slash command and hasn't been replied or deferred
             await input.deferReply();
             startingMessage = await input.editReply({ embeds: [startingEmbed] })
         } else {
             if (input.commandName !== undefined) { //check if it's a slash command
                 startingMessage = await input.editReply({ embeds: [startingEmbed] })
             }
-            else { startingMessage = await input.channel.send({ embeds: [startingEmbed] }) } // else, the input is a message
+            else { startingMessage = await input.channel.send({ embeds: [startingEmbed] }) } //else, the input is a message
         }
 
-        // starts the game
+        //starts the game
         let gameTypeRegion = options.gameType == "animal" ? "en_animals" : options.gameType == "character" ? "en" : "en_objects";
         let aki = new Aki({ region: gameTypeRegion, childMode: options.childMode });
         await aki.start();
@@ -135,11 +136,11 @@ module.exports = async function (input, options = {}) {
 
         if (input.commandName !== undefined) { //check if it's a slash command
             akiMessage = await input.editReply({ embeds: [akiEmbed] })
-        } else { akiMessage = await startingMessage.edit({ embeds: [akiEmbed] }); } // else, the input is a message
+        } else { akiMessage = await startingMessage.edit({ embeds: [akiEmbed] }); } //else, the input is a message
 
         let updatedAkiEmbed = akiMessage.embeds[0];
 
-        // repeat while the game is not finished
+        //repeat while the game is not finished
         while (notFinished) {
             if (!notFinished) return;
 
@@ -180,7 +181,7 @@ module.exports = async function (input, options = {}) {
 
                         attemptingGuess.delete(inputData.guild.id)
 
-                        // if they answered yes
+                        //if they answered yes
                         if (guessAnswer == "y" || guessAnswer == translations.yes.toLowerCase()) {
                             let finishedGameCorrect = {
                                 title: translations.wellPlayed,
@@ -199,7 +200,7 @@ module.exports = async function (input, options = {}) {
                             notFinished = false;
                             return;
 
-                            // otherwise
+                            //otherwise
                         } else if (guessAnswer == "n" || guessAnswer == translations.no.toLowerCase()) {
                             if (aki.currentStep >= 78) {
                                 let finishedGameDefeated = {
@@ -251,7 +252,7 @@ module.exports = async function (input, options = {}) {
                     let reply = getButtonReply(response) || response
                     const answer = reply.toLowerCase();
 
-                    // assign points for the possible answers given
+                    //assign points for the possible answers given
                     const answers = {
                         "y": 0,
                         "yes": 0,
@@ -288,7 +289,7 @@ module.exports = async function (input, options = {}) {
                             await aki.back();
                         }
 
-                        // stop the game if the user selected to stop
+                        //stop the game if the user selected to stop
                     } else if (answer == "s" || answer == translations.stop.toLowerCase()) {
                         let stopEmbed = {
                             title: translations.gameEnded,
@@ -308,7 +309,7 @@ module.exports = async function (input, options = {}) {
                 });
         }
     } catch (e) {
-        // log any errors that come
+        //log any errors that come
         attemptingGuess.delete(inputData.guild.id)
         if (e == "DiscordAPIError: Unknown Message") return;
         console.log("Discord.js Akinator Error:")
