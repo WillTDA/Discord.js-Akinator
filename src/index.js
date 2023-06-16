@@ -43,7 +43,7 @@ function getButtonReply(interaction) {
 
 module.exports = async function (input, options = {}) {
     // check discord.js version
-    if (Discord.version.split(".")[0] < 14) return console.log("Discord.js Akinator Error: Discord.js v14 or Higher is Required.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
+    if (Discord.version.split(".")[0] < 14) return console.log(`Discord.js Akinator Error: Discord.js v14 or later is required.\nPlease check the README for finding a compatible version for Discord.js v${Discord.version.split(".")[0]}\nNeed help? Join our Discord server at 'https://discord.gg/P2g24jp'`);
 
     let inputData = {};
     try {
@@ -58,11 +58,11 @@ module.exports = async function (input, options = {}) {
         options.gameType = options.gameType.toLowerCase();
 
         // error handling
-        if (!input) return console.log("Discord.js Akinator Error: Message or CommandInteraction was not Provided.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
-        if (!input.client) return console.log("Discord.js Akinator Error: Message or CommandInteration Provided was Invalid.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
-        if (!input.guild) return console.log("Discord.js Akinator Error: Cannot be used in Direct Messages.\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'");
-        if (!fs.existsSync(`${__dirname}/translations/${options.language}.json`)) return console.log(`Discord.js Akinator Error: Language "${options.language}" Not Found. Examples are: "en" or "fr" or "es".\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'`);
-        if (!["animal", "character", "object"].includes(options.gameType)) return console.log(`Discord.js Akinator Error: Game Type "${options.gameType}" Not Found. Choose from: "animal", "character" or "object".\nNeed Help? Join Our Discord Server at 'https://discord.gg/P2g24jp'`);
+        if (!input) return console.log("Discord.js Akinator Error: Message or CommandInteraction was not provided.\nNeed help? Join our Discord server at 'https://discord.gg/P2g24jp'");
+        if (!input.client) return console.log("Discord.js Akinator Error: Message or CommandInteration provided was invalid.\nNeed help? Join our Discord server at 'https://discord.gg/P2g24jp'");
+        if (!input.guild) return console.log("Discord.js Akinator Error: Cannot be used in Direct Messages.\nNeed help? Join our Discord server at 'https://discord.gg/P2g24jp'");
+        if (!fs.existsSync(`${__dirname}/translations/${options.language}.json`)) return console.log(`Discord.js Akinator Error: Language "${options.language}" cannot be found. Examples: "en", "fr", "es", etc.\nNeed help? Join our Discord server at 'https://discord.gg/P2g24jp'`);
+        if (!["animal", "character", "object"].includes(options.gameType)) return console.log(`Discord.js Akinator Error: Game type "${options.gameType}" cannot be found. Choose from: "animal", "character" or "object".\nNeed help? Join our Discord server at 'https://discord.gg/P2g24jp'`);
 
         try {
             inputData.client = input.client,
@@ -70,7 +70,7 @@ module.exports = async function (input, options = {}) {
                 inputData.author = input.author ? input.author : input.user,
                 inputData.channel = input.channel
         } catch {
-            return console.log("Discord.js Akinator Error: Failed to Parse Input for Use.\nJoin Our Discord Server for Support at 'https://discord.gg/P2g24jp'");
+            return console.log("Discord.js Akinator Error: Failed to parse input for use.\nJoin our Discord server for support at 'https://discord.gg/P2g24jp'");
         }
 
         //auto-resetting 
