@@ -24,7 +24,7 @@ function getButtonReply(interaction) {
  * @prop {string} [options.language="en"] The language of the game. Defaults to `en`.
  * @prop {boolean} [options.childMode=false] Whether to use Akinator's Child Mode. Defaults to `false`.
  * @prop {"character" | "animal" | "object"} [options.gameType="character"] The type of Akinator game to be played. Defaults to `character`.
- * @prop {boolean} [options.useButtons=false] Whether to use Discord's buttons instead of message input for answering questions. Defaults to `false`.
+ * @prop {boolean} [options.useButtons=true] Whether to use Discord's buttons instead of message input for answering questions. Defaults to `true`.
  * @prop {Discord.ColorResolvable} [options.embedColor="Random"] The color of the message embeds. Defaults to `Random`.
  * @prop {object} [translationCaching={}] The options for translation caching.
  * @prop {boolean} [translationCaching.enabled=true] Whether to cache successful translations in a JSON file to reduce API calls and boost performance. Defaults to `true`.
@@ -56,7 +56,7 @@ module.exports = async function (input, options) {
         options.language = options.language || "en";
         options.childMode = options.childMode !== undefined ? options.childMode : false;
         options.gameType = options.gameType || "character";
-        options.useButtons = options.useButtons !== undefined ? options.useButtons : false;
+        options.useButtons = options.useButtons !== undefined ? options.useButtons : true;
         options.embedColor = Discord.resolveColor(options.embedColor || "Random");
 
         //configuring translation caching options if not specified

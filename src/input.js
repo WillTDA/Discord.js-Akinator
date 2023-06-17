@@ -4,7 +4,7 @@ const translate = require("./translate");
 
 /**
  * @param {boolean} useButtons If true, use buttons. If false, use text input.
- * @param {Discord.Message | Discord.CommandInteraction} input The Message or Slash Command Sent by the user.
+ * @param {Discord.Message | Discord.CommandInteraction} input The Message or Slash Command sent by the user.
  * @param {Discord.Message} botMessage The message for the bot to send, also the message which will contain the buttons (Max. 8). MUST BE AN EMBED!
  * @param {boolean} isGuessFilter Specifies whether to only show buttons used when Akinator is guessing.
  * @param {any} translations Active translation file.
