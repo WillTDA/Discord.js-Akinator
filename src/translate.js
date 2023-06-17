@@ -23,7 +23,7 @@ module.exports = async function translate(string, language, cachingOptions) {
         let currentCache = fs.existsSync(path.join(process.cwd(), cachingOptions.path, `${language}.json`)) ? JSON.parse(fs.readFileSync(path.join(process.cwd(), cachingOptions.path, `${language}.json`))) : {}; //load the cache file
         if (currentCache[hashedString]) {
             console.log("Translator: Cache hit for " + string);
-            return cache[hashedString]; //return cached translation if it exists
+            return currentCache[hashedString]; //return cached translation if it exists
         }
     }
 
