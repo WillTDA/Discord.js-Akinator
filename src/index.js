@@ -24,7 +24,7 @@ function getButtonReply(interaction) {
  * @prop {string} [options.language="en"] The language of the game. Defaults to `en`.
  * @prop {boolean} [options.childMode=false] Whether to use Akinator's Child Mode. Defaults to `false`.
  * @prop {"character" | "animal" | "object"} [options.gameType="character"] The type of Akinator game to be played. Defaults to `character`.
- * @prop {boolean} [options.useButtons=false] Whether to use Discord's buttons instead of message input. Defaults to `false`.
+ * @prop {boolean} [options.useButtons=false] Whether to use Discord's buttons instead of message input for answering questions. Defaults to `false`.
  * @prop {Discord.ColorResolvable} [options.embedColor="Random"] The color of the message embeds. Defaults to `Random`.
  * @prop {object} [translationCaching={}] The options for translation caching.
  * @prop {boolean} [translationCaching.enabled=true] Whether to cache successful translations in a JSON file to reduce API calls and boost performance. Defaults to `true`.
@@ -34,18 +34,11 @@ function getButtonReply(interaction) {
  */
 
 /**
-    * Play a Game of Akinator.
+    * Start a game of Akinator.
     * 
     * Simply pass in the Discord `Message` or `CommandInteraction` sent by the user to this function to start the game.
     * 
-    * __Game Options__
-    * 
-    * - `language` - The language of the game.
-    * - `childMode` - Whether to use Akinator's Child Mode.
-    * - `gameType` - The type of Akinator game to be played. (`animal`, `character` or `object`)
-    * - `useButtons` - Whether to use Discord's buttons instead of message input.
-    * - `embedColor` - The color of the message embeds.
-    * - `cacheTranslations` - Whether to cache translations in a JSON file to reduce API calls and boost performance.
+    * Definitions and explanations of game options can be found [here](https://github.com/WillTDA/Discord.js-akinator#code-examples).
     * 
     * @param {Discord.Message | Discord.CommandInteraction} input The Message or Slash Command sent by the user.
     * @param {gameOptions} options The options for the game.

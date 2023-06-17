@@ -60,13 +60,17 @@ client.on("ready", () => {
 
 //Example options for Discord.js Akinator:
 
-const language = "en"; //The language of the game
-const childMode = false; //Whether to use Akinator's Child Mode
-const gameType = "character"; //The type of Akinator game to be played. ("animal", "character" or "object")
-const useButtons = true; //Whether to use Discord's buttons instead of message input
-const embedColor = "#1F1E33"; //The color of the message embeds
+const language = "en"; //The language of the game. Defaults to "en".
+const childMode = false; //Whether to use Akinator's Child Mode. Defaults to "false".
+const gameType = "character"; //The type of Akinator game to be played. ("animal", "character" or "object"). Defaults to "character".
+const useButtons = true; //Whether to use Discord's buttons instead of message input for answering questions. Defaults to "false".
+const embedColor = "#1F1E33"; //The color of the message embeds. Defaults to "Random".
+const translationCachingOptions = {
+    enabled: true, //Whether to cache translations. Defaults to "true". (Recommended)
+    path: "./translationCache" //The path to the translation cache folder relative to the current working directory. Defaults to "./translationCache".
+};
 ```
-With Discord.js Akinator, you can choose whether you want to use a message, or a slash command as the input. Here's a quick example on how to do both!
+With Discord.js Akinator, you can choose whether you want to use a slash command, or a message as the input. Here's some quick examples on how to do both!
 
 ### Using Discord's Slash Commands as Input:
 
@@ -75,11 +79,12 @@ client.on("interactionCreate", async interaction => {
     if (!interaction.isChatInputCommand()) return; //If the interaction is not a slash command, do nothing
     if (interaction.commandName === "akinator") { //If the user sends "/akinator"...
         akinator(interaction, {
-            language: language, //Defaults to "en"
-            childMode: childMode, //Defaults to "false"
-            gameType: gameType, //Defaults to "character"
-            useButtons: useButtons, //Defaults to "false"
-            embedColor: embedColor //Defaults to "Random"
+            language: language,
+            childMode: childMode,
+            gameType: gameType,
+            useButtons: useButtons,
+            embedColor: embedColor,
+            translationCaching: translationCachingOptions
         });
     };
 });
@@ -88,18 +93,19 @@ client.on("interactionCreate", async interaction => {
 ### Using a Message as Input:
 
 ```js
-//ATTENTION: Make sure to enable the "Message Content" intent for your bot in the Discord Developer Portal!
+//IMPORTANT: Make sure to enable the "Message Content" intent for your bot in the Discord Developer Portal!
 
 const PREFIX = "!"; //Your bot's command prefix
 
 client.on("messageCreate", async message => {
     if (message.content.startsWith(`${PREFIX}akinator`)) { //When the user types "!akinator"...
         akinator(message, {
-            language: language, //Defaults to "en"
-            childMode: childMode, //Defaults to "false"
-            gameType: gameType, //Defaults to "character"
-            useButtons: useButtons, //Defaults to "false"
-            embedColor: embedColor //Defaults to "Random"
+            language: language,
+            childMode: childMode,
+            gameType: gameType,
+            useButtons: useButtons,
+            embedColor: embedColor,
+            translationCaching: translationCachingOptions
         });
     };
 });
@@ -107,17 +113,13 @@ client.on("messageCreate", async message => {
 
 ## Contributors
 
-- [3061LRTAGSPKJMORMRT (Ashish#0540)](https://github.com/3061LRTAGSPKJMORMRT) (Error handling and writing much cleaner code)
-
-- [ChaosArising (Josh_#9733)](https://github.com/ChaosArising) (Providing compatibility for Discord.js v13 in v3.0.0)
-
-- ...and [many other people](https://github.com/WillTDA/Discord.js-Akinator/graphs/contributors) helping to make language translation more accurate, and so much more!
+Special thanks to [many people](https://github.com/WillTDA/Discord.js-Akinator/graphs/contributors) helping to make language translation more accurate, refactor code, provide compatibility for new Discord.js versions, and so much more!
 
 ## Contact Us
 
-- 👋 Need Help? [Join Our Discord Server](https://diamonddigital.dev/discord)!
+- 👋 Need help? [Join our Discord Server](https://diamonddigital.dev/discord)!
 
-- 👾 Found a Bug, or Inaccurate Translations? [Open an Issue](https://github.com/WillTDA/Discord.js-Akinator/issues), or Fork and [Submit a Pull Request](https://github.com/WillTDA/Discord.js-Akinator/pulls) on our [GitHub Repository](https://github.com/WillTDA/Discord.js-Akinator)!
+- 👾 Found a bug, or inaccurate translations? [Open an issue](https://github.com/WillTDA/Discord.js-Akinator/issues), or fork and [submit a pull request](https://github.com/WillTDA/Discord.js-Akinator/pulls) on our [GitHub repository](https://github.com/WillTDA/Discord.js-Akinator)!
 <hr>
 <center>
 <a href="https://diamonddigital.dev/"><strong>Created and maintained by</strong>
