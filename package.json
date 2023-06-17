@@ -22,7 +22,7 @@
   "author": "WillTDA",
   "license": "Apache-2.0",
   "dependencies": {
-    "@vitalets/google-translate-api": "^9.1.0",
+    "@vitalets/google-translate-api": "^9.2.0",
     "aki-api": "^6.0.9"
   }
 }
