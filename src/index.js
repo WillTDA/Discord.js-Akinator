@@ -5,7 +5,7 @@ const translate = require("./translate");
 const awaitInput = require("./input");
 const attemptingGuess = new Set();
 
-//this simply gets the user's reply from a button interaction (that is, if the user has chosen to enable buttons)
+//helper function to get the user's reply from a button interaction
 function getButtonReply(interaction) {
     interaction = interaction.customId;
     if (interaction === "✅") return "y"; //yes
@@ -19,6 +19,21 @@ function getButtonReply(interaction) {
 };
 
 /**
+ * Akinator Game Options
+ * @typedef {object} gameOptions
+ * @prop {string} [options.language="en"] The language of the game. Defaults to `en`.
+ * @prop {boolean} [options.childMode=false] Whether to use Akinator's Child Mode. Defaults to `false`.
+ * @prop {"character" | "animal" | "object"} [options.gameType="character"] The type of Akinator game to be played. Defaults to `character`.
+ * @prop {boolean} [options.useButtons=false] Whether to use Discord's buttons instead of message input. Defaults to `false`.
+ * @prop {Discord.ColorResolvable} [options.embedColor="Random"] The color of the message embeds. Defaults to `Random`.
+ * @prop {object} [translationCaching={}] The options for translation caching.
+ * @prop {boolean} [translationCaching.enabled=true] Whether to cache successful translations in a JSON file to reduce API calls and boost performance. Defaults to `true`.
+ * @prop {string} [translationCaching.path="./translationCache"] The path to the directory where the translation cache files are stored. Defaults to `./translationCache`.
+ * 
+ * __Note:__ Paths are relative to the current working directory. (`process.cwd()`)
+ */
+
+/**
     * Play a Game of Akinator.
     * 
     * Simply pass in the Discord `Message` or `CommandInteraction` sent by the user to this function to start the game.
@@ -30,30 +45,31 @@ function getButtonReply(interaction) {
     * - `gameType` - The type of Akinator game to be played. (`animal`, `character` or `object`)
     * - `useButtons` - Whether to use Discord's buttons instead of message input.
     * - `embedColor` - The color of the message embeds.
-    * - `cacheTranslations` - Whether to cache translations to reduce API calls and boost performance.
+    * - `cacheTranslations` - Whether to cache translations in a JSON file to reduce API calls and boost performance.
     * 
-    * @param {Discord.Message | Discord.CommandInteraction} input The Message or Slash Command Sent by the User.
-    * @param {object} options The Options for the Game.
-    * @param {string} [options.language="en"] The language of the game. Defaults to "en".
-    * @param {boolean} [options.childMode=false] Whether to use Akinator's Child Mode. Defaults to "false".
-    * @param {"character" | "animal" | "object"} [options.gameType="character"] The type of Akinator game to be played. Defaults to "character".
-    * @param {boolean} [options.useButtons=false] Whether to use Discord's buttons instead of message input. Defaults to "false".
-    * @param {Discord.ColorResolvable} [options.embedColor="Random"] The color of the message embeds. Defaults to "Random".
+    * @param {Discord.Message | Discord.CommandInteraction} input The Message or Slash Command sent by the user.
+    * @param {gameOptions} options The options for the game.
     * @returns {Promise<void>} Discord.js Akinator Game
     */
 
-module.exports = async function (input, options = {}) {
+module.exports = async function (input, options) {
     //check discord.js version
     if (Discord.version.split(".")[0] < 14) return console.log(`Discord.js Akinator Error: Discord.js v14 or later is required.\nPlease check the README for finding a compatible version for Discord.js v${Discord.version.split(".")[0]}\nNeed help? Join our Discord server at 'https://discord.gg/P2g24jp'`);
 
     let inputData = {};
     try {
+        //TODO: Data type validation
         //configuring game options if not specified
         options.language = options.language || "en";
-        options.childMode = options.childMode || false;
+        options.childMode = options.childMode !== undefined ? options.childMode : false;
         options.gameType = options.gameType || "character";
-        options.useButtons = options.useButtons || false;
+        options.useButtons = options.useButtons !== undefined ? options.useButtons : false;
         options.embedColor = Discord.resolveColor(options.embedColor || "Random");
+
+        //configuring translation caching options if not specified
+        options.translationCaching = options.translationCaching || {};
+        options.translationCaching.enabled = options.translationCaching.enabled !== undefined ? options.translationCaching.enabled : true;
+        options.translationCaching.path = options.translationCaching.path || "./translationCache";
 
         options.language = options.language.toLowerCase();
         options.gameType = options.gameType.toLowerCase();
@@ -121,7 +137,7 @@ module.exports = async function (input, options = {}) {
 
         let akiEmbed = {
             title: `${translations.question} ${aki.currentStep + 1}`,
-            description: `**${translations.progress}: 0%\n${await translate(aki.question, options.language)}**`,
+            description: `**${translations.progress}: 0%\n${await translate(aki.question, options.language, options.translationCaching)}**`,
             color: options.embedColor,
             fields: [],
             author: { name: usertag, icon_url: avatar }
@@ -154,8 +170,8 @@ module.exports = async function (input, options = {}) {
                 hasGuessed = true;
 
                 let guessEmbed = {
-                    title: `${await translate(`I'm ${Math.round(aki.progress)}% sure your ${options.gameType} is...`, options.language)}`,
-                    description: `**${aki.answers[0].name}**\n${await translate(aki.answers[0].description, options.language)}\n\n${options.gameType == "animal" ? translations.isThisYourAnimal : options.gameType == "character" ? translations.isThisYourCharacter : translations.isThisYourObject} ${!options.useButtons ? `**(Type Y/${translations.yes} or N/${translations.no})**` : ""}`,
+                    title: `${await translate(`I'm ${Math.round(aki.progress)}% sure your ${options.gameType} is...`, options.language, options.translationCaching)}`,
+                    description: `**${aki.answers[0].name}**\n${await translate(aki.answers[0].description, options.language, options.translationCaching)}\n\n${options.gameType == "animal" ? translations.isThisYourAnimal : options.gameType == "character" ? translations.isThisYourCharacter : translations.isThisYourObject} ${!options.useButtons ? `**(Type Y/${translations.yes} or N/${translations.no})**` : ""}`,
                     color: options.embedColor,
                     image: { url: aki.answers[0].absolute_picture_path },
                     author: { name: usertag, icon_url: avatar },
@@ -168,7 +184,7 @@ module.exports = async function (input, options = {}) {
                 await akiMessage.edit({ embeds: [guessEmbed] });
                 akiMessage.embeds[0] = guessEmbed;
 
-                await awaitInput(options.useButtons, inputData, akiMessage, true, translations, options.language)
+                await awaitInput(options.useButtons, inputData, akiMessage, true, translations, options.language, options.translationCaching)
                     .then(async response => {
                         if (response === null) {
                             notFinished = false;
@@ -227,7 +243,7 @@ module.exports = async function (input, options = {}) {
             if (updatedAkiEmbed !== akiMessage.embeds[0]) {
                 updatedAkiEmbed = {
                     title: `${translations.question} ${aki.currentStep + 1}`,
-                    description: `**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, options.language)}**`,
+                    description: `**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, options.language, options.translationCaching)}**`,
                     color: options.embedColor,
                     fields: [],
                     author: { name: usertag, icon_url: avatar }
@@ -241,7 +257,7 @@ module.exports = async function (input, options = {}) {
                 akiMessage.embeds[0] = updatedAkiEmbed
             }
 
-            await awaitInput(options.useButtons, inputData, akiMessage, false, translations, options.language)
+            await awaitInput(options.useButtons, inputData, akiMessage, false, translations, options.language, options.translationCaching)
                 .then(async response => {
                     if (response === null) {
                         await aki.win()
@@ -271,7 +287,7 @@ module.exports = async function (input, options = {}) {
 
                     let thinkingEmbed = {
                         title: `${translations.question} ${aki.currentStep + 1}`,
-                        description: `**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, options.language)}**`,
+                        description: `**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, options.language, options.translationCaching)}**`,
                         color: options.embedColor,
                         fields: [],
                         author: { name: usertag, icon_url: avatar },
@@ -310,8 +326,7 @@ module.exports = async function (input, options = {}) {
         }
     } catch (e) {
         //log any errors that come
-        attemptingGuess.delete(inputData.guild.id)
-        if (e == "DiscordAPIError: Unknown Message") return;
+        //attemptingGuess.delete(inputData.guild.id)
         console.log("Discord.js Akinator Error:")
         console.log(e);
     }
