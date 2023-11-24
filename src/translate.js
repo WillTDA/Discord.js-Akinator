@@ -1,7 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const crypto = require("crypto");
-const translator = require("@vitalets/google-translate-api");
+const translator = require("@kreisler/js-google-translate-free");
 
 /**
  * 
@@ -30,9 +30,8 @@ module.exports = async function translate(string, language, cachingOptions) {
     if (language === "zh") language = "zh-CN";
     if (language === "zhcn" || language === "zh-cn") language = "zh-CN";
     if (language === "zhtw" || language === "zh-tw") language = "zh-TW";
-    let translation = await translator.translate(string, { to: language }).catch(e => console.log(e)); //translate the string using google translate
+    let translation = await translator.translate("en", language, string).catch(e => console.log(e)); //translate the string using google translate
     if (!translation) return console.log("Translator: Error occured while translating.");
-    translation = translation.text;
 
     //save the translation to the cache if caching is enabled
     if (cachingOptions.enabled === true) {
