@@ -30,13 +30,7 @@ To install this package, simply run the following command in your terminal:
 
 `npm i discord.js-akinator --save`
 
-**Please Note:** The latest release of this package is only compatible with Discord.js v14. If you are using Discord.js v13 or v12, please refer to the table below to find the version that suits your needs.
-
-| Discord.js Version | Recommended Package Version |
-|--------------------|-----------------------------|
-| v14.x.x            | v4.x.x (`@latest`)          |
-| v13.x.x            | v3.x.x (`@3.4.5`)           |
-| v12.x.x            | v2.1.0 or earlier           |
+**Please Note:** The latest release of this package is only compatible with Discord.js v14.
 
 ## Code Examples
 
