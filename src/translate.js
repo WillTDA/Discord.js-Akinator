@@ -12,9 +12,9 @@ const translator = require("@kreisler/js-google-translate-free");
  */
 
 module.exports = async function translate(string, language, cachingOptions) {
-    if (!string) return console.log("Translator: No String Provided!")
-    if (!language) return console.log("Translator: No Language Provided!")
-    if (!cachingOptions) return console.log("Translator: No Caching Options Provided!")
+    if (!string) return console.log("Discord.js Akinator Translator: No String Provided!")
+    if (!language) return console.log("Discord.js Akinator Translator: No Language Provided!")
+    if (!cachingOptions) return console.log("Discord.js Akinator Translator: No Caching Options Provided!")
     if (language === "en") return string; //the string will always be given in english so give the same text back
 
     let hashedString = crypto.createHash("md5").update(string).digest("hex"); //hash the string to use as key
@@ -30,8 +30,8 @@ module.exports = async function translate(string, language, cachingOptions) {
     if (language === "zh") language = "zh-CN";
     if (language === "zhcn" || language === "zh-cn") language = "zh-CN";
     if (language === "zhtw" || language === "zh-tw") language = "zh-TW";
-    let translation = await translator.translate("en", language, string).catch(e => console.log(e)); //translate the string using google translate
-    if (!translation) return console.log("Translator: Error occured while translating.");
+    let translation = await translator.translate({ from: "en", to: language, text: string }).catch(e => console.log(e)); //translate the string using google translate
+    if (!translation) return console.log("Discord.js Akinator Translator: Error occured while translating.");
 
     //save the translation to the cache if caching is enabled
     if (cachingOptions.enabled === true) {

@@ -22,7 +22,8 @@
   "author": "WillTDA",
   "license": "Apache-2.0",
   "dependencies": {
-    "@kreisler/js-google-translate-free": "^2.1.0",
-    "aki-api": "^6.0.9"
+    "@kreisler/js-google-translate-free": "^4.0.2",
+    "aki-api": "^7.0.0",
+    "discord.js": "^14.14.1"
   }
 }

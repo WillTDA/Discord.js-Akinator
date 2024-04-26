@@ -3,7 +3,6 @@ const { Aki } = require("aki-api");
 const fs = require("fs");
 const translate = require("./translate");
 const awaitInput = require("./input");
-const attemptingGuess = new Set();
 
 //helper function to get the user's reply from a button interaction
 function getButtonReply(interaction) {
@@ -83,9 +82,6 @@ module.exports = async function (input, options) {
             return console.log("Discord.js Akinator Error: Failed to parse input for use.\nJoin our Discord server for support at 'https://discord.gg/P2g24jp'");
         }
 
-        //auto-resetting 
-        attemptingGuess.delete(inputData.guild.id);
-
         //defining for easy use
         let usertag = inputData.author.tag;
         let avatar = inputData.author.displayAvatarURL({ dynamic: true });
@@ -115,10 +111,9 @@ module.exports = async function (input, options) {
         //starts the game
         let gameTypeRegion = options.gameType == "animal" ? "en_animals" : options.gameType == "character" ? "en" : "en_objects";
         let aki = new Aki({ region: gameTypeRegion, childMode: options.childMode });
-        await aki.start();
+        let akiData = await aki.start();
 
         let notFinished = true;
-        let stepsSinceLastGuess = 0;
         let hasGuessed = false;
 
         let noResEmbed = {
@@ -130,7 +125,7 @@ module.exports = async function (input, options) {
 
         let akiEmbed = {
             title: `${translations.question} ${aki.currentStep + 1}`,
-            description: `**${translations.progress}: 0%\n${await translate(aki.question, options.language, options.translationCaching)}**`,
+            description: `**${translations.progress}: 0%\n${await translate(akiData.question, options.language, options.translationCaching)}**`,
             color: options.embedColor,
             fields: [],
             author: { name: usertag, icon_url: avatar }
@@ -153,23 +148,15 @@ module.exports = async function (input, options) {
         while (notFinished) {
             if (!notFinished) return;
 
-            stepsSinceLastGuess = stepsSinceLastGuess + 1
-
-            if (((aki.progress >= 95 && (stepsSinceLastGuess >= 10 || hasGuessed == false)) || aki.currentStep >= 78) && (!attemptingGuess.has(inputData.guild.id))) {
-                attemptingGuess.add(inputData.guild.id)
-                await aki.win();
-
-                stepsSinceLastGuess = 0;
-                hasGuessed = true;
-
+            if (aki.guess?.id_base_proposition) { //if the algorithm has guessed the answer
                 let guessEmbed = {
                     title: `${await translate(`I'm ${Math.round(aki.progress)}% sure your ${options.gameType} is...`, options.language, options.translationCaching)}`,
-                    description: `**${aki.answers[0].name}**\n${await translate(aki.answers[0].description, options.language, options.translationCaching)}\n\n${options.gameType == "animal" ? translations.isThisYourAnimal : options.gameType == "character" ? translations.isThisYourCharacter : translations.isThisYourObject} ${!options.useButtons ? `**(Type Y/${translations.yes} or N/${translations.no})**` : ""}`,
+                    description: `**${aki.guess.name_proposition}**\n${await translate(aki.guess.description_proposition, options.language, options.translationCaching)}\n\n${options.gameType == "animal" ? translations.isThisYourAnimal : options.gameType == "character" ? translations.isThisYourCharacter : translations.isThisYourObject} ${!options.useButtons ? `**(Type Y/${translations.yes} or N/${translations.no})**` : ""}`,
                     color: options.embedColor,
-                    image: { url: aki.answers[0].absolute_picture_path },
+                    image: { url: aki.guess.photo },
                     author: { name: usertag, icon_url: avatar },
                     fields: [
-                        { name: translations.ranking, value: `**#${aki.answers[0].ranking}**`, inline: true },
+                        //{ name: translations.ranking, value: `**#${aki.answers[0].ranking}**`, inline: true }, //NO LONGER SUPPORTED
                         { name: translations.noOfQuestions, value: `**${aki.currentStep}**`, inline: true }
                     ],
                 }
@@ -188,8 +175,6 @@ module.exports = async function (input, options) {
                         let reply = getButtonReply(response) || response
                         const guessAnswer = reply.toLowerCase();
 
-                        attemptingGuess.delete(inputData.guild.id)
-
                         //if they answered yes
                         if (guessAnswer == "y" || guessAnswer == translations.yes.toLowerCase()) {
                             let finishedGameCorrect = {
@@ -198,8 +183,8 @@ module.exports = async function (input, options) {
                                 color: options.embedColor,
                                 author: { name: usertag, icon_url: avatar },
                                 fields: [
-                                    { name: translations[options.gameType], value: `**${aki.answers[0].name}**`, inline: true },
-                                    { name: translations.ranking, value: `**#${aki.answers[0].ranking}**`, inline: true },
+                                    { name: translations[options.gameType], value: `**${aki.guess.name_proposition}**`, inline: true },
+                                    //{ name: translations.ranking, value: `**#${aki.answers[0].ranking}**`, inline: true }, //NO LONGER SUPPORTED
                                     { name: translations.noOfQuestions, value: `**${aki.currentStep}**`, inline: true }
                                 ]
                             }
@@ -211,9 +196,9 @@ module.exports = async function (input, options) {
 
                             //otherwise
                         } else if (guessAnswer == "n" || guessAnswer == translations.no.toLowerCase()) {
-                            if (aki.currentStep >= 78) {
+                            if (aki.currentStep >= 78 || hasGuessed == true) {
                                 let finishedGameDefeated = {
-                                    title: "Well Played!",
+                                    title: translations.wellPlayed,
                                     description: `**${inputData.author.username}, ${translations.defeated}**`,
                                     color: options.embedColor,
                                     author: { name: usertag, icon_url: avatar }
@@ -225,10 +210,23 @@ module.exports = async function (input, options) {
                             } else {
                                 if (options.useButtons) await response.editReply({ embeds: [guessEmbed], components: [] })
                                 else await akiMessage.edit({ embeds: [guessEmbed], components: [] })
+                                hasGuessed = true; // set hasGuessed to true so that the game doesn't keep guessing after the second attempt
                                 aki.progress = 50
+                                aki.continue(); //continue the game after the guess
                             }
                         }
                     });
+            } else if (!akiData.question) {
+                let finishedGameDefeated = {
+                    title: translations.wellPlayed,
+                    description: `**${inputData.author.username}, ${translations.defeated}**`,
+                    color: options.embedColor,
+                    author: { name: usertag, icon_url: avatar }
+                }
+
+                if (options.useButtons) await response.editReply({ embeds: [finishedGameDefeated], components: [] })
+                else await akiMessage.edit({ embeds: [finishedGameDefeated], components: [] })
+                notFinished = false; //end the game if the algorithm can't guess and there are no questions found
             }
 
             if (!notFinished) return;
@@ -253,7 +251,6 @@ module.exports = async function (input, options) {
             await awaitInput(options.useButtons, inputData, akiMessage, false, translations, options.language, options.translationCaching)
                 .then(async response => {
                     if (response === null) {
-                        await aki.win()
                         notFinished = false;
                         return akiMessage.edit({ embeds: [noResEmbed], components: [] })
                     }
@@ -280,7 +277,7 @@ module.exports = async function (input, options) {
 
                     let thinkingEmbed = {
                         title: `${translations.question} ${aki.currentStep + 1}`,
-                        description: `**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(aki.question, options.language, options.translationCaching)}**`,
+                        description: `**${translations.progress}: ${Math.round(aki.progress)}%\n${await translate(akiData.question, options.language, options.translationCaching)}**`,
                         color: options.embedColor,
                         fields: [],
                         author: { name: usertag, icon_url: avatar },
@@ -295,7 +292,7 @@ module.exports = async function (input, options) {
 
                     if (answer == "b" || answer == translations.back.toLowerCase()) {
                         if (aki.currentStep >= 1) {
-                            await aki.back();
+                            akiData = await aki.back();
                         }
 
                         //stop the game if the user selected to stop
@@ -307,19 +304,18 @@ module.exports = async function (input, options) {
                             author: { name: usertag, icon_url: avatar }
                         }
 
-                        await aki.win()
                         await akiMessage.edit({ embeds: [stopEmbed], components: [] })
                         notFinished = false;
                     } else {
-                        await aki.step(answers[answer]);
+                        let step = await aki.step(answers[answer]);
+                        if (!step.guess?.id_base_proposition) akiData = step;
                     }
 
                     if (!notFinished) return;
                 });
         }
     } catch (e) {
-        //log any errors that come
-        //attemptingGuess.delete(inputData.guild.id)
+        //log any errors that come up
         console.log("Discord.js Akinator Error:")
         console.log(e);
     }
