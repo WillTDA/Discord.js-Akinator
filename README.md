@@ -24,11 +24,11 @@
 
 - 🤖 <b>Slash Command & Message Support!</b> | No matter how your bot receives its commands, you can simply pass in a `CommandInteraction` or `Message` and it will work!
 
-## Installation & Compatibility List
+## Installation
 
 To install this package, simply run the following command in your terminal:
 
-`npm i discord.js-akinator --save`
+`npm i discord.js-akinator`
 
 **Please Note:** The latest release of this package is only compatible with Discord.js v14.
 
