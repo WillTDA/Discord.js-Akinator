@@ -12,7 +12,7 @@ const translator = require("@kreisler/js-google-translate-free");
  */
 
 module.exports = async function translate(string, language, cachingOptions) {
-    if (!string) return console.log("Discord.js Akinator Translator: No String Provided!")
+    if (!string) return;
     if (!language) return console.log("Discord.js Akinator Translator: No Language Provided!")
     if (!cachingOptions) return console.log("Discord.js Akinator Translator: No Caching Options Provided!")
     if (language === "en") return string; //the string will always be given in english so give the same text back

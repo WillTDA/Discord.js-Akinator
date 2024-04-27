@@ -4,11 +4,20 @@
 
 <center style="margin-bottom:1rem;">A Discord.js v14 module that allows you to create an Akinator command for your discord bot in a matter of seconds.</center>
 
-[![NPM](https://nodei.co/npm/discord.js-akinator.png)](https://npmjs.com/package/discord.js-akinator)
+<div align="center">
 
-[![Downloads](https://img.shields.io/npm/dt/discord.js-akinator?logo=npm&style=flat-square)](https://npmjs.com/package/discord.js-akinator) [![Discord Server](https://img.shields.io/discord/667479986214666272?logo=discord&logoColor=white&style=flat-square)](https://diamonddigital.dev/discord)
+  ![license](https://img.shields.io/npm/l/discord.js-akinator?style=flat-square)
+  [![version](https://img.shields.io/npm/v/discord.js-akinator?style=flat-square)](https://npmjs.com/package/discord.js-akinator)
+  [![gzipped size](https://img.shields.io/bundlejs/size/discord.js-akinator?style=flat-square)](https://npmjs.com/package/discord.js-akinator)
+  [![downloads](https://img.shields.io/npm/dt/discord.js-akinator?style=flat-square)](https://npmjs.com/package/discord.js-akinator)
+  ![last commit](https://img.shields.io/github/last-commit/WillTDA/Discord.js-Akinator?style=flat-square)
 
-<a href="https://www.buymeacoffee.com/willtda" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/default-orange.png" alt="Buy Me A Coffee" height="41" width="174"></a>
+  [![discord](https://img.shields.io/discord/667479986214666272?logo=discord&logoColor=white&style=flat-square)](https://diamonddigital.dev/discord)
+  [![buy me a coffee](https://img.shields.io/badge/-Buy%20Me%20a%20Coffee-ffdd00?logo=Buy%20Me%20A%20Coffee&logoColor=000000&style=flat-square)](https://www.buymeacoffee.com/willtda)
+
+</div>
+
+<br />
 
 ## Features
 
@@ -56,7 +65,6 @@ client.on("ready", () => {
 
 const language = "en"; //The language of the game. Defaults to "en".
 const childMode = false; //Whether to use Akinator's Child Mode. Defaults to "false".
-const gameType = "character"; //The type of Akinator game to be played. ("animal", "character" or "object"). Defaults to "character".
 const useButtons = true; //Whether to use Discord's buttons instead of message input for answering questions. Defaults to "true".
 const embedColor = "#1F1E33"; //The color of the message embeds. Defaults to "Random".
 const translationCachingOptions = {
@@ -75,7 +83,6 @@ client.on("interactionCreate", async interaction => {
         akinator(interaction, {
             language: language,
             childMode: childMode,
-            gameType: gameType,
             useButtons: useButtons,
             embedColor: embedColor,
             translationCaching: translationCachingOptions
@@ -96,7 +103,6 @@ client.on("messageCreate", async message => {
         akinator(message, {
             language: language,
             childMode: childMode,
-            gameType: gameType,
             useButtons: useButtons,
             embedColor: embedColor,
             translationCaching: translationCachingOptions
@@ -114,8 +120,10 @@ Special thanks to [many people](https://github.com/WillTDA/Discord.js-Akinator/g
 - 👋 Need help? [Join our Discord Server](https://diamonddigital.dev/discord)!
 
 - 👾 Found a bug, or inaccurate translations? [Open an issue](https://github.com/WillTDA/Discord.js-Akinator/issues), or fork and [submit a pull request](https://github.com/WillTDA/Discord.js-Akinator/pulls) on our [GitHub repository](https://github.com/WillTDA/Discord.js-Akinator)!
-<hr>
-<center>
-<a href="https://diamonddigital.dev/"><strong>Created and maintained by</strong>
-<img align="center" style="width:25%;height:auto" src="https://diamonddigital.dev/img/png/ddd_logo_text_transparent.png" alt="Diamond Digital Development Logo"></a>
-</center>
+
+---
+
+<a href="https://diamonddigital.dev/">
+  <strong>Created and maintained by</strong>
+  <img align="center" alt="Diamond Digital Development Logo" src="https://diamonddigital.dev/img/png/ddd_logo_text_transparent.png" style="width:25%;height:auto" />
+</a>

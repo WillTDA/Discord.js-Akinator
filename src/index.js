@@ -22,7 +22,6 @@ function getButtonReply(interaction) {
  * @typedef {object} gameOptions
  * @prop {string} [options.language="en"] The language of the game. Defaults to `en`.
  * @prop {boolean} [options.childMode=false] Whether to use Akinator's Child Mode. Defaults to `false`.
- * @prop {"character" | "animal" | "object"} [options.gameType="character"] The type of Akinator game to be played. Defaults to `character`.
  * @prop {boolean} [options.useButtons=true] Whether to use Discord's buttons instead of message input for answering questions. Defaults to `true`.
  * @prop {Discord.ColorResolvable} [options.embedColor="Random"] The color of the message embeds. Defaults to `Random`.
  * @prop {object} [translationCaching={}] The options for translation caching.
@@ -54,7 +53,6 @@ module.exports = async function (input, options) {
         //configuring game options if not specified
         options.language = options.language || "en";
         options.childMode = options.childMode !== undefined ? options.childMode : false;
-        options.gameType = options.gameType || "character";
         options.useButtons = options.useButtons !== undefined ? options.useButtons : true;
         options.embedColor = Discord.resolveColor(options.embedColor || "Random");
 
@@ -64,14 +62,12 @@ module.exports = async function (input, options) {
         options.translationCaching.path = options.translationCaching.path || "./translationCache";
 
         options.language = options.language.toLowerCase();
-        options.gameType = options.gameType.toLowerCase();
 
         //error handling
         if (!input) return console.log("Discord.js Akinator Error: Message or CommandInteraction was not provided.\nNeed help? Join our Discord server at 'https://discord.gg/P2g24jp'");
         if (!input.client) return console.log("Discord.js Akinator Error: Message or CommandInteration provided was invalid.\nNeed help? Join our Discord server at 'https://discord.gg/P2g24jp'");
         if (!input.guild) return console.log("Discord.js Akinator Error: Cannot be used in Direct Messages.\nNeed help? Join our Discord server at 'https://discord.gg/P2g24jp'");
         if (!fs.existsSync(`${__dirname}/translations/${options.language}.json`)) return console.log(`Discord.js Akinator Error: Language "${options.language}" cannot be found. Examples: "en", "fr", "es", etc.\nNeed help? Join our Discord server at 'https://discord.gg/P2g24jp'`);
-        if (!["animal", "character", "object"].includes(options.gameType)) return console.log(`Discord.js Akinator Error: Game type "${options.gameType}" cannot be found. Choose from: "animal", "character" or "object".\nNeed help? Join our Discord server at 'https://discord.gg/P2g24jp'`);
 
         try {
             inputData.client = input.client,
@@ -109,7 +105,7 @@ module.exports = async function (input, options) {
         }
 
         //starts the game
-        let aki = new Aki({ region: options.gameType, childMode: options.childMode });
+        let aki = new Aki({ region: "en", childMode: options.childMode }); // set to en region, translation is handled later
         let akiData = await aki.start();
 
         let notFinished = true;
@@ -149,8 +145,8 @@ module.exports = async function (input, options) {
 
             if (aki.guess?.id_base_proposition) { //if the algorithm has guessed the answer
                 let guessEmbed = {
-                    title: `${await translate(`I'm ${Math.round(aki.progress)}% sure your ${options.gameType} is...`, options.language, options.translationCaching)}`,
-                    description: `**${aki.guess.name_proposition}**\n${await translate(aki.guess.description_proposition, options.language, options.translationCaching)}\n\n${options.gameType == "animal" ? translations.isThisYourAnimal : options.gameType == "character" ? translations.isThisYourCharacter : translations.isThisYourObject} ${!options.useButtons ? `**(Type Y/${translations.yes} or N/${translations.no})**` : ""}`,
+                    title: `${await translate(`I'm ${Math.round(aki.progress)}% sure your character is...`, options.language, options.translationCaching)}`,
+                    description: `**${aki.guess.name_proposition}**\n${await translate(aki.guess.description_proposition, options.language, options.translationCaching)}\n\n${translations.isThisYourCharacter} ${!options.useButtons ? `**(Type Y/${translations.yes} or N/${translations.no})**` : ""}`,
                     color: options.embedColor,
                     image: { url: aki.guess.photo },
                     author: { name: usertag, icon_url: avatar },
@@ -182,7 +178,7 @@ module.exports = async function (input, options) {
                                 color: options.embedColor,
                                 author: { name: usertag, icon_url: avatar },
                                 fields: [
-                                    { name: translations[options.gameType], value: `**${aki.guess.name_proposition}**`, inline: true },
+                                    { name: "Character", value: `**${aki.guess.name_proposition}**`, inline: true },
                                     //{ name: translations.ranking, value: `**#${aki.answers[0].ranking}**`, inline: true }, //NO LONGER SUPPORTED
                                     { name: translations.noOfQuestions, value: `**${aki.currentStep}**`, inline: true }
                                 ]
