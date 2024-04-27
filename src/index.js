@@ -109,8 +109,7 @@ module.exports = async function (input, options) {
         }
 
         //starts the game
-        let gameTypeRegion = options.gameType == "animal" ? "en_animals" : options.gameType == "character" ? "en" : "en_objects";
-        let aki = new Aki({ region: gameTypeRegion, childMode: options.childMode });
+        let aki = new Aki({ region: options.gameType, childMode: options.childMode });
         let akiData = await aki.start();
 
         let notFinished = true;
