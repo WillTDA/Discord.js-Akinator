@@ -32,28 +32,18 @@ module.exports = async function createButtonMenu(client, inputMessage, botMessag
         return null;
     }
 
-    const actionRows = [];
-    let currentRow = { type: 1, components: [] };
-
-    for (let i = 0; i < buttons.length; i++) {
-        if (currentRow.components.length >= 5) { // Check if current row is full
-            actionRows.push(currentRow);
-            currentRow = { type: 1, components: [] }; // Create a new row
-        }
-        currentRow.components.push(buttons[i]);
-    }
-
-    if (currentRow.components.length > 0) { // Push the last row if it's not empty
-        actionRows.push(currentRow);
-    }
-
-    if (actionRows.length > 5) {
-        console.warn(`Button Menu Warning: Created ${actionRows.length} action rows, exceeding Discord's limit of 5 rows per message. Some buttons might not be visible.`);
-    }
-
+    const actionRows = buttons.reduce((rows, button, index) => {
+        const rowIndex = Math.floor(index / 3);
+        rows[rowIndex] = rows[rowIndex] || { type: 1, components: [] };
+        rows[rowIndex].components.push(button);
+        return rows;
+    }, []).slice(0, 3); // Maximum 3 rows allowed by Discord
 
     try {
-        await botMessage.edit({ embeds: [botMessage.embeds[0]], components: actionRows });
+        const updatedMessage = await botMessage.edit({
+            embeds: [botMessage.embeds[0]],
+            components: actionRows
+        });
 
         const filter = (interaction) => {
             if (interaction.user.id === inputMessage.author.id) {
@@ -64,17 +54,16 @@ module.exports = async function createButtonMenu(client, inputMessage, botMessag
             }
         };
 
-        let selection = null;
+        const selection = await updatedMessage.awaitMessageComponent({
+            filter: (i) => {
+                const isAuthor = i.user.id === inputMessage.author.id;
+                if (!isAuthor) i.deferUpdate();
+                return isAuthor;
+            },
+            time
+        });
 
-        try {
-            selection = await botMessage.awaitMessageComponent({
-                filter,
-                time,
-            });
-            return selection;
-        } catch (error) {
-            return null; // Timeout
-        }
+        return selection;
 
     } catch (error) {
         console.error("Button Menu Error:", error);
