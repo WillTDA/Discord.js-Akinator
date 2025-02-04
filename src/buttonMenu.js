@@ -60,15 +60,6 @@ module.exports = async function createButtonMenu(client, inputMessage, botMessag
             components: actionRows
         });
 
-        const filter = (interaction) => {
-            if (interaction.user.id === inputMessage.author.id) {
-                return true; // Only the command user can interact
-            } else {
-                interaction.deferUpdate(); // Acknowledge interaction for other users
-                return false;
-            }
-        };
-
         const selection = await updatedMessage.awaitMessageComponent({
             filter: (i) => {
                 const isAuthor = i.user.id === inputMessage.author.id;
