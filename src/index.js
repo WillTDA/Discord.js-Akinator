@@ -4,18 +4,21 @@ const fs = require("fs");
 const translate = require("./translate");
 const awaitInput = require("./input");
 
+const buttonMap = {
+    "✅": "y",  // yes
+    "❌": "n",  // no
+    "❓": "i",  // don't know
+    "👍": "p",  // probably
+    "👎": "pn", // probably not
+    "⏪": "b",  // back
+    "🛑": "s"   // stop game
+};
+
 //helper function to get the user's reply from a button interaction
 function getButtonReply(interaction) {
-    interaction = interaction.customId;
-    if (interaction === "✅") return "y"; //yes
-    else if (interaction === "❌") return "n"; //no
-    else if (interaction === "❓") return "i"; //don't know
-    else if (interaction === "👍") return "p"; //probably
-    else if (interaction === "👎") return "pn"; //probably not
-    else if (interaction === "⏪") return "b"; //back
-    else if (interaction === "🛑") return "s"; //stop game
-    else return null;
-};
+  const customId = interaction.customId;
+  return buttonMap[customId] || null;
+}
 
 /**
  * Akinator Game Options
