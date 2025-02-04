@@ -32,10 +32,6 @@ module.exports = async function createButtonMenu(client, inputMessage, botMessag
         return null;
     }
 
-    if (buttons.length > 8) {
-        console.warn(`Button Menu Warning: Provided ${buttons.length} buttons, which is more than recommended (Max 8).`);
-    }
-
     const actionRows = [];
     let currentRow;
 
@@ -47,6 +43,9 @@ module.exports = async function createButtonMenu(client, inputMessage, botMessag
         currentRow.components.push(buttons[i]);
     }
 
+    if (actionRows.length > 5) {
+        console.warn(`Button Menu Warning: Created ${actionRows.length} action rows, exceeding Discord's limit of 5 rows per message. Some buttons might not be visible.`);
+    }
 
     try {
         await botMessage.edit({ embeds: [botMessage.embeds[0]], components: actionRows });
