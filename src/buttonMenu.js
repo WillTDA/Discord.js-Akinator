@@ -1,5 +1,8 @@
 const Discord = require("discord.js");
 
+const MAXIMUM_ROWS = 5;
+const MAXIMUM_BUTTONS_PER_ROWS = 5;
+
 /**
  * Creates an interactive button menu on a Discord message.
  *
@@ -32,12 +35,24 @@ module.exports = async function createButtonMenu(client, inputMessage, botMessag
         return null;
     }
 
-    const actionRows = buttons.reduce((rows, button, index) => {
-        const rowIndex = Math.floor(index / 3);
-        rows[rowIndex] = rows[rowIndex] || { type: 1, components: [] };
-        rows[rowIndex].components.push(button);
-        return rows;
-    }, []).slice(0, 3); // Maximum 3 rows allowed by Discord
+    const actionRows = [];
+    let currentRow = { type: 1, components: [] }; // Initialize currentRow here
+
+    for (let i = 0; i < buttons.length; i++) {
+        if (currentRow.components.length >= MAXIMUM_BUTTONS_PER_ROWS) { // Check if current row is full
+            actionRows.push(currentRow); // Push the full row
+            currentRow = { type: 1, components: [] }; // Create a new row
+        }
+        currentRow.components.push(buttons[i]); // Add button to current row
+    }
+
+    if (currentRow.components.length > 0) { // Push the last row if it's not empty
+        actionRows.push(currentRow);
+    }
+
+    if (actionRows.length > MAXIMUM_ROWS) {
+        console.warn(`Button Menu Warning: Created ${actionRows.length} action rows, exceeding Discord's limit of ${MAXIMUM_ROWS} rows per message. Some buttons might not be visible.`);
+    }
 
     try {
         const updatedMessage = await botMessage.edit({
@@ -64,7 +79,6 @@ module.exports = async function createButtonMenu(client, inputMessage, botMessag
         });
 
         return selection;
-
     } catch (error) {
         console.error("Button Menu Error:", error);
         return null;
