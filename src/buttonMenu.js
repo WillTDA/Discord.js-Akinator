@@ -33,19 +33,24 @@ module.exports = async function createButtonMenu(client, inputMessage, botMessag
     }
 
     const actionRows = [];
-    let currentRow;
+    let currentRow = { type: 1, components: [] };
 
     for (let i = 0; i < buttons.length; i++) {
-        if (i % 5 === 0) { // Discord limit is 5 buttons per row
-            currentRow = { type: 1, components: [] };
+        if (currentRow.components.length >= 5) { // Check if current row is full
             actionRows.push(currentRow);
+            currentRow = { type: 1, components: [] }; // Create a new row
         }
         currentRow.components.push(buttons[i]);
+    }
+
+    if (currentRow.components.length > 0) { // Push the last row if it's not empty
+        actionRows.push(currentRow);
     }
 
     if (actionRows.length > 5) {
         console.warn(`Button Menu Warning: Created ${actionRows.length} action rows, exceeding Discord's limit of 5 rows per message. Some buttons might not be visible.`);
     }
+
 
     try {
         await botMessage.edit({ embeds: [botMessage.embeds[0]], components: actionRows });
